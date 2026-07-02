@@ -436,6 +436,26 @@ const CONTACT_DATA = [
   { icon: '🎮', label: 'Discord', value: 'ItsWanheda', href: null, copyValue: 'ItsWanheda' },
 ];
 
+async function fetchGithubStats() {
+  const repos = REPOS_DATA; // your existing array
+  const enriched = await Promise.all(repos.map(async r => {
+    try {
+      // Extract owner/repo from the github URL
+      const match = r.github.match(/github\.com\/([^/]+)\/([^/]+)/);
+      if (!match) return r;
+      const [, owner, repo] = match;
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+      if (!res.ok) return r;
+      const data = await res.json();
+      return { ...r, stars: data.stargazers_count, forks: data.forks_count };
+    } catch { return r; }
+  }));
+  // Re-render with real data
+  REPOS_DATA.length = 0;
+  REPOS_DATA.push(...enriched);
+  renderGithub();
+}
+
 /* ============================================================
    PRELOADER
 ============================================================ */
@@ -646,6 +666,17 @@ function initNav() {
   window.addEventListener('scroll', setActive, { passive: true });
 }
 
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = (window.scrollY / h) * 100;
+  document.getElementById('scroll-progress').style.width = pct + '%';
+}, { passive: true });
+
+const btt = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  btt.classList.toggle('show', window.scrollY > 500);
+}, { passive: true });
+btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 /* ============================================================
    SCROLL REVEAL
 ============================================================ */
@@ -693,6 +724,45 @@ function initCounters() {
     }, { threshold: 0.5 });
     obs.observe(el);
   });
+}
+
+/* ============================================================
+   LEARNING DAYS COUNTER (Dynamic)
+============================================================ */
+const LEARNING_START_DATE = new Date('2022-01-12');
+
+function calculateLearningDays() {
+  const today = new Date();
+  // Normalize to midnight to avoid hour/timezone drift
+  const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const startMidnight = new Date(
+    LEARNING_START_DATE.getFullYear(),
+    LEARNING_START_DATE.getMonth(),
+    LEARNING_START_DATE.getDate()
+  );
+
+  const diffMs = todayMidnight - startMidnight;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  return Math.max(0, diffDays);
+}
+
+function updateLearningDaysStat() {
+  const days = calculateLearningDays();
+  const statCards = document.querySelectorAll('.stat-card');
+
+  statCards.forEach(card => {
+    const label = card.querySelector('.stat-label');
+    if (label && label.textContent.trim() === 'Days Learning') {
+      const numberEl = card.querySelector('.stat-number');
+      if (numberEl) {
+        numberEl.dataset.target = days;
+        numberEl.textContent = days;
+      }
+    }
+  });
+
+  setTimeout(updateLearningDaysStat, 60 * 60 * 1000);
 }
 
 /* ============================================================
@@ -772,7 +842,6 @@ function renderProjects() {
         <div class="proj-actions">
           <a href="${p.github}" target="_blank" class="btn btn-ghost" onclick="event.stopPropagation()">GitHub ↗</a>
           ${p.live ? `<a href="${p.live}" target="_blank" class="btn btn-ghost" onclick="event.stopPropagation()">Live ↗</a>` : ''}
-          <button class="btn btn-ghost" onclick="event.stopPropagation();openProjectModal('${p.id}')">Details →</button>
         </div>
       </div>
     </div>
@@ -1086,6 +1155,190 @@ document.getElementById('modal-overlay').addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+
+/* ============================================================
+   COMMAND PALETTE (Ctrl+K)
+   ============================================================ */
+function initPalette() {
+  const overlay = document.getElementById('palette-overlay');
+  const input = document.getElementById('palette-input');
+  const results = document.getElementById('palette-results');
+  if (!overlay || !input) return;
+
+  // Build searchable index from existing data
+  const ITEMS = [
+    { icon: '🏠', title: 'Home', sub: 'Section', action: () => document.getElementById('home').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '👤', title: 'About', sub: 'Section', action: () => document.getElementById('about').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '🛠️', title: 'Skills', sub: 'Section', action: () => document.getElementById('skills').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '📂', title: 'Projects', sub: 'Section', action: () => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '🖥️', title: 'Terminal', sub: 'Section', action: () => document.getElementById('terminal')?.scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '💼', title: 'Experience', sub: 'Section', action: () => document.getElementById('experience').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '⚡', title: 'GitHub Activity', sub: 'Section', action: () => document.getElementById('github').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '🎓', title: 'Certifications', sub: 'Section', action: () => document.getElementById('certifications').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '📝', title: 'Blog', sub: 'Section', action: () => document.getElementById('blog').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '📧', title: 'Contact', sub: 'Section', action: () => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }) },
+    { icon: '⚡', title: 'GitHub: @ItsWanheda', sub: 'External', action: () => window.open('https://github.com/ItsWanheda', '_blank') },
+    { icon: '📧', title: 'Email: wanheda.work@gmail.com', sub: 'Contact', action: () => window.open('mailto:wanheda.work@gmail.com') },
+    { icon: '⬆️', title: 'Back to Top', sub: 'Action', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+    { icon: '🌙', title: 'Toggle Theme', sub: 'Action', action: () => toggleTheme() },
+    // Dynamic items from projects
+    ...PROJECTS_DATA.map(p => ({
+      icon: p.emoji,
+      title: p.name,
+      sub: 'Project',
+      action: () => openProjectModal(p.id)
+    })),
+    // Dynamic items from blog
+    ...BLOG_DATA.map(b => ({
+      icon: '📄',
+      title: b.title,
+      sub: `Blog · ${b.tag}`,
+      action: () => openBlogModal(BLOG_DATA.indexOf(b))
+    }))
+  ];
+
+  let activeIndex = 0;
+  let filtered = ITEMS;
+  let lastFocused = null;
+
+  // ---------- Core functions ----------
+  function render(query = '') {
+    const q = query.trim().toLowerCase();
+    filtered = q
+      ? ITEMS.filter(i =>
+        i.title.toLowerCase().includes(q) ||
+        i.sub.toLowerCase().includes(q)
+      )
+      : ITEMS;
+    activeIndex = 0;
+
+    if (!filtered.length) {
+      results.innerHTML = `
+        <div class="palette-empty">
+          No results for "<strong>${escapeHtml(query)}</strong>"
+        </div>`;
+      return;
+    }
+
+    results.innerHTML = filtered.map((item, i) => `
+      <div class="palette-item ${i === 0 ? 'active' : ''}" data-index="${i}">
+        <div class="icon">${item.icon}</div>
+        <div class="text">
+          <div class="title">${escapeHtml(item.title)}</div>
+          <div class="sub">${escapeHtml(item.sub)}</div>
+        </div>
+      </div>
+    `).join('');
+
+    results.querySelectorAll('.palette-item').forEach((el, i) => {
+      el.addEventListener('click', () => execute(filtered[i]));
+      el.addEventListener('mouseenter', () => {
+        activeIndex = i;
+        updateActive();
+      });
+    });
+  }
+
+  function updateActive() {
+    const items = results.querySelectorAll('.palette-item');
+    if (!items.length) return;
+    // Wrap around
+    if (activeIndex < 0) activeIndex = items.length - 1;
+    if (activeIndex >= items.length) activeIndex = 0;
+    items.forEach((el, i) => el.classList.toggle('active', i === activeIndex));
+    const active = items[activeIndex];
+    if (active) {
+      active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  function execute(item) {
+    if (!item || typeof item.action !== 'function') return;
+    closePalette();
+    // Defer slightly so the modal/close animation doesn't conflict
+    setTimeout(() => {
+      try { item.action(); }
+      catch (err) { console.error('Palette action failed:', err); }
+    }, 50);
+  }
+
+  function openPalette() {
+    lastFocused = document.activeElement;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    input.value = '';
+    render('');
+    // Wait a tick so the focus doesn't fight the transition
+    setTimeout(() => input.focus(), 10);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePalette() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocused && typeof lastFocused.focus === 'function') {
+      lastFocused.focus();
+    }
+  }
+
+  function isOpen() {
+    return overlay.classList.contains('open');
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // ---------- Event listeners ----------
+  // Open / close on Ctrl+K (or Cmd+K on Mac)
+  document.addEventListener('keydown', (e) => {
+    const isToggle = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k';
+    if (isToggle) {
+      e.preventDefault();
+      isOpen() ? closePalette() : openPalette();
+      return;
+    }
+    if (!isOpen()) return;
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closePalette();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIndex++;
+      updateActive();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIndex--;
+      updateActive();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      execute(filtered[activeIndex]);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      activeIndex = 0;
+      updateActive();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      activeIndex = filtered.length - 1;
+      updateActive();
+    }
+  });
+
+  // Live search
+  input.addEventListener('input', (e) => render(e.target.value));
+
+  // Click outside the palette box to close
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closePalette();
+  });
+}
 /* ============================================================
    INIT ALL
 ============================================================ */
@@ -1101,5 +1354,9 @@ function initAll() {
   renderCerts();
   renderBlog();
   renderContact();
+  updateLearningDaysStat();
   initCounters();
+  fetchGithubStats();
+  openSkillModal();
+  openProjectModal();
 }

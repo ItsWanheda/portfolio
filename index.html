@@ -1,258 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Cybersecurity Enthusiast, Backend Developer & Networking Explorer — Personal Portfolio">
-<meta name="theme-color" content="#0A0A0A">
-<title>Portfolio — Cybersecurity & Backend Engineering</title>
-<link rel="stylesheet" href="./src/css/style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Cybersecurity Enthusiast, Backend Developer & Networking Explorer — Personal Portfolio">
+  <meta name="theme-color" content="#0A0A0A">
+  <title>Portfolio — Cybersecurity & Backend Engineering</title>
+  <link rel="stylesheet" href="./src/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+
+    <script type="module" src="./src/js/main.js" defer></script>
 </head>
+
 <body class="loading">
 
-<!-- CURSOR -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+  <!-- CURSOR -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <div id="scroll-progress"></div>
+  <!-- CANVAS BG -->
+  <canvas id="bg-canvas"></canvas>
+  <!--Back-to-Top-->
+  <button id="back-to-top" aria-label="Back to top">↑</button>
 
-<!-- CANVAS BG -->
-<canvas id="bg-canvas"></canvas>
-
-<!-- PRELOADER -->
-<div id="preloader">
-  <div class="pre-shield">
-    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-      <path d="M28 4L8 14V28C8 39.05 16.6 49.37 28 52C39.4 49.37 48 39.05 48 28V14L28 4Z" stroke="#FF003C" stroke-width="1.5" fill="none"/>
-      <path d="M28 12L14 19V28C14 35.5 20.3 42.6 28 44.6C35.7 42.6 42 35.5 42 28V19L28 12Z" stroke="#FF003C" stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.4"/>
-      <circle cx="28" cy="26" r="5" stroke="#FF003C" stroke-width="1.5" fill="none"/>
-      <path d="M28 31V35" stroke="#FF003C" stroke-width="1.5"/>
-    </svg>
-    <div class="pre-ring"></div>
-    <div class="pre-ring2"></div>
-  </div>
-  <div class="pre-text" id="pre-text">INITIALIZING SECURITY MODULES...</div>
-  <div class="pre-bar-wrap"><div class="pre-bar" id="pre-bar"></div></div>
-  <div class="pre-percent" id="pre-percent">0%</div>
-</div>
-
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#home" class="nav-logo">
-    <div class="nav-logo-dot"></div>
-    <span>ItsWanheda</span>
-  </a>
-  <ul class="nav-links" id="nav-links">
-    <li><a href="#home" class="active">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#github">GitHub</a></li>
-    <li><a href="#certifications">Certs</a></li>
-    <li><a href="#blog">Blog</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-<div class="nav-mobile" id="nav-mobile">
-  <a href="#home">Home</a>
-  <a href="#about">About</a>
-  <a href="#skills">Skills</a>
-  <a href="#projects">Projects</a>
-  <a href="#experience">Experience</a>
-  <a href="#github">GitHub</a>
-  <a href="#certifications">Certifications</a>
-  <a href="#blog">Blog</a>
-  <a href="#contact">Contact</a>
-</div>
-
-<!-- HERO -->
-<section id="home">
-  <div class="container">
-    <div class="hero-wrap">
-      <div class="hero-left">
-        <div class="hero-greeting">WELCOME TO MY PORTFOLIO</div>
-        <h1 class="hero-name">Its <span>Wanheda</span></h1>
-        <div class="hero-roles">Cybersecurity Enthusiast · Backend Developer · Networking Explorer</div>
-        <div class="hero-typed-wrap">
-          <span class="hero-typed-prefix">$&gt;</span>
-          <span class="hero-typed-text" id="typed-text"></span>
-          <span class="hero-cursor"></span>
-        </div>
-        <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
-            View Projects
-          </a>
-          <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener" class="btn btn-outline">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-            GitHub
-          </a>
-          <a href="#" class="btn btn-outline" onclick="alert('Resume download would be here')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-            Resume
-          </a>
-        </div>
-      </div>
-<div class="hero-right">
-  <div class="hero-avatar-wrap">
-    <div class="hero-avatar">
-      <!-- We replace the SVG div with an img tag -->
-      <img src="./src/images/116275068.jpg" alt="ItsWanheda Profile" class="hero-profile-img">
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="pre-shield">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+        <path d="M28 4L8 14V28C8 39.05 16.6 49.37 28 52C39.4 49.37 48 39.05 48 28V14L28 4Z" stroke="#FF003C"
+          stroke-width="1.5" fill="none" />
+        <path d="M28 12L14 19V28C14 35.5 20.3 42.6 28 44.6C35.7 42.6 42 35.5 42 28V19L28 12Z" stroke="#FF003C"
+          stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.4" />
+        <circle cx="28" cy="26" r="5" stroke="#FF003C" stroke-width="1.5" fill="none" />
+        <path d="M28 31V35" stroke="#FF003C" stroke-width="1.5" />
+      </svg>
+      <div class="pre-ring"></div>
+      <div class="pre-ring2"></div>
     </div>
-    <div class="hero-ring1"></div>
-    <div class="hero-ring2"></div>
-    <div class="hero-ring3"></div>
-    <div class="hero-glow"></div>
-  </div>
-</div>
-      </div>
+    <div class="pre-text" id="pre-text">INITIALIZING SECURITY MODULES...</div>
+    <div class="pre-bar-wrap">
+      <div class="pre-bar" id="pre-bar"></div>
     </div>
+    <div class="pre-percent" id="pre-percent">0%</div>
   </div>
-  <a href="#about" class="hero-scroll">
-    <span>SCROLL</span>
-    <div class="hero-scroll-line"></div>
-  </a>
-</section>
 
-<!-- ABOUT -->
-<section id="about" class="section-pad">
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-text reveal">
-        <div class="section-label">About Me</div>
-        <h2 class="section-title">Building the <span class="text-red">secure</span> web</h2>
-        <p>I'm a passionate technologist focused on the intersection of <strong>cybersecurity, backend engineering,</strong> and <strong>network infrastructure</strong>. My journey started with a fascination for how systems communicate and how they can be made resilient against threats.</p>
-        <p>I dive deep into <strong>authentication systems, API security, and network protocols</strong> — constantly exploring how to engineer software that is not only functional but fundamentally secure by design.</p>
-        <p>Currently learning <strong>Go and TypeScript</strong> while building projects that solve real security challenges. I believe that understanding attacks makes for better defenders, and every system I build reflects that philosophy.</p>
-        <div class="about-highlight">
-          &gt; Focus Areas<br>
-          ├── Cybersecurity &amp; Threat Analysis<br>
-          ├── Backend Development (Node.js, Go)<br>
-          ├── Network Protocols (TCP/IP, TLS, DNS)<br>
-          ├── Authentication &amp; Authorization (JWT, RBAC)<br>
-          └── IT Infrastructure &amp; Systems
-        </div>
-      </div>
-      <div class="stats-grid reveal reveal-d2">
-        <div class="stat-card">
-          <div class="stat-number" data-target="12">0</div>
-          <div class="stat-label">Projects Built</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-target="11">0</div>
-          <div class="stat-label">Repositories</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-target="15">0</div>
-          <div class="stat-label">Technologies</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-target="1642">0</div>
-          <div class="stat-label">Days Learning</div>
-        </div>
-      </div>
-    </div>
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#home" class="nav-logo">
+      <div class="nav-logo-dot"></div>
+      <span>ItsWanheda</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#github">GitHub</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#github">GitHub</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact</a>
   </div>
-</section>
 
-<!-- SKILLS -->
-<section id="skills" class="section-pad">
-  <div class="container">
-    <div class="section-label reveal">Tech Stack</div>
-    <h2 class="section-title reveal reveal-d1">Skills &amp; <span class="text-red">Technologies</span></h2>
-    <p class="section-desc reveal reveal-d2" style="margin-bottom:48px">A curated set of tools, languages, and frameworks I use to build secure, scalable systems.</p>
-    <div class="skills-categories reveal reveal-d3" id="skill-cats">
-      <button class="cat-btn active" data-cat="all">All</button>
-      <button class="cat-btn" data-cat="frontend">Frontend</button>
-      <button class="cat-btn" data-cat="backend">Backend</button>
-      <button class="cat-btn" data-cat="security">Security</button>
-      <button class="cat-btn" data-cat="networking">Networking</button>
-      <button class="cat-btn" data-cat="languages">Languages</button>
-    </div>
-    <div class="skills-grid" id="skills-grid"></div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects" class="section-pad">
-  <div class="container">
-    <div class="section-label reveal">Portfolio</div>
-    <h2 class="section-title reveal reveal-d1">Featured <span class="text-red">Projects</span></h2>
-    <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Security-focused software projects exploring real-world challenges in authentication, network analysis, and threat detection.</p>
-    <div class="projects-grid" id="projects-grid"></div>
-  </div>
-</section>
-
-<!-- GITHUB -->
-<section id="github" class="section-pad">
-  <div class="container">
-    <div class="section-label reveal">Open Source</div>
-    <h2 class="section-title reveal reveal-d1">GitHub <span class="text-red">Activity</span></h2>
-    <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">A snapshot of my open-source contributions and repositories. Connect via GitHub API for live data.</p>
-    <div class="github-layout reveal reveal-d2">
-      <div>
-        <div class="github-profile-card">
-          <div class="github-avatar">🛡️</div>
-          <div class="github-username">@ItsWanheda</div>
-          <div class="github-bio">Cybersecurity enthusiast & backend developer. Building secure systems, one commit at a time.</div>
-          <div class="github-stats">
-            <div class="gh-stat"><div class="gh-stat-num">11</div><div class="gh-stat-label">Repos</div></div>
-            <div class="gh-stat"><div class="gh-stat-num">223</div><div class="gh-stat-label">Commits</div></div>
-            <div class="gh-stat"><div class="gh-stat-num">5</div><div class="gh-stat-label">Followers</div></div>
-            <div class="gh-stat"><div class="gh-stat-num">11</div><div class="gh-stat-label">Following</div></div>
+  <!-- HERO -->
+  <section id="home">
+    <div class="container">
+      <div class="hero-wrap">
+        <div class="hero-left">
+          <div class="hero-greeting">WELCOME TO MY PORTFOLIO</div>
+          <h1 class="hero-name">Its <span>Wanheda</span></h1>
+          <div class="hero-roles">Cybersecurity Enthusiast · Backend Developer · Networking Explorer</div>
+          <div class="hero-typed-wrap">
+            <span class="hero-typed-prefix">$&gt;</span>
+            <span class="hero-typed-text" id="typed-text"></span>
+            <span class="hero-cursor"></span>
           </div>
-          <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;justify-content:center">View Profile →</a>
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M9 9h6M9 13h6M9 17h4" />
+              </svg>
+              View Projects
+            </a>
+            <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener" class="btn btn-outline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-avatar-wrap">
+            <div class="hero-avatar">
+              <img src="./src/images/Profile.jpg" alt="ItsWanheda Profile" class="hero-profile-img">
+            </div>
+            <div class="hero-ring1"></div>
+            <div class="hero-ring2"></div>
+            <div class="hero-ring3"></div>
+            <div class="hero-glow"></div>
+          </div>
         </div>
       </div>
-    <div class="repos-grid" id="repos-grid"></div>
+    </div>
+    </div>
+    <a href="#about" class="hero-scroll">
+      <span>SCROLL</span>
+      <div class="hero-scroll-line"></div>
+    </a>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section-pad">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <div class="section-label">About Me</div>
+          <h2 class="section-title">Building the <span class="text-red">secure</span> web</h2>
+          <p>I'm a passionate technologist focused on the intersection of <strong>cybersecurity, backend
+              engineering,</strong> and <strong>network infrastructure</strong>. My journey started with a fascination
+            for how systems communicate and how they can be made resilient against threats.</p>
+          <p>I dive deep into <strong>authentication systems, API security, and network protocols</strong> — constantly
+            exploring how to engineer software that is not only functional but fundamentally secure by design.</p>
+          <p>Currently learning <strong>Go and TypeScript</strong> while building projects that solve real security
+            challenges. I believe that understanding attacks makes for better defenders, and every system I build
+            reflects that philosophy.</p>
+          <div class="about-highlight">
+            &gt; Focus Areas<br>
+            ├── Cybersecurity &amp; Threat Analysis<br>
+            ├── Backend Development (Node.js, Go)<br>
+            ├── Network Protocols (TCP/IP, TLS, DNS)<br>
+            ├── Authentication &amp; Authorization (JWT, RBAC)<br>
+            └── IT Infrastructure &amp; Systems
+          </div>
+        </div>
+        <div class="stats-grid reveal reveal-d2">
+          <div class="stat-card">
+            <div class="stat-number" data-target="12">0</div>
+            <div class="stat-label">Projects Built</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-target="11">0</div>
+            <div class="stat-label">Repositories</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-target="15">0</div>
+            <div class="stat-label">Technologies</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-target="1642">0</div>
+            <div class="stat-label">Days Learning</div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+  <!-- SKILLS -->
+  <section id="skills" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Tech Stack</div>
+      <h2 class="section-title reveal reveal-d1">Skills &amp; <span class="text-red">Technologies</span></h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:48px">A curated set of tools, languages, and
+        frameworks I use to build secure, scalable systems.</p>
+      <div class="skills-categories reveal reveal-d3" id="skill-cats">
+        <button class="cat-btn active" data-cat="all">All</button>
+        <button class="cat-btn" data-cat="frontend">Frontend</button>
+        <button class="cat-btn" data-cat="backend">Backend</button>
+        <button class="cat-btn" data-cat="security">Security</button>
+        <button class="cat-btn" data-cat="networking">Networking</button>
+        <button class="cat-btn" data-cat="languages">Languages</button>
+      </div>
+      <div class="skills-grid" id="skills-grid"></div>
+    </div>
+  </section>
 
-<!-- EXPERIENCE -->
-<section id="experience" class="section-pad">
-  <div class="container">
-    <div class="section-label reveal">Journey</div>
-    <h2 class="section-title reveal reveal-d1">Learning <span class="text-red">Timeline</span></h2>
-    <p class="section-desc reveal reveal-d2" style="margin-bottom:64px">My continuous path through the world of technology, security, and software engineering.</p>
-    <div class="timeline" id="timeline"></div>
-  </div>
-</section>
+  <!-- PROJECTS -->
+  <section id="projects" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Portfolio</div>
+      <h2 class="section-title reveal reveal-d1">Featured <span class="text-red">Projects</span></h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Security-focused software projects exploring
+        real-world challenges in authentication, network analysis, and threat detection.</p>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+  </section>
 
-<!-- CERTIFICATIONS -->
-<section id="certifications" class="section-pad">
-  <div class="container">
-    <div class="section-label reveal">Credentials</div>
-    <h2 class="section-title reveal reveal-d1"><span class="text-red">Certifications</span> &amp; Badges</h2>
-    <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Formal recognition of skills and knowledge in security, networking, and cloud infrastructure.</p>
-    <div class="certs-grid" id="certs-grid"></div>
-  </div>
-</section>
+  <!-- GITHUB -->
+  <section id="github" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Open Source</div>
+      <h2 class="section-title reveal reveal-d1">GitHub <span class="text-red">Activity</span></h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">A snapshot of my open-source contributions and
+        repositories. Connect via GitHub API for live data.</p>
+      <div class="github-layout reveal reveal-d2">
+        <div>
+          <div class="github-profile-card">
+            <div class="github-avatar">🛡️</div>
+            <div class="github-username">@ItsWanheda</div>
+            <div class="github-bio">Cybersecurity enthusiast & backend developer. Building secure systems, one commit at
+              a time.</div>
+            <div class="github-stats">
+              <div class="gh-stat">
+                <div class="gh-stat-num">11</div>
+                <div class="gh-stat-label">Repos</div>
+              </div>
+              <div class="gh-stat">
+                <div class="gh-stat-num">223</div>
+                <div class="gh-stat-label">Commits</div>
+              </div>
+              <div class="gh-stat">
+                <div class="gh-stat-num">5</div>
+                <div class="gh-stat-label">Followers</div>
+              </div>
+              <div class="gh-stat">
+                <div class="gh-stat-num">11</div>
+                <div class="gh-stat-label">Following</div>
+              </div>
+            </div>
+            <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener" class="btn btn-primary"
+              style="width:100%;justify-content:center">View Profile →</a>
+          </div>
+        </div>
+        <div class="repos-grid" id="repos-grid"></div>
+      </div>
+    </div>
+    </div>
+  </section>
 
-<!-- BLOG -->
-<section id="blog" class="section-pad">
-  <div class="container">
-    <div class="section-label reveal">Research</div>
-    <h2 class="section-title reveal reveal-d1">Blog &amp; <span class="text-red">Writings</span></h2>
-    <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Notes, breakdowns, and deep dives into cybersecurity concepts, protocols, and software engineering principles.</p>
-    <div class="blog-grid" id="blog-grid"></div>
-  </div>
-</section>
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Journey</div>
+      <h2 class="section-title reveal reveal-d1">Learning <span class="text-red">Timeline</span></h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:64px">My continuous path through the world of
+        technology, security, and software engineering.</p>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
 
-<!-- CONTACT -->
-<section id="contact" class="section-pad">
-  <div class="container">
-    <div class="section-label reveal">Get In Touch</div>
-    <h2 class="section-title reveal reveal-d1">Let's <span class="text-red">Connect</span></h2>
-    <div class="contact-layout">
-      <div class="reveal reveal-d2">
-        <p class="contact-info-text">I'm open to collaboration, security research discussions, backend engineering projects, and networking conversations. Feel free to reach out through any channel below.</p>
-        <div class="contact-links" id="contact-links">
+  <!-- CERTIFICATIONS -->
+  <section id="certifications" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Credentials</div>
+      <h2 class="section-title reveal reveal-d1"><span class="text-red">Certifications</span> &amp; Badges</h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Formal recognition of skills and knowledge in
+        security, networking, and cloud infrastructure.</p>
+      <div class="certs-grid" id="certs-grid"></div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Research</div>
+      <h2 class="section-title reveal reveal-d1">Blog &amp; <span class="text-red">Writings</span></h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Notes, breakdowns, and deep dives into
+        cybersecurity concepts, protocols, and software engineering principles.</p>
+      <div class="blog-grid" id="blog-grid"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Get In Touch</div>
+      <h2 class="section-title reveal reveal-d1">Let's <span class="text-red">Connect</span></h2>
+      <div class="contact-layout">
+        <div class="reveal reveal-d2">
+          <p class="contact-info-text">I'm open to collaboration, security research discussions, backend engineering
+            projects, and networking conversations. Feel free to reach out through any channel below.</p>
+          <div class="contact-links" id="contact-links">
             <!-- This will be populated by JS, but here is the expected structure -->
             <!-- 
             <div class="contact-item">
@@ -263,68 +302,110 @@
             <button class="contact-copy" data-copy="...">COPY</button>
             </div> 
              -->
-         </div>
-      </div>
-      <div class="reveal reveal-d3">
-        <div class="contact-form-title">Available For</div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="stat-card" style="padding:20px 24px">
-            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">COLLABORATION</div>
-            <div style="font-size:0.85rem;color:var(--muted)">Open source security tools and backend projects</div>
           </div>
-          <div class="stat-card" style="padding:20px 24px">
-            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">LEARNING</div>
-            <div style="font-size:0.85rem;color:var(--muted)">Cybersecurity mentorship and knowledge exchange</div>
-          </div>
-          <div class="stat-card" style="padding:20px 24px">
-            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">OPPORTUNITIES</div>
-            <div style="font-size:0.85rem;color:var(--muted)">Junior security or backend engineering roles</div>
-          </div>
-          <div class="stat-card" style="padding:20px 24px">
-            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">RESEARCH</div>
-            <div style="font-size:0.85rem;color:var(--muted)">Security writeups, CTF teams, and threat analysis</div>
+        </div>
+        <div class="reveal reveal-d3">
+          <div class="contact-form-title">Available For</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="stat-card" style="padding:20px 24px">
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">
+                COLLABORATION</div>
+              <div style="font-size:0.85rem;color:var(--muted)">Open source security tools and backend projects</div>
+            </div>
+            <div class="stat-card" style="padding:20px 24px">
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">LEARNING
+              </div>
+              <div style="font-size:0.85rem;color:var(--muted)">Cybersecurity mentorship and knowledge exchange</div>
+            </div>
+            <div class="stat-card" style="padding:20px 24px">
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">
+                OPPORTUNITIES</div>
+              <div style="font-size:0.85rem;color:var(--muted)">Junior security or backend engineering roles</div>
+            </div>
+            <div class="stat-card" style="padding:20px 24px">
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">RESEARCH
+              </div>
+              <div style="font-size:0.85rem;color:var(--muted)">Security writeups, CTF teams, and threat analysis</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-name">Its <span>Wanheda</span></div>
-      <div class="footer-quote">"Building secure systems one project at a time."</div>
-      <div class="footer-socials">
-        <a href="https://github.com/ItsWanheda" target="_blank" class="footer-social" title="GitHub">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-        </a>
-        <a href="mailto:Wanheda.work@gmail.com" class="footer-social" title="Email">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        </a>
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-name">Its <span>Wanheda</span></div>
+        <div class="footer-quote">"Building secure systems one project at a time."</div>
+        <div class="footer-socials">
+          <a href="https://github.com/ItsWanheda" target="_blank" class="footer-social" title="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+          </a>
+          <a href="mailto:Wanheda.work@gmail.com" class="footer-social" title="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+          </a>
+        </div>
+        <div class="footer-copy">© 2026 ItsWanheda — BUILT WITH PRECISION &amp; PURPOSE</div>
       </div>
-      <div class="footer-copy">© 2026 ItsWanheda — BUILT WITH PRECISION &amp; PURPOSE</div>
+    </div>
+  </footer>
+  <!-- BLOG MODAL (Unified) -->
+  <div id="blog-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <div class="modal-header">
+        <div class="modal-meta">
+          <div class="modal-number" id="modal-number"></div>
+          <div class="modal-tag" id="modal-tag"></div>
+        </div>
+        <h2 class="modal-title" id="modal-title"></h2>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Full content will be injected here -->
+      </div>
     </div>
   </div>
-</footer>
-<!-- BLOG MODAL (Unified) -->
-<div id="blog-modal" class="modal-overlay">
-  <div class="modal-content">
-    <button class="modal-close" aria-label="Close modal">&times;</button>
-    <div class="modal-header">
-      <div class="modal-meta">
-        <div class="modal-number" id="modal-number"></div>
-        <div class="modal-tag" id="modal-tag"></div>
-      </div>
-      <h2 class="modal-title" id="modal-title"></h2>
+<!-- COMMAND PALETTE -->
+<div id="palette-overlay" class="palette-overlay">
+  <div class="palette">
+    <div class="palette-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="palette-input" type="text" placeholder="Type a command, search, or jump to..." />
+      <kbd>ESC</kbd>
     </div>
-    <div class="modal-body" id="modal-body">
-      <!-- Full content will be injected here -->
+    <div id="palette-results" class="palette-results"></div>
+    <div class="palette-footer">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> select</span>
+      <span><kbd>Ctrl</kbd>+<kbd>K</kbd> toggle</span>
     </div>
   </div>
 </div>
-
+<!-- Generic Modal -->
+<div id="modal-overlay" class="generic-modal-overlay" hidden>
+  <div class="generic-modal" role="dialog" aria-modal="true" aria-labelledby="generic-modal-title">
+    <button class="generic-modal-close" type="button" aria-label="Close modal">×</button>
+    <div class="modal-header">
+      <div class="modal-emoji" id="generic-modal-emoji"></div>
+      <div>
+        <h2 id="generic-modal-title" class="modal-title"></h2>
+        <div id="generic-modal-subtitle" class="modal-subtitle"></div>
+      </div>
+    </div>
+    <div id="generic-modal-body" class="modal-body"></div>
+  </div>
+</div>
 <script type="module" src="./src/js/main.js"></script>
 </body>
+
 </html>
