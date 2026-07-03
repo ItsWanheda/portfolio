@@ -36,6 +36,13 @@
 
 ---
 
+## 📸 Screenshots
+<p align="center">
+  <img src="./src/images/preview.png/>
+</p>
+
+---
+
 ## 🧠 About
 
 A **cybersecurity-themed personal portfolio** built with vanilla web technologies. This isn't just a résumé — it's a demonstration of my engineering philosophy: **secure by design, performant by default, beautiful by intention**.
