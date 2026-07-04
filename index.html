@@ -7,14 +7,50 @@
   <meta name="description"
     content="Cybersecurity Enthusiast, Backend Developer & Networking Explorer — Personal Portfolio">
   <meta name="theme-color" content="#0A0A0A">
+  <!-- Open Graph -->
+  <meta property="og:title" content="ItsWanheda — Cybersecurity & Backend Portfolio">
+  <meta property="og:description"
+    content="Cybersecurity enthusiast, backend developer, and networking explorer. Building secure systems one project at a time.">
+  <meta property="og:image" content="https://itswanheda.dev/src/images/og-preview.png">
+  <meta property="og:url" content="https://itswanheda.dev">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ItsWanheda — Cybersecurity & Backend Portfolio">
+  <meta name="twitter:description" content="Building secure systems, one commit at a time.">
+  <meta name="twitter:image" content="https://itswanheda.dev/src/images/og-preview.png">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "ItsWanheda",
+  "jobTitle": "Cybersecurity Enthusiast & Backend Developer",
+  "url": "https://itswanheda.dev",
+  "sameAs": ["https://github.com/ItsWanheda"],
+  "knowsAbout": ["Cybersecurity", "Backend Development", "Networking", "Go", "TypeScript", "Python"]
+}
+</script>
   <title>Portfolio — Cybersecurity & Backend Engineering</title>
   <link rel="stylesheet" href="./src/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet">
+  <!-- Standard favicon -->
+  <link rel="icon" type="image/x-icon" href="./src/images/favicon.ico">
 
-    <script type="module" src="./src/js/main.js" defer></script>
+  <!-- SVG favicon (modern browsers) -->
+  <link rel="icon" type="image/svg+xml" href="./src/images/favicon.svg">
+
+  <!-- Apple touch icon -->
+  <link rel="apple-touch-icon" href="./src/images/apple-touch-icon.png">
+
+  <link rel="manifest" href="./manifest.webmanifest">
+
+  <script type="module" src="./src/js/main.js" defer></script>
 </head>
 
 <body class="loading">
@@ -66,6 +102,7 @@
       <li><a href="#blog">Blog</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -304,31 +341,19 @@
              -->
           </div>
         </div>
-        <div class="reveal reveal-d3">
-          <div class="contact-form-title">Available For</div>
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <div class="stat-card" style="padding:20px 24px">
-              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">
-                COLLABORATION</div>
-              <div style="font-size:0.85rem;color:var(--muted)">Open source security tools and backend projects</div>
-            </div>
-            <div class="stat-card" style="padding:20px 24px">
-              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">LEARNING
-              </div>
-              <div style="font-size:0.85rem;color:var(--muted)">Cybersecurity mentorship and knowledge exchange</div>
-            </div>
-            <div class="stat-card" style="padding:20px 24px">
-              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">
-                OPPORTUNITIES</div>
-              <div style="font-size:0.85rem;color:var(--muted)">Junior security or backend engineering roles</div>
-            </div>
-            <div class="stat-card" style="padding:20px 24px">
-              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);margin-bottom:6px">RESEARCH
-              </div>
-              <div style="font-size:0.85rem;color:var(--muted)">Security writeups, CTF teams, and threat analysis</div>
-            </div>
-          </div>
-        </div>
+<div class="reveal reveal-d3">
+  <div class="contact-form-title">Send a Message</div>
+  <form id="contact-form" class="contact-form">
+    <input type="text" name="name" placeholder="Your Name" required class="form-input">
+    <input type="email" name="_replyto" placeholder="your@email.com" required class="form-input">
+    <input type="text" name="subject" placeholder="Subject" required class="form-input">
+    <textarea name="message" placeholder="Your message..." rows="5" required class="form-input"></textarea>
+    <button type="submit" class="btn btn-primary form-submit">
+      <span class="btn-text">Send Message</span>
+    </button>
+    <div class="form-status" id="form-status"></div>
+  </form>
+</div>
       </div>
     </div>
   </section>
@@ -373,39 +398,40 @@
       </div>
     </div>
   </div>
-<!-- COMMAND PALETTE -->
-<div id="palette-overlay" class="palette-overlay">
-  <div class="palette">
-    <div class="palette-search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input id="palette-input" type="text" placeholder="Type a command, search, or jump to..." />
-      <kbd>ESC</kbd>
-    </div>
-    <div id="palette-results" class="palette-results"></div>
-    <div class="palette-footer">
-      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-      <span><kbd>↵</kbd> select</span>
-      <span><kbd>Ctrl</kbd>+<kbd>K</kbd> toggle</span>
-    </div>
-  </div>
-</div>
-<!-- Generic Modal -->
-<div id="modal-overlay" class="generic-modal-overlay" hidden>
-  <div class="generic-modal" role="dialog" aria-modal="true" aria-labelledby="generic-modal-title">
-    <button class="generic-modal-close" type="button" aria-label="Close modal">×</button>
-    <div class="modal-header">
-      <div class="modal-emoji" id="generic-modal-emoji"></div>
-      <div>
-        <h2 id="generic-modal-title" class="modal-title"></h2>
-        <div id="generic-modal-subtitle" class="modal-subtitle"></div>
+  <!-- COMMAND PALETTE -->
+  <div id="palette-overlay" class="palette-overlay">
+    <div class="palette">
+      <div class="palette-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input id="palette-input" type="text" placeholder="Type a command, search, or jump to..." />
+        <kbd>ESC</kbd>
+      </div>
+      <div id="palette-results" class="palette-results"></div>
+      <div class="palette-footer">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> select</span>
+        <span><kbd>Ctrl</kbd>+<kbd>K</kbd> toggle</span>
       </div>
     </div>
-    <div id="generic-modal-body" class="modal-body"></div>
   </div>
-</div>
-<script type="module" src="./src/js/main.js"></script>
+  <!-- Generic Modal -->
+  <div id="modal-overlay" class="generic-modal-overlay" hidden>
+    <div class="generic-modal" role="dialog" aria-modal="true" aria-labelledby="generic-modal-title">
+      <button class="generic-modal-close" type="button" aria-label="Close modal">×</button>
+      <div class="modal-header">
+        <div class="modal-emoji" id="generic-modal-emoji"></div>
+        <div>
+          <h2 id="generic-modal-title" class="modal-title"></h2>
+          <div id="generic-modal-subtitle" class="modal-subtitle"></div>
+        </div>
+      </div>
+      <div id="generic-modal-body" class="modal-body"></div>
+    </div>
+  </div>
+  <script type="module" src="./src/js/main.js"></script>
 </body>
 
 </html>
