@@ -320,8 +320,8 @@ See LICENSE for the full text.
 
 ## 📞 Contact
 > ItsWanheda — Cybersecurity Enthusiast & Backend Developer
-- github:
-- Email:Wanheda.work@gmail.com
+- github:`https://github.com/ItsWanheda`
+- Email:`Wanheda.work@gmail.com`
 > Project Link: https://github.com/ItsWanheda/portfolio
 
 ---
