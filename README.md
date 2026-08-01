@@ -1,4 +1,3 @@
-
 # Portfolio — Cybersecurity & Backend Engineering
 
 **Cybersecurity Enthusiast · Backend Developer · Networking Explorer**
@@ -307,7 +306,7 @@ Contributions are welcome! Whether it's a bug fix, new feature, or documentation
 **Code Style**
 * 2-space indentation
 * Single quotes for JS strings
-* Semantic HTML (use <section>, <article>, <nav>, etc.)
+* Semantic HTML (use `<section>`, `<article>`, `<nav>`, etc.)
 * Mobile-first CSS (write base styles for mobile, then layer @media for larger)
 * Comment non-obvious logic
 
