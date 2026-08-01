@@ -1483,25 +1483,6 @@ const CONTACT_DATA = [
   { icon: '🎮', label: 'Discord', value: 'ItsWanheda', href: null, copyValue: 'ItsWanheda' },
 ];
 
-async function fetchGithubStats() {
-  const repos = REPOS_DATA; // your existing array
-  const enriched = await Promise.all(repos.map(async r => {
-    try {
-      // Extract owner/repo from the github URL
-      const match = r.github.match(/github\.com\/([^/]+)\/([^/]+)/);
-      if (!match) return r;
-      const [, owner, repo] = match;
-      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-      if (!res.ok) return r;
-      const data = await res.json();
-      return { ...r, stars: data.stargazers_count, forks: data.forks_count };
-    } catch { return r; }
-  }));
-  // Re-render with real data
-  REPOS_DATA.length = 0;
-  REPOS_DATA.push(...enriched);
-  renderGithub();
-}
 
 function initPWA() {
   if ('serviceWorker' in navigator) {
