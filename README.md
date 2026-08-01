@@ -37,7 +37,7 @@
 
 ## 📸 Screenshots
 <p align="center">
-  <img src="./src/images/preview.png/>
+  <img src="./src/images/preview.png"/>
 </p>
 
 ---
