@@ -772,7 +772,7 @@ add_header X-Frame-Options "DENY" always;</code></pre>
   },
 
   // =================================================================
-  // BLOG 04 — DNS (Already expanded in previous message)
+  // BLOG 04 — DNS
   // =================================================================
   {
     num: '04',
@@ -900,7 +900,7 @@ dig -x 8.8.8.8</code></pre>
   },
 
   // =================================================================
-  // BLOG 05 — OWASP Top 10 (Already expanded in previous message)
+  // BLOG 05 — OWASP Top 10
   // =================================================================
   {
     num: '05',
@@ -1164,7 +1164,7 @@ function isPrivateIP(host) {
   },
 
   // =================================================================
-  // BLOG 06 — GO PORT SCANNER (Already expanded in previous message)
+  // BLOG 06 — GO PORT SCANNER
   // =================================================================
   {
     num: '06',
@@ -2479,7 +2479,6 @@ function initAll() {
   renderContact();
   updateLearningDaysStat();
   initCounters();
-  fetchGithubStats();
   initTheme();
   initContactForm();
   initClickParticles();
