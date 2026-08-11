@@ -128,9 +128,7 @@ body.loading {
   transform: translateY(-4px);
 }
 
-/* ============================================================
-   CUSTOM CURSOR
-   ============================================================ */
+/* ============================================================ CUSTOM CURSOR ============================================================ */
 #cursor,
 #cursor-ring {
   position: fixed;
@@ -138,63 +136,115 @@ body.loading {
   left: 0;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 99999;
   transform: translate(-50%, -50%);
   will-change: transform;
+  z-index: 99999;
 }
 
+/* ------------------------------------------------------------ MAIN DOT ------------------------------------------------------------ */
 #cursor {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   background: var(--red);
-  box-shadow: 0 0 12px var(--red), 0 0 24px var(--red-glow);
-  transition:
-    transform 0.08s linear,
-    width 0.2s var(--ease-out),
-    height 0.2s var(--ease-out),
-    background 0.2s;
+  box-shadow: 0 0 8px var(--red), 0 0 18px var(--red-glow), 0 0 32px rgba(255, 0, 60, 0.18);
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), background 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
 }
 
+/* ------------------------------------------------------------ OUTER RING ------------------------------------------------------------ */
 #cursor-ring {
-  width: 36px;
-  height: 36px;
-  border: 1px solid rgba(255, 0, 60, 0.5);
-  z-index: 99998;
-  transition:
-    transform 0.18s var(--ease-out),
-    width 0.25s var(--ease-out),
-    height 0.25s var(--ease-out),
-    opacity 0.2s;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 0, 60, 0.45);
+  box-shadow: 0 0 15px rgba(255, 0, 60, 0.04);
+  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), border-color 0.25s ease, background 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* ------------------------------------------------------------ HOVER STATE ------------------------------------------------------------ */
 body.cursor-hover #cursor {
-  width: 20px;
-  height: 20px;
-  background: rgba(255, 0, 60, 0.7);
+  width: 14px;
+  height: 14px;
+  background: rgba(255, 0, 60, 0.8);
+  box-shadow: 0 0 12px var(--red), 0 0 30px var(--red-glow), 0 0 50px rgba(255, 0, 60, 0.15);
 }
 
 body.cursor-hover #cursor-ring {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-color: var(--red);
+  background: rgba(255, 0, 60, 0.025);
+  box-shadow: 0 0 25px rgba(255, 0, 60, 0.08);
 }
 
+/* ------------------------------------------------------------ STRONG HOVER ------------------------------------------------------------ */
+body.cursor-active #cursor {
+  width: 18px;
+  height: 18px;
+}
+
+body.cursor-active #cursor-ring {
+  width: 64px;
+  height: 64px;
+  border-color: rgba(255, 0, 60, 0.8);
+}
+
+/* ------------------------------------------------------------ CURSOR HIDDEN ------------------------------------------------------------ */
+body.cursor-hidden #cursor,
+body.cursor-hidden #cursor-ring {
+  opacity: 0;
+}
+
+/* ============================================================ CLICK PARTICLES ============================================================ */
 .click-particle {
   position: fixed;
   width: 4px;
   height: 4px;
-  background: var(--red);
+  margin: -2px 0 0 -2px;
   border-radius: 50%;
+  background: var(--red);
   pointer-events: none;
   z-index: 99999;
-  box-shadow: 0 0 8px var(--red);
-  animation: particleBurst 0.6s ease-out forwards;
+  box-shadow: 0 0 8px var(--red), 0 0 16px var(--red-glow);
+  animation: particleBurst 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes particleBurst {
-  to {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+
+  70% {
+    opacity: 0.8;
+  }
+
+  100% {
     opacity: 0;
     transform: translate(var(--x), var(--y)) scale(0);
+  }
+}
+
+/* ============================================================ CLICK RIPPLE ============================================================ */
+.cursor-ripple {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 1px solid var(--red);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99997;
+  animation: cursorRipple 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cursorRipple {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.3);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(3.5);
   }
 }
 
@@ -320,12 +370,13 @@ body.light-theme {
 }
 
 .theme-toggle {
-  order: -1;                              /* forces far-left position */
+  order: -1;
+  /* forces far-left position */
   margin-right: 16px;
-  
+
   font-family: var(--font-mono);
   font-size: 1rem;
-  
+
   background: transparent;
   border: 1px solid var(--border);
   color: var(--muted);
@@ -369,6 +420,7 @@ body.light-theme {
   display: inline-block;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 /* ============================================================
    NAVBAR
    ============================================================ */
@@ -1746,10 +1798,10 @@ section {
 ============================================================ */
 
 .contact-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 70px;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: start;
 }
 
 /* ------------------------------------------------------------
@@ -1757,112 +1809,106 @@ section {
 ------------------------------------------------------------ */
 
 .contact-info-text {
-    max-width: 600px;
-    color: var(--muted);
-    line-height: 1.8;
-    font-size: 0.95rem;
-    margin-bottom: 30px;
+  max-width: 600px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 0.95rem;
+  margin-bottom: 30px;
 }
 
 /* Contact items */
 
 .contact-links {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .contact-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-    padding: 18px;
+  padding: 18px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.035),
-            rgba(255, 255, 255, 0.012)
-        );
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.012));
 
-    border: 1px solid var(--border);
-    border-radius: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    transition:
-        transform 0.3s ease,
-        border-color 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* Red scanning line */
 
 .contact-item::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
 
-    width: 3px;
-    height: 100%;
+  width: 3px;
+  height: 100%;
 
-    background: var(--red);
+  background: var(--red);
 
-    transform: scaleY(0);
-    transform-origin: bottom;
+  transform: scaleY(0);
+  transform-origin: bottom;
 
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 /* Subtle glow */
 
 .contact-item::after {
-    content: "";
+  content: "";
 
-    position: absolute;
-    inset: 0;
+  position: absolute;
+  inset: 0;
 
-    background:
-        radial-gradient(
-            circle at left center,
-            rgba(255, 0, 0, 0.08),
-            transparent 45%
-        );
+  background:
+    radial-gradient(circle at left center,
+      rgba(255, 0, 0, 0.08),
+      transparent 45%);
 
-    opacity: 0;
+  opacity: 0;
 
-    pointer-events: none;
+  pointer-events: none;
 
-    transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .contact-item:hover {
-    transform: translateX(6px);
+  transform: translateX(6px);
 
-    border-color: rgba(255, 0, 0, 0.45);
+  border-color: rgba(255, 0, 0, 0.45);
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.055),
-            rgba(255, 255, 255, 0.018)
-        );
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018));
 
-    box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.25),
-        0 0 25px rgba(255, 0, 0, 0.04);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    0 0 25px rgba(255, 0, 0, 0.04);
 }
 
 .contact-item:hover::before {
-    transform: scaleY(1);
+  transform: scaleY(1);
 }
 
 .contact-item:hover::after {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* ------------------------------------------------------------
@@ -1871,18 +1917,18 @@ section {
 
 .contact-link-info,
 .contact-static-info {
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
 
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-    flex: 1;
-    min-width: 0;
+  flex: 1;
+  min-width: 0;
 
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 /* ------------------------------------------------------------
@@ -1890,39 +1936,39 @@ section {
 ------------------------------------------------------------ */
 
 .contact-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    width: 46px;
-    height: 46px;
+  width: 46px;
+  height: 46px;
 
-    flex-shrink: 0;
+  flex-shrink: 0;
 
-    background: rgba(255, 0, 0, 0.06);
+  background: rgba(255, 0, 0, 0.06);
 
-    border: 1px solid rgba(255, 0, 0, 0.18);
-    border-radius: 8px;
+  border: 1px solid rgba(255, 0, 0, 0.18);
+  border-radius: 8px;
 
-    color: var(--red);
+  color: var(--red);
 
-    font-size: 1.1rem;
+  font-size: 1.1rem;
 
-    transition:
-        background 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .contact-item:hover .contact-icon {
-    background: rgba(255, 0, 0, 0.12);
-    border-color: rgba(255, 0, 0, 0.45);
+  background: rgba(255, 0, 0, 0.12);
+  border-color: rgba(255, 0, 0, 0.45);
 
-    box-shadow:
-        0 0 18px rgba(255, 0, 0, 0.12);
+  box-shadow:
+    0 0 18px rgba(255, 0, 0, 0.12);
 
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* ------------------------------------------------------------
@@ -1930,38 +1976,38 @@ section {
 ------------------------------------------------------------ */
 
 .contact-info {
-    min-width: 0;
+  min-width: 0;
 }
 
 .contact-label {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 
-    color: var(--muted);
+  color: var(--muted);
 
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
 
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .contact-value {
-    overflow: hidden;
+  overflow: hidden;
 
-    color: var(--white);
+  color: var(--white);
 
-    font-size: 0.9rem;
-    font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 500;
 
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-    transition: color 0.25s ease;
+  transition: color 0.25s ease;
 }
 
 .contact-link-info:hover .contact-value {
-    color: var(--red);
+  color: var(--red);
 }
 
 /* ------------------------------------------------------------
@@ -1969,106 +2015,102 @@ section {
 ------------------------------------------------------------ */
 
 .contact-copy {
-    position: relative;
-    z-index: 3;
+  position: relative;
+  z-index: 3;
 
-    min-width: 72px;
-    min-height: 34px;
+  min-width: 72px;
+  min-height: 34px;
 
-    padding: 7px 12px;
+  padding: 7px 12px;
 
-    background: transparent;
+  background: transparent;
 
-    border: 1px solid var(--border);
-    border-radius: 5px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
 
-    color: var(--muted);
+  color: var(--muted);
 
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
 
-    letter-spacing: 0.08em;
+  letter-spacing: 0.08em;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    transition:
-        color 0.25s ease,
-        border-color 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .contact-copy:hover {
-    color: var(--red);
+  color: var(--red);
 
-    border-color: var(--red);
+  border-color: var(--red);
 
-    background: rgba(255, 0, 0, 0.06);
+  background: rgba(255, 0, 0, 0.06);
 
-    box-shadow:
-        0 0 15px rgba(255, 0, 0, 0.08);
+  box-shadow:
+    0 0 15px rgba(255, 0, 0, 0.08);
 }
 
 .contact-copy:active {
-    transform: scale(0.96);
+  transform: scale(0.96);
 }
 
 .contact-copy.copied {
-    color: #00ff41;
+  color: #00ff41;
 
-    border-color: #00ff41;
+  border-color: #00ff41;
 
-    background: rgba(0, 255, 65, 0.05);
+  background: rgba(0, 255, 65, 0.05);
 }
 
 /* ------------------------------------------------------------
    FORM CONTAINER
 ------------------------------------------------------------ */
 
-.contact-layout > .reveal:last-child {
-    position: relative;
+.contact-layout>.reveal:last-child {
+  position: relative;
 
-    padding: 30px;
+  padding: 30px;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.045),
-            rgba(255, 255, 255, 0.012)
-        );
+  background:
+    linear-gradient(145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.012));
 
-    border: 1px solid var(--border);
-    border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
 
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25);
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 /* Top red line */
 
-.contact-layout > .reveal:last-child::before {
-    content: "";
+.contact-layout>.reveal:last-child::before {
+  content: "";
 
-    position: absolute;
+  position: absolute;
 
-    top: 0;
-    left: 0;
-    right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
 
-    height: 2px;
+  height: 2px;
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--red),
-            transparent
-        );
+  background:
+    linear-gradient(90deg,
+      transparent,
+      var(--red),
+      transparent);
 
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 /* ------------------------------------------------------------
@@ -2076,42 +2118,43 @@ section {
 ------------------------------------------------------------ */
 
 .contact-form-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 
-    color: var(--white);
+  color: var(--white);
 
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 600;
 
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .contact-form-title::before {
-    content: ">";
+  content: ">";
 
-    color: var(--red);
+  color: var(--red);
 
-    font-size: 1rem;
+  font-size: 1rem;
 
-    animation: cursorBlink 1s infinite;
+  animation: cursorBlink 1s infinite;
 }
 
 @keyframes cursorBlink {
-    0%,
-    45% {
-        opacity: 1;
-    }
 
-    46%,
-    100% {
-        opacity: 0.25;
-    }
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0.25;
+  }
 }
 
 /* ------------------------------------------------------------
@@ -2119,9 +2162,9 @@ section {
 ------------------------------------------------------------ */
 
 .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 /* ------------------------------------------------------------
@@ -2129,54 +2172,54 @@ section {
 ------------------------------------------------------------ */
 
 .form-input {
-    width: 100%;
+  width: 100%;
 
-    padding: 14px 16px;
+  padding: 14px 16px;
 
-    background: rgba(0, 0, 0, 0.22);
+  background: rgba(0, 0, 0, 0.22);
 
-    border: 1px solid var(--border);
-    border-radius: 7px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
 
-    color: var(--white);
+  color: var(--white);
 
-    font-family: var(--font-body);
-    font-size: 0.88rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
 
-    outline: none;
+  outline: none;
 
-    transition:
-        border-color 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease,
-        transform 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .form-input:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .form-input:focus {
-    border-color: var(--red);
+  border-color: var(--red);
 
-    background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.35);
 
-    box-shadow:
-        0 0 0 3px rgba(255, 0, 0, 0.06),
-        0 0 20px rgba(255, 0, 0, 0.04);
+  box-shadow:
+    0 0 0 3px rgba(255, 0, 0, 0.06),
+    0 0 20px rgba(255, 0, 0, 0.04);
 }
 
 .form-input::placeholder {
-    color: var(--muted);
-    opacity: 0.7;
+  color: var(--muted);
+  opacity: 0.7;
 }
 
 /* Prevent textarea from becoming enormous */
 
 textarea.form-input {
-    min-height: 130px;
-    resize: vertical;
-    line-height: 1.6;
+  min-height: 130px;
+  resize: vertical;
+  line-height: 1.6;
 }
 
 /* ------------------------------------------------------------
@@ -2184,73 +2227,71 @@ textarea.form-input {
 ------------------------------------------------------------ */
 
 .form-submit {
-    position: relative;
+  position: relative;
 
-    width: 100%;
+  width: 100%;
 
-    min-height: 48px;
+  min-height: 48px;
 
-    margin-top: 4px;
+  margin-top: 4px;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    font-family: var(--font-mono);
-    letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
 
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .form-submit:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 
-    box-shadow:
-        0 10px 30px rgba(255, 0, 0, 0.16);
+  box-shadow:
+    0 10px 30px rgba(255, 0, 0, 0.16);
 }
 
 .form-submit:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .form-submit:disabled {
-    opacity: 0.65;
+  opacity: 0.65;
 
-    cursor: not-allowed;
+  cursor: not-allowed;
 
-    transform: none;
+  transform: none;
 
-    box-shadow: none;
+  box-shadow: none;
 }
 
 /* Button loading effect */
 
 .form-submit:disabled::after {
-    content: "";
+  content: "";
 
-    position: absolute;
+  position: absolute;
 
-    top: 0;
-    left: -100%;
+  top: 0;
+  left: -100%;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.12),
-            transparent
-        );
+  background:
+    linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.12),
+      transparent);
 
-    animation: buttonLoading 1.3s infinite;
+  animation: buttonLoading 1.3s infinite;
 }
 
 @keyframes buttonLoading {
-    to {
-        left: 100%;
-    }
+  to {
+    left: 100%;
+  }
 }
 
 /* ------------------------------------------------------------
@@ -2258,32 +2299,32 @@ textarea.form-input {
 ------------------------------------------------------------ */
 
 .form-status {
-    min-height: 20px;
+  min-height: 20px;
 
-    margin-top: 2px;
+  margin-top: 2px;
 
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
 
-    line-height: 1.5;
+  line-height: 1.5;
 
-    text-align: center;
+  text-align: center;
 
-    transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .form-status.success {
-    color: #00ff41;
+  color: #00ff41;
 
-    text-shadow:
-        0 0 10px rgba(0, 255, 65, 0.25);
+  text-shadow:
+    0 0 10px rgba(0, 255, 65, 0.25);
 }
 
 .form-status.error {
-    color: var(--red);
+  color: var(--red);
 
-    text-shadow:
-        0 0 10px rgba(255, 0, 0, 0.2);
+  text-shadow:
+    0 0 10px rgba(255, 0, 0, 0.2);
 }
 
 /* ------------------------------------------------------------
@@ -2291,75 +2332,75 @@ textarea.form-input {
 ------------------------------------------------------------ */
 
 @media (max-width: 900px) {
-    .contact-layout {
-        grid-template-columns: 1fr;
-        gap: 45px;
-    }
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
 
-    .contact-layout > .reveal:last-child {
-        padding: 24px;
-    }
+  .contact-layout>.reveal:last-child {
+    padding: 24px;
+  }
 }
 
 @media (max-width: 600px) {
-    .contact-item {
-        padding: 14px;
-    }
+  .contact-item {
+    padding: 14px;
+  }
 
-    .contact-icon {
-        width: 42px;
-        height: 42px;
-    }
+  .contact-icon {
+    width: 42px;
+    height: 42px;
+  }
 
-    .contact-link-info,
-    .contact-static-info {
-        gap: 12px;
-    }
+  .contact-link-info,
+  .contact-static-info {
+    gap: 12px;
+  }
 
-    .contact-value {
-        font-size: 0.82rem;
-    }
+  .contact-value {
+    font-size: 0.82rem;
+  }
 
-    .contact-copy {
-        min-width: 62px;
-        padding: 6px 8px;
+  .contact-copy {
+    min-width: 62px;
+    padding: 6px 8px;
 
-        font-size: 0.6rem;
-    }
+    font-size: 0.6rem;
+  }
 
-    .contact-layout > .reveal:last-child {
-        padding: 20px;
-    }
+  .contact-layout>.reveal:last-child {
+    padding: 20px;
+  }
 
-    .form-input {
-        padding: 13px 14px;
-    }
+  .form-input {
+    padding: 13px 14px;
+  }
 }
 
 @media (max-width: 430px) {
-    .contact-item {
-        gap: 10px;
-    }
+  .contact-item {
+    gap: 10px;
+  }
 
-    .contact-icon {
-        width: 38px;
-        height: 38px;
+  .contact-icon {
+    width: 38px;
+    height: 38px;
 
-        font-size: 0.9rem;
-    }
+    font-size: 0.9rem;
+  }
 
-    .contact-label {
-        font-size: 0.6rem;
-    }
+  .contact-label {
+    font-size: 0.6rem;
+  }
 
-    .contact-value {
-        max-width: 145px;
-        font-size: 0.75rem;
-    }
+  .contact-value {
+    max-width: 145px;
+    font-size: 0.75rem;
+  }
 
-    .contact-copy {
-        min-width: 56px;
-    }
+  .contact-copy {
+    min-width: 56px;
+  }
 }
 
 /* ============================================================
@@ -3206,6 +3247,7 @@ footer {
     width: 7px;
     height: 7px;
   }
+
   /* Full-width buttons for better tap targets */
   .btn {
     justify-content: center;
@@ -3360,11 +3402,13 @@ footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .theme-toggle,
   .theme-toggle .icon-sun,
   .theme-toggle .icon-moon {
     transition: none;
   }
+
   .theme-toggle:active {
     transform: scale(0.92);
   }
@@ -3374,6 +3418,7 @@ footer {
   .theme-toggle {
     border-width: 2px;
   }
+
   .theme-toggle:focus-visible {
     outline-width: 3px;
   }
