@@ -2,35 +2,34 @@
    DATA
 ============================================================ */
 const SKILLS_DATA = [
-  { name: 'HTML5', icon: '🌐', cat: 'frontend', level: 85 },
-  { name: 'CSS3', icon: '🎨', cat: 'frontend', level: 80 },
-  { name: 'JavaScript', icon: '⚡', cat: 'frontend', level: 75 },
-  { name: 'HTTP/S', icon: '🌐', cat: 'networking', level: 80 },
-  { name: 'TLS/SSL', icon: '🔏', cat: 'networking', level: 72 },
-  { name: 'API Security', icon: '🔒', cat: 'security', level: 75 },
-  { name: 'JWT', icon: '🔑', cat: 'security', level: 80 },
-  { name: 'RBAC', icon: '🛡️', cat: 'security', level: 72 },
-  { name: 'OAuth', icon: '🔐', cat: 'security', level: 65 },
-  { name: 'Bash', icon: '💻', cat: 'languages', level: 60 },
-  { name: 'C++', icon: '⚙️', cat: 'languages', level: 75 },
-  { name: 'Python', icon: '🐍', cat: 'languages', level: 85 },
-  { name: 'Go', icon: '🐹', cat: 'languages', level: 70 },
-  { name: 'JavaScript', icon: '🟨', cat: 'languages', level: 80 },
-  { name: 'TypeScript', icon: '🟦', cat: 'languages', level: 75 },
-  { name: 'React', icon: '⚛️', cat: 'frontend', level: 82 },
-  { name: 'Next.js', icon: '▲', cat: 'frontend', level: 78 },
-  { name: 'Tailwind CSS', icon: '🌊', cat: 'frontend', level: 85 },
-  { name: 'Node.js', icon: '🟢', cat: 'backend', level: 75 },
-  { name: 'Express.js', icon: '🚀', cat: 'backend', level: 72 },
-  { name: 'Git', icon: '🌲', cat: 'tools', level: 88 },
-  { name: 'GitHub', icon: '🐙', cat: 'tools', level: 85 },
-  { name: 'Void Linux', icon: '🐧', cat: 'tools', level: 70 },
-  { name: 'TCP/IP', icon: '📡', cat: 'networking', level: 70 },
-  { name: 'BlackArch', icon: '🐉', cat: 'tools', level: 50 },
-  { name: 'Kali Linux', icon: '🐉', cat: 'tools', level: 80 },
-  { name: 'VS Code', icon: '💙', cat: 'tools', level: 90 },
-  { name: 'Docker', icon: '🐳', cat: 'tools', level: 74 },
-  { name: 'Windows', icon: '🪟', cat: 'tools', level: 95 },
+  { name: 'HTML5', icon: '🌐', cat: 'frontend', level: 85, desc: 'Semantic markup and modern web standards for accessible, structured content.' },
+  { name: 'CSS3', icon: '🎨', cat: 'frontend', level: 80, desc: 'Responsive layouts, animations, and custom properties for dark, cyberpunk-styled UIs.' },
+  { name: 'JavaScript', icon: '⚡', cat: 'frontend', level: 75, desc: 'DOM manipulation, event-driven interactivity, and vanilla scripting.' },
+  { name: 'HTTP/S', icon: '🌐', cat: 'networking', level: 80, desc: 'Request/response cycles, headers, status codes, and secure transport.' },
+  { name: 'TLS/SSL', icon: '🔏', cat: 'networking', level: 72, desc: 'Handshake mechanics, certificate validation, and cipher suite hardening.' },
+  { name: 'API Security', icon: '🔒', cat: 'security', level: 75, desc: 'Rate limiting, input validation, and defense-in-depth for REST APIs.' },
+  { name: 'JWT', icon: '🔑', cat: 'security', level: 80, desc: 'Stateless auth tokens, claim validation, and attack-vector hardening.' },
+  { name: 'RBAC', icon: '🛡️', cat: 'security', level: 72, desc: 'Role-based access control patterns for enforcing authorization.' },
+  { name: 'OAuth', icon: '🔐', cat: 'security', level: 65, desc: 'Delegated authorization flows, grant types, and PKCE.' },
+  { name: 'Bash', icon: '💻', cat: 'languages', level: 60, desc: 'Shell scripting for automation, tooling, and system tasks.' },
+  { name: 'C++', icon: '⚙️', cat: 'languages', level: 75, desc: 'Low-level systems programming and performance-critical logic.' },
+  { name: 'Python', icon: '🐍', cat: 'languages', level: 85, desc: 'CLI tools, network scanners, and security scripting.' },
+  { name: 'Go', icon: '🐹', cat: 'languages', level: 70, desc: 'High-concurrency backend services and network utilities.' },
+  { name: 'TypeScript', icon: '🟦', cat: 'languages', level: 75, desc: 'Strongly typed JS for safer, more maintainable backend code.' },
+  { name: 'React', icon: '⚛️', cat: 'frontend', level: 82, desc: 'Component-based UIs with hooks and shared state.' },
+  { name: 'Next.js', icon: '▲', cat: 'frontend', level: 78, desc: 'React framework for routing, SSR, and production builds.' },
+  { name: 'Tailwind CSS', icon: '🌊', cat: 'frontend', level: 85, desc: 'Utility-first styling for fast, consistent UI development.' },
+  { name: 'Node.js', icon: '🟢', cat: 'backend', level: 75, desc: 'Server-side JavaScript runtime for APIs and tooling.' },
+  { name: 'Express.js', icon: '🚀', cat: 'backend', level: 72, desc: 'Minimal routing and middleware framework for Node APIs.' },
+  { name: 'Git', icon: '🌲', cat: 'tools', level: 88, desc: 'Version control, branching strategies, and collaborative workflows.' },
+  { name: 'GitHub', icon: '🐙', cat: 'tools', level: 85, desc: 'Repository hosting, issue tracking, and CI/CD workflows.' },
+  { name: 'Void Linux', icon: '🐧', cat: 'tools', level: 70, desc: 'Lightweight, independent Linux distro for daily driving.' },
+  { name: 'TCP/IP', icon: '📡', cat: 'networking', level: 70, desc: 'Packet-level networking, sockets, and protocol fundamentals.' },
+  { name: 'BlackArch', icon: '🐉', cat: 'tools', level: 50, desc: 'Arch-based penetration testing distro with security tooling.' },
+  { name: 'Kali Linux', icon: '🐉', cat: 'tools', level: 80, desc: 'Security-focused distro for testing and network analysis.' },
+  { name: 'VS Code', icon: '💙', cat: 'tools', level: 90, desc: 'Primary editor — extensions, debugging, and workflow tuning.' },
+  { name: 'Docker', icon: '🐳', cat: 'tools', level: 74, desc: 'Containerization for consistent, portable dev environments.' },
+  { name: 'Windows', icon: '🖥', cat: 'tools', level: 95, desc: 'Primary desktop OS for development and daily workflows.' },
 ];
 
 const SKILL_DETAILS = {
@@ -1765,6 +1764,118 @@ function initReveal() {
   els.forEach(el => obs.observe(el));
 }
 
+// ============================================================
+//  SKILLS — render + category filter + click-to-expand
+// ============================================================
+
+const grid          = document.getElementById('skills-grid');
+const catContainer  = document.getElementById('skill-cats');
+
+let activeCategory = 'all';
+
+// ---------- Render ----------
+function renderSkills() {
+  const list = activeCategory === 'all'
+    ? SKILLS_DATA
+    : SKILLS_DATA.filter(s => s.cat === activeCategory);
+
+  grid.innerHTML = list.map(s => `
+    <article class="skill-card"
+             data-name="${s.name}"
+             style="--level: ${s.level}%"
+             tabindex="0"
+             role="button"
+             aria-haspopup="dialog">
+      <div class="skill-icon" aria-hidden="true">${s.icon}</div>
+      <div class="skill-name">${s.name}</div>
+      <div class="skill-level"><div class="skill-level-fill"></div></div>
+    </article>
+  `).join('');
+
+  requestAnimationFrame(() => {
+    [...grid.children].forEach((card, i) => {
+      setTimeout(() => card.classList.add('animated'), 60 + i * 25);
+    });
+  });
+}
+
+// ---------- Skill Modal ----------
+const skillModalOverlay = document.getElementById('skill-modal-overlay');
+let lastSkillFocused = null;
+
+function openSkillModal(name) {
+  const skill = SKILLS_DATA.find(s => s.name === name);
+  if (!skill) return;
+
+  document.getElementById('skill-modal-icon').textContent = skill.icon;
+  document.getElementById('skill-modal-name').textContent = skill.name;
+  document.getElementById('skill-modal-badge').textContent = skill.cat;
+  document.getElementById('skill-modal-desc').textContent = skill.desc || '';
+  document.getElementById('skill-modal-pct').textContent = skill.level + '%';
+
+  const fill = document.getElementById('skill-modal-level-fill');
+  fill.style.width = '0%';
+
+  lastSkillFocused = document.activeElement;
+  skillModalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // animate the bar in after the modal is visible
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { fill.style.width = skill.level + '%'; });
+  });
+
+  skillModalOverlay.querySelector('.skill-modal-close').focus();
+}
+
+function closeSkillModal() {
+  skillModalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  if (lastSkillFocused && typeof lastSkillFocused.focus === 'function') {
+    lastSkillFocused.focus();
+  }
+}
+
+skillModalOverlay.querySelector('.skill-modal-close')
+  .addEventListener('click', closeSkillModal);
+
+skillModalOverlay.addEventListener('click', e => {
+  if (e.target === skillModalOverlay) closeSkillModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && skillModalOverlay.classList.contains('open')) {
+    closeSkillModal();
+  }
+});
+
+// ---------- Events ----------
+grid.addEventListener('click', e => {
+  const card = e.target.closest('.skill-card');
+  if (!card) return;
+  openSkillModal(card.dataset.name);
+});
+
+grid.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const card = e.target.closest('.skill-card');
+  if (!card) return;
+  e.preventDefault();
+  openSkillModal(card.dataset.name);
+});
+
+// Category filter buttons
+catContainer.addEventListener('click', e => {
+  const btn = e.target.closest('.cat-btn');
+  if (!btn) return;
+
+  catContainer.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  activeCategory = btn.dataset.cat;
+  renderSkills();
+});
+
 /* ============================================================
    STAT COUNTER
 ============================================================ */
@@ -1841,65 +1952,6 @@ function updateLearningDaysStat() {
 
   setTimeout(updateLearningDaysStat, 60 * 60 * 1000);
 }
-
-/* ============================================================
-   SKILLS
-============================================================ */
-function renderSkills(cat = 'all') {
-  const grid = document.getElementById('skills-grid');
-  const data = cat === 'all' ? SKILLS_DATA : SKILLS_DATA.filter(s => s.cat === cat);
-  grid.innerHTML = data.map(s => `
-    <div class="skill-card reveal" data-skill="${s.name}" onclick="openSkillModal('${s.name}')">
-      <div class="skill-icon">${s.icon}</div>
-      <div class="skill-name">${s.name}</div>
-      <div class="skill-level"><div class="skill-level-fill" style="--level:${s.level}%"></div></div>
-    </div>
-  `).join('');
-
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible', 'animated');
-      }
-    });
-  }, { threshold: 0.1 });
-  grid.querySelectorAll('.skill-card').forEach(c => obs.observe(c));
-}
-
-function initSkills() {
-  renderSkills();
-  document.getElementById('skill-cats').addEventListener('click', e => {
-    if (!e.target.classList.contains('cat-btn')) return;
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    renderSkills(e.target.dataset.cat);
-  });
-}
-
-function openSkillModal(name) {
-  const s = SKILLS_DATA.find(x => x.name === name);
-  const d = SKILL_DETAILS[name];
-  const body = `
-    <div class="modal-section">
-      <div class="modal-section-title">About</div>
-      <div class="modal-section-content">${d ? d.desc : 'Core technology in my stack — actively used in projects and ongoing learning.'}</div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">Proficiency</div>
-      <div style="display:flex;align-items:center;gap:16px;margin-top:8px">
-        <div style="flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden">
-          <div style="height:100%;width:${s.level}%;background:var(--red);border-radius:2px;transition:width 1s var(--ease-out)"></div>
-        </div>
-        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--red)">${s.level}%</div>
-      </div>
-    </div>
-    ${d && d.exp ? `<div class="modal-section"><div class="modal-section-title">Experience</div><div class="modal-section-content">${d.exp}</div></div>` : ''}
-    ${d && d.projects ? `<div class="modal-section"><div class="modal-section-title">Used In</div><div class="modal-tags">${d.projects.map(p => `<span class="tag">${p}</span>`).join('')}</div></div>` : ''}
-    <div class="modal-section"><div class="modal-section-title">Category</div><span class="tag">${s.cat.toUpperCase()}</span></div>
-  `;
-  openModal(s.name, body, s.icon + ' Skill Details');
-}
-
 /* ============================================================
    PROJECTS
 ============================================================ */
@@ -2470,7 +2522,6 @@ function initAll() {
   typeLoop();
   initNav();
   initReveal();
-  initSkills();
   renderProjects();
   renderGithub();
   renderTimeline();
@@ -2483,4 +2534,5 @@ function initAll() {
   initContactForm();
   initClickParticles();
   initPWA();
+  renderSkills();
 }
