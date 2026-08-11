@@ -2711,12 +2711,23 @@ function initContactForm() {
     status.className = 'form-status';
 
     try {
-      const data = new FormData(form);
+      const data = {
+        name: form.name.value,
+        email: form.email.value,
+        subject: form.subject.value,
+        message: form.message.value,
+        _subject: "New Portfolio Contact"
+      };
+
       const res = await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
       });
+
       if (res.ok) {
         status.textContent = '✓ Message sent successfully!';
         status.classList.add('success');
