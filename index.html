@@ -8,6 +8,14 @@
   <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
 
   <!-- =========================
+       SECURITY HEADERS
+       ========================= -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- =========================
        PRIMARY META TAGS
        ========================= -->
   <title>ItsWanheda — Cybersecurity Enthusiast & Backend Engineer</title>
@@ -23,7 +31,6 @@
   <meta name="distribution" content="global">
   <meta name="copyright" content="© 2026 ItsWanheda. All rights reserved.">
   <meta name="language" content="English">
-  
 
   <!-- =========================
        CANONICAL & ALTERNATE
@@ -31,67 +38,56 @@
   <link rel="canonical" href="https://itswanheda.vercel.app/">
   <link rel="alternate" hreflang="en" href="https://itswanheda.vercel.app/">
   <link rel="alternate" hreflang="x-default" href="https://itswanheda.vercel.app/">
-  <link rel="sitemap" type="application/xml" href="https://itswanheda.vercel.app/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml"
+        title="ItsWanheda Blog" href="https://itswanheda.vercel.app/rss.xml">
+  <link rel="sitemap" type="application/xml"
+        href="https://itswanheda.vercel.app/sitemap.xml">
 
   <!-- =========================
-       THEME & BROWSER COLOR
+       THEME & BROWSER COLORS
        ========================= -->
   <meta name="color-scheme" content="dark light">
-<meta name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#0A0A0A">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#0A0A0A">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 
-<meta name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="#FFFFFF">
-  <meta name="msapplication-TileImage" content="./src/images/apple-touch-icon.png">
-
-  <!-- =========================
-       APPLE / iOS
+   <!-- =========================
+       iOS / APPLE
        ========================= -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ItsWanheda">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="application-name" content="ItsWanheda">
-  <link rel="apple-touch-icon" sizes="57x57" href="./src/images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="./src/images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="./src/images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="./src/images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="./src/images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="./src/images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./src/images/apple-touch-icon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="./src/images/apple-touch-icon.png">
 
   <!-- =========================
        FAVICONS
        ========================= -->
-  <link rel="icon" type="image/x-icon" href="./src/images/favicon.ico">
   <link rel="icon" type="image/svg+xml" href="./src/images/wanheda-32-px.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="./src/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./src/images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="./src/images/favicon.ico">
+
+    <!-- =========================
+       WINDOWS TILES
+       ========================= -->
+  <meta name="msapplication-TileColor" content="#0A0A0A">
+  <meta name="msapplication-TileImage" content="./src/images/apple-touch-icon.png">
 
   <!-- =========================
        WEB APP / PWA
        ========================= -->
   <link rel="manifest" href="./manifest.webmanifest">
-
   <link rel="shortcut icon" href="./src/images/favicon.ico">
 
   <!-- =========================
        PERFORMANCE HINTS
        ========================= -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect"  href="https://fonts.googleapis.com">
+  <link rel="preconnect"  href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://api.github.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-
-  <!-- Preload critical assets -->
   <link rel="preload" as="image" href="./src/images/Profile.jpg" fetchpriority="high">
-  <link rel="preload" as="font" type="font/woff2"
-    href="https://fonts.gstatic.com/s/syne/v22/8vIQ7wsy3TFsoc4ehKgF.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2"
-    href="https://fonts.gstatic.com/sharetechmono.woff2" crossorigin>
 
   <!-- =========================
        OPEN GRAPH (Facebook, LinkedIn, Discord)
@@ -101,7 +97,7 @@
   <meta property="og:description"
     content="Cybersecurity enthusiast, backend developer, and networking explorer. Building secure, resilient systems through authentication, API security, and network protocols.">
   <meta property="og:image" content="https://itswanheda.vercel.app/src/images/Profile.jpg">
-  <meta property="og:image:secure_url" content="https://itswanheda.vercel.app//src/images/Profile.jpg">
+  <meta property="og:image:secure_url" content="https://itswanheda.vercel.app/src/images/Profile.jpg">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -119,43 +115,41 @@
   <!-- =========================
        TWITTER / X
        ========================= -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@ItsWanheda">
-  <meta name="twitter:creator" content="@ItsWanheda">
-  <meta name="twitter:creator:id" content="@ItsWanheda">
-  <meta name="twitter:title" content="ItsWanheda — Cybersecurity & Backend Engineer">
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@ItsWanheda">
+  <meta name="twitter:creator"     content="@ItsWanheda">
+  <meta name="twitter:title"       content="ItsWanheda — Cybersecurity &amp; Backend Engineer">
   <meta name="twitter:description"
-    content="Cybersecurity enthusiast & backend developer. Building secure systems, one commit at a time.">
-  <meta name="twitter:image" content="https://itswanheda.vercel.app//src/images/profile.jpg">
-  <meta name="twitter:image:alt" content="ItsWanheda — Cybersecurity & Backend Engineer Portfolio">
-  <meta name="twitter:domain" content="itswanheda.dev">
-  <meta name="twitter:url" content="https://itswanheda.vercel.app//">
+        content="Cybersecurity enthusiast &amp; backend developer. Building secure systems, one commit at a time.">
+  <meta name="twitter:image"       content="https://itswanheda.vercel.app/src/images/Profile.jpg">
+  <meta name="twitter:image:alt"   content="ItsWanheda — Cybersecurity &amp; Backend Engineer Portfolio">
+  <meta name="twitter:domain"      content="itswanheda.vercel.app">
+  <meta name="twitter:url"         content="https://itswanheda.vercel.app/">
 
   <!-- =========================
        SEARCH ENGINE VERIFICATION
        ========================= -->
-  <meta name="google-site-verification" content="fPE4fDYumFkpoetTY3Cweod8xdN4jvjV2QD4zHHeE88" />
+  <meta name="google-site-verification" content="fPE4fDYumFkpoetTY3Cweod8xdN4jvjV2QD4zHHeE88">
 
   <!-- =========================
-       STRUCTURED DATA (JSON-LD)
-       Enhanced Person Schema
        ========================= -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Person",
-        "@id": "https://itswanheda.vercel.app//#person",
+        "@type": ["Person", "WebPage"],
+        "@id": "https://itswanheda.vercel.app/#person",
         "name": "ItsWanheda",
         "givenName": "Wanheda",
+        "familyName": "Its",
         "alternateName": "ItsWanheda",
         "jobTitle": "Cybersecurity Enthusiast & Backend Developer",
         "description": "Cybersecurity enthusiast, backend developer, and networking explorer focused on building secure, resilient systems.",
-        "url": "https://itswanheda.vercel.app//",
+        "url": "https://itswanheda.vercel.app/",
         "image": {
           "@type": "ImageObject",
-          "url": "https://itswanheda.vercel.app//src/images/Profile.jpg",
+          "url": "https://itswanheda.vercel.app/src/images/Profile.jpg",
           "width": "800",
           "height": "800"
         },
@@ -192,24 +186,28 @@
             "name": "Global"
           },
           "skills": "Cybersecurity, Backend Engineering, Network Protocols, System Architecture"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://itswanheda.vercel.app/#webpage"
         }
       },
       {
         "@type": "WebSite",
-        "@id": "https://itswanheda.vercel.app//#website",
-        "url": "https://itswanheda.vercel.app//",
+        "@id": "https://itswanheda.vercel.app/#website",
+        "url": "https://itswanheda.vercel.app/",
         "name": "ItsWanheda — Cybersecurity & Backend Portfolio",
         "description": "Personal portfolio of ItsWanheda, a cybersecurity enthusiast and backend developer.",
         "inLanguage": "en-US",
-        "publisher": { "@id": "https://itswanheda.vercel.app//#person" },
+        "publisher": { "@id": "https://itswanheda.vercel.app/#person" }
       },
       {
         "@type": "WebPage",
-        "@id": "https://itswanheda.vercel.app//#webpage",
-        "url": "https://itswanheda.vercel.app//",
+        "@id": "https://itswanheda.vercel.app/#webpage",
+        "url": "https://itswanheda.vercel.app/",
         "name": "ItsWanheda — Cybersecurity & Backend Engineer",
-        "isPartOf": { "@id": "https://itswanheda.vercel.app//#website" },
-        "about": { "@id": "https://itswanheda.vercel.app//#person" },
+        "isPartOf": { "@id": "https://itswanheda.vercel.app/#website" },
+        "about": { "@id": "https://itswanheda.vercel.app/#person" },
         "inLanguage": "en-US"
       }
     ]
@@ -220,13 +218,8 @@
        STYLESHEETS & FONTS
        ========================= -->
   <link rel="stylesheet" href="./src/css/style.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet">
-
-  <!-- =========================
-       SCRIPTS
-       ========================= -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap">
   
 </head>
 
