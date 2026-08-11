@@ -301,7 +301,7 @@ body.cursor-hover #cursor-ring {
 #bg-canvas {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -999;
   pointer-events: none;
 }
 
