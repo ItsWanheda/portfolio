@@ -1536,132 +1536,834 @@ setTimeout(() => {
 }, 3000);
 
 /* ============================================================
-   CURSOR
-============================================================ */
-const cursor = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursor-ring');
-let cx = 0, cy = 0, rx = 0, ry = 0;
-
-document.addEventListener('mousemove', e => {
-  cx = e.clientX; cy = e.clientY;
-  cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
-});
-setInterval(() => {
-  rx += (cx - rx) * 0.12; ry += (cy - ry) * 0.12;
-  cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
-}, 16);
-
-document.addEventListener('mouseover', e => {
-  if (e.target.matches('a,button,.proj-card,.skill-card,.contact-card,.repo-card,.blog-card,.cert-card,.stat-card'))
-    document.body.classList.add('cursor-hover');
-});
-document.addEventListener('mouseout', () => document.body.classList.remove('cursor-hover'));
-
-function initClickParticles() {
-  document.addEventListener('click', e => {
-    const count = 8;
-    for (let i = 0; i < count; i++) {
-      const p = document.createElement('div');
-      p.className = 'click-particle';
-      const angle = (Math.PI * 2 * i) / count;
-      const distance = 30 + Math.random() * 30;
-      const x = Math.cos(angle) * distance;
-      const y = Math.sin(angle) * distance;
-      p.style.setProperty('--x', x + 'px');
-      p.style.setProperty('--y', y + 'px');
-      p.style.left = e.clientX + 'px';
-      p.style.top = e.clientY + 'px';
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 600);
-    }
-  });
-}
-/* ============================================================
    CANVAS BACKGROUND
 ============================================================ */
+
 function initCanvas() {
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let w, h, nodes, mouse = { x: 0, y: 0 };
+    const canvas = document.getElementById('bg-canvas');
 
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
+    if (!canvas) return;
 
-  function createNodes() {
-    nodes = [];
-    const count = Math.min(Math.floor(w * h / 14000), 80);
-    for (let i = 0; i < count; i++) {
-      nodes.push({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 1.5 + 0.5,
-        pulse: Math.random() * Math.PI * 2
-      });
-    }
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-
-    // grid
-    ctx.strokeStyle = 'rgba(255,0,60,0.03)';
-    ctx.lineWidth = 0.5;
-    const gs = 60;
-    for (let x = 0; x < w; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
-    for (let y = 0; y < h; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
-
-    const t = Date.now() * 0.001;
-    nodes.forEach(n => {
-      n.x += n.vx + (mouse.x - w / 2) * 0.00002;
-      n.y += n.vy + (mouse.y - h / 2) * 0.00002;
-      if (n.x < 0) n.x = w; if (n.x > w) n.x = 0;
-      if (n.y < 0) n.y = h; if (n.y > h) n.y = 0;
-      n.pulse += 0.02;
+    const ctx = canvas.getContext('2d', {
+        alpha: true
     });
 
-    // connections
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[j].x - nodes[i].x, dy = nodes[j].y - nodes[i].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 160) {
-          const alpha = (1 - dist / 160) * 0.25;
-          ctx.strokeStyle = `rgba(255,0,60,${alpha})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    let nodes = [];
+
+    const mouse = {
+        x: -9999,
+        y: -9999,
+        active: false
+    };
+
+    const config = {
+        nodeDistance: 150,
+        mouseDistance: 210,
+
+        nodeSpeed: 0.18,
+
+        gridSize: 70,
+
+        baseOpacity: 0.35,
+
+        maxNodes: 90
+    };
+
+    /* --------------------------------------------------------
+       DEVICE PERFORMANCE
+    -------------------------------------------------------- */
+
+    const isMobile =
+        window.matchMedia('(max-width: 700px)').matches;
+
+    if (isMobile) {
+        config.maxNodes = 40;
+        config.nodeDistance = 120;
+        config.mouseDistance = 160;
+    }
+
+    /* --------------------------------------------------------
+       RESIZE
+    -------------------------------------------------------- */
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+
+        ctx.setTransform(
+            dpr,
+            0,
+            0,
+            dpr,
+            0,
+            0
+        );
+
+        createNodes();
+    }
+
+    /* --------------------------------------------------------
+       CREATE NODES
+    -------------------------------------------------------- */
+
+    function createNodes() {
+        const area = width * height;
+
+        const calculatedCount = Math.floor(
+            area / 16000
+        );
+
+        const count = Math.min(
+            Math.max(calculatedCount, 25),
+            config.maxNodes
+        );
+
+        nodes = [];
+
+        for (let i = 0; i < count; i++) {
+            nodes.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+
+                vx:
+                    (Math.random() - 0.5) *
+                    config.nodeSpeed,
+
+                vy:
+                    (Math.random() - 0.5) *
+                    config.nodeSpeed,
+
+                radius:
+                    Math.random() * 1.4 + 0.5,
+
+                pulse:
+                    Math.random() *
+                    Math.PI *
+                    2,
+
+                pulseSpeed:
+                    Math.random() *
+                    0.025 +
+                    0.01
+            });
         }
-      }
     }
 
-    // mouse connections
-    nodes.forEach(n => {
-      const dx = mouse.x - n.x, dy = mouse.y - n.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 200) {
-        const alpha = (1 - dist / 200) * 0.5;
-        ctx.strokeStyle = `rgba(255,0,60,${alpha})`;
+    /* --------------------------------------------------------
+       GRID
+    -------------------------------------------------------- */
+
+    function drawGrid(time) {
+        const grid = config.gridSize;
+
         ctx.lineWidth = 0.5;
-        ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-      }
-    });
 
-    // nodes
-    nodes.forEach(n => {
-      const pulse = Math.sin(n.pulse) * 0.5 + 0.5;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,0,60,${0.4 + pulse * 0.4})`;
-      ctx.fill();
-    });
+        /*
+         * Very subtle static grid.
+         */
 
-    requestAnimationFrame(draw);
-  }
+        ctx.strokeStyle =
+            'rgba(255, 0, 60, 0.025)';
 
-  window.addEventListener('resize', () => { resize(); createNodes(); });
-  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-  resize(); createNodes(); draw();
+        for (let x = 0; x <= width; x += grid) {
+            ctx.beginPath();
+
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, height);
+
+            ctx.stroke();
+        }
+
+        for (let y = 0; y <= height; y += grid) {
+            ctx.beginPath();
+
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+
+            ctx.stroke();
+        }
+
+        /*
+         * Moving scan line.
+         */
+
+        const scanY =
+            (time * 0.025) %
+            (height + 200) -
+            100;
+
+        const gradient =
+            ctx.createLinearGradient(
+                0,
+                scanY - 80,
+                0,
+                scanY + 80
+            );
+
+        gradient.addColorStop(
+            0,
+            'rgba(255, 0, 60, 0)'
+        );
+
+        gradient.addColorStop(
+            0.5,
+            'rgba(255, 0, 60, 0.025)'
+        );
+
+        gradient.addColorStop(
+            1,
+            'rgba(255, 0, 60, 0)'
+        );
+
+        ctx.fillStyle = gradient;
+
+        ctx.fillRect(
+            0,
+            scanY - 80,
+            width,
+            160
+        );
+    }
+
+    /* --------------------------------------------------------
+       UPDATE NODES
+    -------------------------------------------------------- */
+
+    function updateNodes() {
+        nodes.forEach(node => {
+            node.x += node.vx;
+            node.y += node.vy;
+
+            node.pulse += node.pulseSpeed;
+
+            /*
+             * Mouse influence.
+             */
+
+            if (mouse.active) {
+                const dx = mouse.x - node.x;
+                const dy = mouse.y - node.y;
+
+                const distance =
+                    Math.sqrt(dx * dx + dy * dy);
+
+                if (
+                    distance > 0 &&
+                    distance < config.mouseDistance
+                ) {
+                    const force =
+                        (1 -
+                            distance /
+                                config.mouseDistance) *
+                        0.015;
+
+                    node.x -= dx * force;
+                    node.y -= dy * force;
+                }
+            }
+
+            /*
+             * Screen wrapping.
+             */
+
+            if (node.x < -10) {
+                node.x = width + 10;
+            }
+
+            if (node.x > width + 10) {
+                node.x = -10;
+            }
+
+            if (node.y < -10) {
+                node.y = height + 10;
+            }
+
+            if (node.y > height + 10) {
+                node.y = -10;
+            }
+        });
+    }
+
+    /* --------------------------------------------------------
+       DRAW CONNECTIONS
+    -------------------------------------------------------- */
+
+    function drawConnections() {
+        for (let i = 0; i < nodes.length; i++) {
+            for (
+                let j = i + 1;
+                j < nodes.length;
+                j++
+            ) {
+                const a = nodes[i];
+                const b = nodes[j];
+
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+
+                const distance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    );
+
+                if (
+                    distance <
+                    config.nodeDistance
+                ) {
+                    const opacity =
+                        (1 -
+                            distance /
+                                config.nodeDistance) *
+                        0.18;
+
+                    ctx.strokeStyle =
+                        `rgba(255,0,60,${opacity})`;
+
+                    ctx.lineWidth = 0.5;
+
+                    ctx.beginPath();
+
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    /* --------------------------------------------------------
+       MOUSE CONNECTIONS
+    -------------------------------------------------------- */
+
+    function drawMouseConnections() {
+        if (!mouse.active) return;
+
+        nodes.forEach(node => {
+            const dx =
+                mouse.x - node.x;
+
+            const dy =
+                mouse.y - node.y;
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+            if (
+                distance <
+                config.mouseDistance
+            ) {
+                const opacity =
+                    (1 -
+                        distance /
+                            config.mouseDistance) *
+                    0.45;
+
+                ctx.strokeStyle =
+                    `rgba(255,0,60,${opacity})`;
+
+                ctx.lineWidth = 0.7;
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    node.x,
+                    node.y
+                );
+
+                ctx.lineTo(
+                    mouse.x,
+                    mouse.y
+                );
+
+                ctx.stroke();
+            }
+        });
+    }
+
+    /* --------------------------------------------------------
+       DRAW NODES
+    -------------------------------------------------------- */
+
+    function drawNodes() {
+        nodes.forEach(node => {
+            const pulse =
+                Math.sin(node.pulse) *
+                    0.5 +
+                0.5;
+
+            const radius =
+                node.radius +
+                pulse * 0.7;
+
+            const opacity =
+                config.baseOpacity +
+                pulse * 0.35;
+
+            /*
+             * Glow.
+             */
+
+            ctx.shadowBlur =
+                8 + pulse * 8;
+
+            ctx.shadowColor =
+                'rgba(255,0,60,0.5)';
+
+            ctx.beginPath();
+
+            ctx.arc(
+                node.x,
+                node.y,
+                radius,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle =
+                `rgba(255,0,60,${opacity})`;
+
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+        });
+    }
+
+    /* --------------------------------------------------------
+       MOUSE POSITION
+    -------------------------------------------------------- */
+
+    function updateMouse(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        mouse.active = true;
+    }
+
+    function clearMouse() {
+        mouse.active = false;
+    }
+
+    /* --------------------------------------------------------
+       ANIMATION
+    -------------------------------------------------------- */
+
+    let animationFrame;
+
+    function draw(time) {
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+        drawGrid(time);
+
+        updateNodes();
+
+        drawConnections();
+
+        drawMouseConnections();
+
+        drawNodes();
+
+        animationFrame =
+            requestAnimationFrame(draw);
+    }
+
+    /* --------------------------------------------------------
+       VISIBILITY OPTIMIZATION
+    -------------------------------------------------------- */
+
+    document.addEventListener(
+        'visibilitychange',
+        () => {
+            if (
+                document.hidden &&
+                animationFrame
+            ) {
+                cancelAnimationFrame(
+                    animationFrame
+                );
+            } else if (
+                !document.hidden
+            ) {
+                animationFrame =
+                    requestAnimationFrame(draw);
+            }
+        }
+    );
+
+    /* --------------------------------------------------------
+       EVENTS
+    -------------------------------------------------------- */
+
+    window.addEventListener(
+        'resize',
+        resize,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        'mousemove',
+        updateMouse,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        'mouseleave',
+        clearMouse,
+        { passive: true }
+    );
+
+    /* --------------------------------------------------------
+       START
+    -------------------------------------------------------- */
+
+    resize();
+
+    animationFrame =
+        requestAnimationFrame(draw);
+}
+
+/* ============================================================
+   PREMIUM CUSTOM CURSOR
+============================================================ */
+
+function initCustomCursor() {
+    const cursor =
+        document.getElementById('cursor');
+
+    const cursorRing =
+        document.getElementById('cursor-ring');
+
+    if (!cursor || !cursorRing) return;
+
+    /*
+     * Don't run custom cursor on touch devices.
+     */
+
+    if (
+        window.matchMedia(
+            '(hover: none), (pointer: coarse)'
+        ).matches
+    ) {
+        return;
+    }
+
+    const pointer = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
+    };
+
+    const ring = {
+        x: pointer.x,
+        y: pointer.y
+    };
+
+    let currentTarget = null;
+
+    /* --------------------------------------------------------
+       POINTER MOVEMENT
+    -------------------------------------------------------- */
+
+    document.addEventListener(
+        'mousemove',
+        e => {
+            pointer.x = e.clientX;
+            pointer.y = e.clientY;
+
+            cursor.style.transform =
+                `translate3d(
+                    ${pointer.x}px,
+                    ${pointer.y}px,
+                    0
+                ) translate(-50%, -50%)`;
+        },
+        { passive: true }
+    );
+
+    /* --------------------------------------------------------
+       ANIMATION LOOP
+    -------------------------------------------------------- */
+
+    function animate() {
+        /*
+         * Smooth inertia for outer ring.
+         */
+
+        ring.x +=
+            (pointer.x - ring.x) * 0.13;
+
+        ring.y +=
+            (pointer.y - ring.y) * 0.13;
+
+        cursorRing.style.transform =
+            `translate3d(
+                ${ring.x}px,
+                ${ring.y}px,
+                0
+            ) translate(-50%, -50%)`;
+
+        requestAnimationFrame(
+            animate
+        );
+    }
+
+    animate();
+
+    /* --------------------------------------------------------
+       INTERACTIVE ELEMENTS
+    -------------------------------------------------------- */
+
+    const interactiveSelector = [
+        'a',
+        'button',
+        'input',
+        'textarea',
+        'select',
+        '[role="button"]',
+        '.proj-card',
+        '.skill-card',
+        '.contact-item',
+        '.repo-card',
+        '.blog-card',
+        '.cert-card',
+        '.stat-card'
+    ].join(',');
+
+    document.addEventListener(
+        'mouseover',
+        e => {
+            const target =
+                e.target.closest(
+                    interactiveSelector
+                );
+
+            if (!target) return;
+
+            currentTarget = target;
+
+            document.body.classList.add(
+                'cursor-hover'
+            );
+        }
+    );
+
+    document.addEventListener(
+        'mouseout',
+        e => {
+            const target =
+                e.target.closest(
+                    interactiveSelector
+                );
+
+            if (
+                !target ||
+                target.contains(e.relatedTarget)
+            ) {
+                return;
+            }
+
+            currentTarget = null;
+
+            document.body.classList.remove(
+                'cursor-hover'
+            );
+
+            document.body.classList.remove(
+                'cursor-active'
+            );
+        }
+    );
+
+    /* --------------------------------------------------------
+       MOUSE DOWN / UP
+    -------------------------------------------------------- */
+
+    document.addEventListener(
+        'mousedown',
+        () => {
+            document.body.classList.add(
+                'cursor-active'
+            );
+        }
+    );
+
+    document.addEventListener(
+        'mouseup',
+        () => {
+            document.body.classList.remove(
+                'cursor-active'
+            );
+        }
+    );
+
+    /* --------------------------------------------------------
+       LEAVE WINDOW
+    -------------------------------------------------------- */
+
+    document.addEventListener(
+        'mouseleave',
+        () => {
+            document.body.classList.add(
+                'cursor-hidden'
+            );
+        }
+    );
+
+    document.addEventListener(
+        'mouseenter',
+        () => {
+            document.body.classList.remove(
+                'cursor-hidden'
+            );
+        }
+    );
+
+    /* --------------------------------------------------------
+       CLICK EFFECT
+    -------------------------------------------------------- */
+
+    document.addEventListener(
+        'click',
+        e => {
+            createCursorRipple(
+                e.clientX,
+                e.clientY
+            );
+
+            createClickParticles(
+                e.clientX,
+                e.clientY
+            );
+        }
+    );
+}
+
+/* ============================================================
+   CURSOR RIPPLE
+============================================================ */
+
+function createCursorRipple(x, y) {
+    const ripple =
+        document.createElement('div');
+
+    ripple.className =
+        'cursor-ripple';
+
+    ripple.style.left =
+        `${x}px`;
+
+    ripple.style.top =
+        `${y}px`;
+
+    document.body.appendChild(
+        ripple
+    );
+
+    setTimeout(() => {
+        ripple.remove();
+    }, 700);
+}
+
+/* ============================================================
+   CLICK PARTICLES
+============================================================ */
+
+function createClickParticles(x, y) {
+    const count = 10;
+
+    const fragment =
+        document.createDocumentFragment();
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+        const particle =
+            document.createElement('div');
+
+        particle.className =
+            'click-particle';
+
+        const angle =
+            (Math.PI * 2 * i) /
+            count;
+
+        const distance =
+            25 +
+            Math.random() * 40;
+
+        const offsetX =
+            Math.cos(angle) *
+            distance;
+
+        const offsetY =
+            Math.sin(angle) *
+            distance;
+
+        particle.style.setProperty(
+            '--x',
+            `${offsetX}px`
+        );
+
+        particle.style.setProperty(
+            '--y',
+            `${offsetY}px`
+        );
+
+        particle.style.left =
+            `${x}px`;
+
+        particle.style.top =
+            `${y}px`;
+
+        /*
+         * Slightly randomize particle size.
+         */
+
+        const size =
+            2 +
+            Math.random() * 3;
+
+        particle.style.width =
+            `${size}px`;
+
+        particle.style.height =
+            `${size}px`;
+
+        fragment.appendChild(
+            particle
+        );
+
+        setTimeout(() => {
+            particle.remove();
+        }, 650);
+    }
+
+    document.body.appendChild(
+        fragment
+    );
 }
 
 /* ============================================================
@@ -2535,4 +3237,5 @@ function initAll() {
   initClickParticles();
   initPWA();
   renderSkills();
+  initContactForm();
 }
