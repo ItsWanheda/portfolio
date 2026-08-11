@@ -1016,6 +1016,7 @@ section {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 16px;
+  align-items: start;
 }
 
 .skill-card {
@@ -1028,6 +1029,7 @@ section {
   transition: all 0.3s var(--ease-out);
   position: relative;
   overflow: hidden;
+  outline: none;
 }
 
 .skill-card::after {
@@ -1042,47 +1044,153 @@ section {
   transition: transform 0.3s var(--ease-out);
 }
 
-.skill-card:hover {
+.skill-card:hover,
+.skill-card:focus-visible {
   border-color: var(--border-red);
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--red-glow);
 }
 
-.skill-card:hover::after {
+.skill-card:hover::after,
+.skill-card:focus-visible::after {
   transform: scaleX(1);
 }
 
-.skill-icon {
-  font-size: 2rem;
-  margin-bottom: 12px;
+.skill-card:hover .skill-icon,
+.skill-card:focus-visible .skill-icon {
+  transform: scale(1.1);
 }
 
-.skill-name {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+/* ============================================================
+   SKILL MODAL
+   ============================================================ */
+.skill-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10002;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.skill-modal-overlay.open {
+  display: flex;
+  opacity: 1;
+}
+
+.skill-modal {
+  width: 100%;
+  max-width: 320px;
+  background: var(--card);
+  border: 1px solid var(--border-red);
+  border-radius: 12px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px var(--red-glow);
+  transform: translateY(-14px) scale(0.97);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.skill-modal-overlay.open .skill-modal {
+  transform: translateY(0) scale(1);
+}
+
+.skill-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+  transition: color 0.2s;
+}
+
+.skill-modal-close:hover {
+  color: var(--red);
+}
+
+.skill-modal-icon {
+  font-size: 2.6rem;
+  margin-bottom: 14px;
+}
+
+.skill-modal-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
   color: var(--white);
-  letter-spacing: 0.05em;
   margin-bottom: 8px;
 }
 
-.skill-level {
-  width: 100%;
-  height: 2px;
+.skill-modal-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: var(--red-faint);
+  border: 1px solid var(--border-red);
+  border-radius: 3px;
+  padding: 3px 10px;
+  margin-bottom: 16px;
+}
+
+.skill-modal-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.skill-modal-level-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.skill-modal-level-track {
+  flex: 1;
+  height: 4px;
   background: rgba(255, 255, 255, 0.06);
-  border-radius: 1px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
-.skill-level-fill {
+.skill-modal-level-fill {
   height: 100%;
+  width: 0%;
   background: var(--red);
-  border-radius: 1px;
-  transition: width 1s var(--ease-out);
-  width: 0;
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--red);
+  transition: width 0.8s var(--ease-out);
 }
 
-.skill-card.animated .skill-level-fill {
-  width: var(--level);
+.skill-modal-pct {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--red);
+  font-weight: 600;
+  min-width: 34px;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .skill-modal {
+    max-width: 280px;
+    padding: 28px 20px 24px;
+  }
 }
 
 /* ============================================================
