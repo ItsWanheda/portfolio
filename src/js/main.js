@@ -2044,7 +2044,47 @@ function initCanvas() {
         requestAnimationFrame(draw);
 }
 
+/* ============================================================
+   CURSOR
+============================================================ */
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
 
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
+});
+setInterval(() => {
+  rx += (cx - rx) * 0.12; ry += (cy - ry) * 0.12;
+  cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
+}, 16);
+
+document.addEventListener('mouseover', e => {
+  if (e.target.matches('a,button,.proj-card,.skill-card,.contact-card,.repo-card,.blog-card,.cert-card,.stat-card'))
+    document.body.classList.add('cursor-hover');
+});
+document.addEventListener('mouseout', () => document.body.classList.remove('cursor-hover'));
+
+function initClickParticles() {
+  document.addEventListener('click', e => {
+    const count = 8;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'click-particle';
+      const angle = (Math.PI * 2 * i) / count;
+      const distance = 30 + Math.random() * 30;
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+      p.style.setProperty('--x', x + 'px');
+      p.style.setProperty('--y', y + 'px');
+      p.style.left = e.clientX + 'px';
+      p.style.top = e.clientY + 'px';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 600);
+    }
+  });
+}
 
 /* ============================================================
    TYPING EFFECT
@@ -2915,6 +2955,7 @@ function initAll() {
   initTheme();
   initContactForm();
   initClickParticles();
+  
   initPWA();
   renderSkills();
 }
