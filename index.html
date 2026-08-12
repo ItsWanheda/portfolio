@@ -8,12 +8,26 @@
   <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
 
   <!-- =========================
-       SECURITY HEADERS
-       ========================= -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
+     SECURITY HEADERS
+     ========================= -->
+
+<meta
+  http-equiv="Content-Security-Policy"
+  content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com data:;
+    img-src 'self' data: https:;
+    connect-src 'self' https://api.github.com https://formspree.io;
+    form-action 'self' https://formspree.io;
+    base-uri 'self';
+    upgrade-insecure-requests;
+  "
+>
+
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 
   <!-- =========================
        PRIMARY META TAGS
@@ -38,19 +52,17 @@
   <link rel="canonical" href="https://itswanheda.vercel.app/">
   <link rel="alternate" hreflang="en" href="https://itswanheda.vercel.app/">
   <link rel="alternate" hreflang="x-default" href="https://itswanheda.vercel.app/">
-  <link rel="alternate" type="application/rss+xml"
-        title="ItsWanheda Blog" href="https://itswanheda.vercel.app/rss.xml">
-  <link rel="sitemap" type="application/xml"
-        href="https://itswanheda.vercel.app/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="ItsWanheda Blog" href="https://itswanheda.vercel.app/rss.xml">
+  <link rel="sitemap" type="application/xml" href="https://itswanheda.vercel.app/sitemap.xml">
 
   <!-- =========================
        THEME & BROWSER COLORS
        ========================= -->
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#0A0A0A">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A0A0A">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 
-   <!-- =========================
+  <!-- =========================
        iOS / APPLE
        ========================= -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -68,7 +80,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="./src/images/apple-touch-icon.png">
   <link rel="shortcut icon" href="./src/images/favicon.ico">
 
-    <!-- =========================
+  <!-- =========================
        WINDOWS TILES
        ========================= -->
   <meta name="msapplication-TileColor" content="#0A0A0A">
@@ -83,8 +95,8 @@
   <!-- =========================
        PERFORMANCE HINTS
        ========================= -->
-  <link rel="preconnect"  href="https://fonts.googleapis.com">
-  <link rel="preconnect"  href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://api.github.com">
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preload" as="image" href="./src/images/Profile.jpg" fetchpriority="high">
@@ -115,16 +127,16 @@
   <!-- =========================
        TWITTER / X
        ========================= -->
-  <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:site"        content="@ItsWanheda">
-  <meta name="twitter:creator"     content="@ItsWanheda">
-  <meta name="twitter:title"       content="ItsWanheda — Cybersecurity &amp; Backend Engineer">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ItsWanheda">
+  <meta name="twitter:creator" content="@ItsWanheda">
+  <meta name="twitter:title" content="ItsWanheda — Cybersecurity &amp; Backend Engineer">
   <meta name="twitter:description"
-        content="Cybersecurity enthusiast &amp; backend developer. Building secure systems, one commit at a time.">
-  <meta name="twitter:image"       content="https://itswanheda.vercel.app/src/images/Profile.jpg">
-  <meta name="twitter:image:alt"   content="ItsWanheda — Cybersecurity &amp; Backend Engineer Portfolio">
-  <meta name="twitter:domain"      content="itswanheda.vercel.app">
-  <meta name="twitter:url"         content="https://itswanheda.vercel.app/">
+    content="Cybersecurity enthusiast &amp; backend developer. Building secure systems, one commit at a time.">
+  <meta name="twitter:image" content="https://itswanheda.vercel.app/src/images/Profile.jpg">
+  <meta name="twitter:image:alt" content="ItsWanheda — Cybersecurity &amp; Backend Engineer Portfolio">
+  <meta name="twitter:domain" content="itswanheda.vercel.app">
+  <meta name="twitter:url" content="https://itswanheda.vercel.app/">
 
   <!-- =========================
        SEARCH ENGINE VERIFICATION
@@ -219,8 +231,8 @@
        ========================= -->
   <link rel="stylesheet" href="./src/css/style.css">
   <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap">
-  
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap">
+
 </head>
 
 <body class="loading">
@@ -511,20 +523,48 @@
              -->
           </div>
         </div>
-<div class="reveal reveal-d3">
-  <div class="contact-form-title">Send a Message</div>
-  <form id="contact-form" class="contact-form"   action="https://formspree.io/f/mgawkqgn"
-    method="POST">
-    <input type="text" name="name" placeholder="Your Name" required class="form-input">
-    <input type="email" name="email" placeholder="your@email.com" required class="form-input">
-    <input type="text" name="subject" placeholder="Subject" required class="form-input">
-    <textarea name="message" placeholder="Your message..." rows="5" required class="form-input"></textarea>
-    <button type="submit" class="btn btn-primary form-submit">
-      <span class="btn-text">Send Message</span>
-    </button>
-    <div class="form-status" id="form-status"></div>
-  </form>
-</div>
+        <div class="reveal reveal-d3">
+          <div class="contact-form-title">Send a Message</div>
+          <form id="contact-form" class="contact-form" action="https://formspree.io/f/mgawkqgn" method="POST"
+            target="_top">
+            <div class="form-field">
+              <label class="form-label" for="name">Your Name</label>
+              <input class="form-input" type="text" id="name" name="name" placeholder="Your Name" autocomplete="name"
+                required />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="email">Email</label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com"
+                autocomplete="email" required />
+              <p class="form-description">
+                This will help me respond to your query via email.
+              </p>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="subject">Subject</label>
+              <input class="form-input" type="text" id="subject" name="subject" placeholder="Subject" required />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="message">Message</label>
+              <textarea class="form-input" id="message" name="message" placeholder="Your message..." rows="5"
+                required></textarea>
+              <p class="form-description">
+                What would you like to discuss?
+              </p>
+            </div>
+
+            <div class="form-button-group">
+              <button type="submit" class="btn btn-primary form-submit">
+                <span class="btn-text">Send Message</span>
+              </button>
+            </div>
+
+            <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -604,21 +644,21 @@
   </div>
 
   <!-- SKILL MODAL -->
-<div id="skill-modal-overlay" class="skill-modal-overlay">
-  <div class="skill-modal" role="dialog" aria-modal="true" aria-labelledby="skill-modal-name">
-    <button class="skill-modal-close" type="button" aria-label="Close">×</button>
-    <div class="skill-modal-icon" id="skill-modal-icon"></div>
-    <div class="skill-modal-name" id="skill-modal-name"></div>
-    <div class="skill-modal-badge" id="skill-modal-badge"></div>
-    <p class="skill-modal-desc" id="skill-modal-desc"></p>
-    <div class="skill-modal-level-row">
-      <div class="skill-modal-level-track">
-        <div class="skill-modal-level-fill" id="skill-modal-level-fill"></div>
+  <div id="skill-modal-overlay" class="skill-modal-overlay">
+    <div class="skill-modal" role="dialog" aria-modal="true" aria-labelledby="skill-modal-name">
+      <button class="skill-modal-close" type="button" aria-label="Close">×</button>
+      <div class="skill-modal-icon" id="skill-modal-icon"></div>
+      <div class="skill-modal-name" id="skill-modal-name"></div>
+      <div class="skill-modal-badge" id="skill-modal-badge"></div>
+      <p class="skill-modal-desc" id="skill-modal-desc"></p>
+      <div class="skill-modal-level-row">
+        <div class="skill-modal-level-track">
+          <div class="skill-modal-level-fill" id="skill-modal-level-fill"></div>
+        </div>
+        <span class="skill-modal-pct" id="skill-modal-pct"></span>
       </div>
-      <span class="skill-modal-pct" id="skill-modal-pct"></span>
     </div>
   </div>
-</div>
 
   <script type="module" src="./src/js/main.js"></script>
 </body>
