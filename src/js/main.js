@@ -2699,13 +2699,40 @@ function initContactForm() {
   const form = document.getElementById('contact-form');
   const status = document.getElementById('form-status');
   const submitBtn = form?.querySelector('.form-submit');
+  const emailInput = form?.querySelector('input[name="_replyto"]');
 
-  if (!form || !status || !submitBtn) return;
+  if (!form || !status || !submitBtn || !emailInput) return;
 
-  const FORM_ENDPOINT = 'https://formspree.io/f/mgawkqgn';
+  const FORM_ENDPOINT = 'https://formspree.io/f/xeebvwpq';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    status.textContent = '';
+    status.className = 'form-status';
+
+    /* =========================
+       Gmail Validation
+       ========================= */
+
+    const email = emailInput.value.trim();
+
+    const gmailRegex =
+      /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+
+    if (!gmailRegex.test(email)) {
+      status.textContent =
+        '✗ Please enter a valid Gmail address.';
+
+      status.classList.add('error');
+
+      emailInput.focus();
+      return;
+    }
+
+    /* =========================
+       Submit
+       ========================= */
 
     submitBtn.disabled = true;
 
@@ -2715,44 +2742,34 @@ function initContactForm() {
       btnText.textContent = 'SENDING...';
     }
 
-    status.textContent = '';
-    status.className = 'form-status';
-
     try {
-      const formData = new FormData(form);
+      const data = new FormData(form);
 
-      formData.append('_subject', 'New Portfolio Contact');
-
-      const response = await fetch(FORM_ENDPOINT, {
+      const res = await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        body: formData,
+        body: data,
         headers: {
           Accept: 'application/json'
         }
       });
 
-      const result = await response.json();
+      if (res.ok) {
+        status.textContent =
+          '✓ Message sent successfully!';
 
-      console.log('Formspree response:', result);
-      console.log('Status:', response.status);
+        status.classList.add('success');
 
-      if (!response.ok) {
-        throw new Error(
-          result?.errors?.map(error => error.message).join(', ') ||
-          result?.error ||
-          `HTTP ${response.status}`
-        );
+        form.reset();
+      } else {
+        throw new Error('Send failed');
       }
 
-      status.textContent = '✓ Message sent successfully!';
-      status.classList.add('success');
+    } catch (err) {
+      console.error('Contact form error:', err);
 
-      form.reset();
+      status.textContent =
+        '✗ Failed to send. Email me directly.';
 
-    } catch (error) {
-      console.error('Form submission error:', error);
-
-      status.textContent = `✗ ${error.message}`;
       status.classList.add('error');
 
     } finally {
@@ -2764,6 +2781,7 @@ function initContactForm() {
     }
   });
 }
+
 /* ============================================================
    MODAL
 ============================================================ */
