@@ -2701,7 +2701,7 @@ function initContactForm() {
   const submitBtn = form?.querySelector('.form-submit');
   if (!form) return;
 
-  const FORM_ENDPOINT = 'https://formspree.io/f/xeebvwpq';
+  const FORM_ENDPOINT = 'https://formspree.io/f/mgawkqgn';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
