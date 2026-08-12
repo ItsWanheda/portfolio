@@ -2699,48 +2699,68 @@ function initContactForm() {
   const form = document.getElementById('contact-form');
   const status = document.getElementById('form-status');
   const submitBtn = form?.querySelector('.form-submit');
-  if (!form) return;
+
+  if (!form || !status || !submitBtn) return;
 
   const FORM_ENDPOINT = 'https://formspree.io/f/mgawkqgn';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     submitBtn.disabled = true;
-    submitBtn.querySelector('.btn-text').textContent = 'SENDING...';
+
+    const btnText = submitBtn.querySelector('.btn-text');
+
+    if (btnText) {
+      btnText.textContent = 'SENDING...';
+    }
+
     status.textContent = '';
     status.className = 'form-status';
 
     try {
-      const data = {
-        name: form.name.value,
-        email: form.email.value,
-        subject: form.subject.value,
-        message: form.message.value,
-        _subject: "New Portfolio Contact"
-      };
+      const formData = new FormData(form);
 
-      const res = await fetch(FORM_ENDPOINT, {
+      formData.append('_subject', 'New Portfolio Contact');
+
+      const response = await fetch(FORM_ENDPOINT, {
         method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(data)
+          Accept: 'application/json'
+        }
       });
 
-      if (res.ok) {
-        status.textContent = '✓ Message sent successfully!';
-        status.classList.add('success');
-        form.reset();
-      } else {
-        throw new Error('Send failed');
+      const result = await response.json();
+
+      console.log('Formspree response:', result);
+      console.log('Status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(
+          result?.errors?.map(error => error.message).join(', ') ||
+          result?.error ||
+          `HTTP ${response.status}`
+        );
       }
-    } catch (err) {
-      status.textContent = '✗ Failed to send. Email me directly.';
+
+      status.textContent = '✓ Message sent successfully!';
+      status.classList.add('success');
+
+      form.reset();
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+
+      status.textContent = `✗ ${error.message}`;
       status.classList.add('error');
+
     } finally {
       submitBtn.disabled = false;
-      submitBtn.querySelector('.btn-text').textContent = 'Send Message';
+
+      if (btnText) {
+        btnText.textContent = 'Send Message';
+      }
     }
   });
 }
