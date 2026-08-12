@@ -515,32 +515,9 @@
   <div class="contact-form-title">Send a Message</div>
   <form id="contact-form" class="contact-form">
     <input type="text" name="name" placeholder="Your Name" required class="form-input">
-    <input
-      type="email"
-      name="email"
-      placeholder="your@email.com"
-      autocomplete="email"
-      maxlength="254"
-      required
-      class="form-input"
-    >
-    <input
-      type="text"
-      name="subject"
-      placeholder="Subject"
-      maxlength="150"
-      required
-      class="form-input"
-    >
-    <textarea
-      name="message"
-      placeholder="Your message..."
-      rows="5"
-      maxlength="5000"
-      required
-      class="form-input"
-    ></textarea>
-    <input type="hidden" name="_subject" value="New Portfolio Contact">
+    <input type="email" name="email" placeholder="your@email.com" required class="form-input">
+    <input type="text" name="subject" placeholder="Subject" required class="form-input">
+    <textarea name="message" placeholder="Your message..." rows="5" required class="form-input"></textarea>
     <button type="submit" class="btn btn-primary form-submit">
       <span class="btn-text">Send Message</span>
     </button>
@@ -624,7 +601,7 @@
       <div id="generic-modal-body" class="modal-body"></div>
     </div>
   </div>
-  <script type="module" src="./src/js/main.js"></script>
+
   <!-- SKILL MODAL -->
 <div id="skill-modal-overlay" class="skill-modal-overlay">
   <div class="skill-modal" role="dialog" aria-modal="true" aria-labelledby="skill-modal-name">
@@ -641,6 +618,8 @@
     </div>
   </div>
 </div>
+
+  <script type="module" src="./src/js/main.js"></script>
 </body>
 
 </html>
