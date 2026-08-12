@@ -11,23 +11,28 @@
      SECURITY HEADERS
      ========================= -->
 
-<meta
-  http-equiv="Content-Security-Policy"
-  content="
-    default-src 'self';
-    script-src 'self' 'unsafe-inline';
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com data:;
-    img-src 'self' data: https:;
-    connect-src 'self' https://api.github.com https://formspree.io;
-    form-action 'self' https://formspree.io;
-    base-uri 'self';
-    upgrade-insecure-requests;
-  "
->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com data:;
+  img-src 'self' data: https: blob:;
+  connect-src 'self' https://api.github.com https://formspree.io;
+  form-action 'self' https://formspree.io;
+  base-uri 'self';
+  frame-ancestors 'none';
+  object-src 'none';
+  upgrade-insecure-requests;
+">
 
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="
+  camera=(),
+  microphone=(),
+  geolocation=(),
+  payment=(),
+  usb=()
+">
 
   <!-- =========================
        PRIMARY META TAGS
@@ -236,7 +241,7 @@
 </head>
 
 <body class="loading">
-
+<a href="#home" class="skip-link">Skip to main content</a>
   <!-- CURSOR -->
   <div id="cursor"></div>
   <div id="cursor-ring"></div>
