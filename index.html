@@ -34,6 +34,7 @@
   usb=()
 ">
 
+
   <!-- =========================
        PRIMARY META TAGS
        ========================= -->
@@ -431,47 +432,90 @@
     </div>
   </section>
 
-  <!-- GITHUB -->
-  <section id="github" class="section-pad">
-    <div class="container">
-      <div class="section-label reveal">Open Source</div>
-      <h2 class="section-title reveal reveal-d1">GitHub <span class="text-red">Activity</span></h2>
-      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">A snapshot of my open-source contributions and
-        repositories. Connect via GitHub API for live data.</p>
-      <div class="github-layout reveal reveal-d2">
-        <div>
-          <div class="github-profile-card">
-            <div class="github-avatar">🛡️</div>
-            <div class="github-username">@ItsWanheda</div>
-            <div class="github-bio">Cybersecurity enthusiast & backend developer. Building secure systems, one commit at
-              a time.</div>
-            <div class="github-stats">
-              <div class="gh-stat">
-                <div class="gh-stat-num" id="gh-repos-count">17</div>
-                <div class="gh-stat-label">Repos</div>
-              </div>
-              <div class="gh-stat">
-                <div class="gh-stat-num" id="gh-commits-count">600</div>
-                <div class="gh-stat-label">Commits</div>
-              </div>
-              <div class="gh-stat">
-                <div class="gh-stat-num" id="gh-followers-count">8</div>
-                <div class="gh-stat-label">Followers</div>
-              </div>
-              <div class="gh-stat">
-                <div class="gh-stat-num" id="gh-following-count">18</div>
-                <div class="gh-stat-label">Following</div>
-              </div>
-            </div>
-            <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener" class="btn btn-primary"
-              style="width:100%;justify-content:center">View Profile →</a>
+<!-- GITHUB -->
+<section id="github" class="section-pad">
+  <div class="container">
+
+    <div class="section-label reveal">Open Source</div>
+
+    <h2 class="section-title reveal reveal-d1">
+      GitHub <span class="text-red">Activity</span>
+    </h2>
+
+    <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">
+      A snapshot of my open-source contributions and repositories.
+      Live data powered by GitHub API.
+    </p>
+
+    <div class="github-layout reveal reveal-d2">
+
+      <div>
+        <div class="github-profile-card">
+
+          <!-- REAL GITHUB AVATAR -->
+          <img
+            id="gh-avatar"
+            class="github-avatar"
+            src="https://github.com/ItsWanheda.png"
+            alt="ItsWanheda"
+            loading="lazy"
+          >
+
+          <div class="github-username" id="gh-username">
+            @ItsWanheda
           </div>
+
+          <div class="github-bio" id="gh-bio">
+            Loading GitHub profile...
+          </div>
+
+          <div class="github-stats">
+
+            <div class="gh-stat">
+              <div class="gh-stat-num" id="gh-repos-count">—</div>
+              <div class="gh-stat-label">Repos</div>
+            </div>
+
+            <div class="gh-stat">
+              <div class="gh-stat-num" id="gh-commits-count">—</div>
+              <div class="gh-stat-label">Commits</div>
+            </div>
+
+            <div class="gh-stat">
+              <div class="gh-stat-num" id="gh-followers-count">—</div>
+              <div class="gh-stat-label">Followers</div>
+            </div>
+
+            <div class="gh-stat">
+              <div class="gh-stat-num" id="gh-following-count">—</div>
+              <div class="gh-stat-label">Following</div>
+            </div>
+
+          </div>
+
+          <a
+            href="https://github.com/ItsWanheda"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+            style="width:100%;justify-content:center"
+          >
+            View Profile →
+          </a>
+
         </div>
-        <div class="repos-grid" id="repos-grid"></div>
       </div>
+
+      <div class="repos-grid" id="repos-grid">
+        <div class="github-loading">
+          Loading repositories...
+        </div>
+      </div>
+
     </div>
-    </div>
-  </section>
+
+  </div>
+</section>
 
   <!-- EXPERIENCE -->
   <section id="experience" class="section-pad">
