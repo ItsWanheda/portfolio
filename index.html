@@ -11,7 +11,7 @@
      SECURITY HEADERS
      ========================= -->
 
-<meta http-equiv="Content-Security-Policy" content="
+  <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
   script-src 'self';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
@@ -25,8 +25,8 @@
   upgrade-insecure-requests;
 ">
 
-<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-<meta http-equiv="Permissions-Policy" content="
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="
   camera=(),
   microphone=(),
   geolocation=(),
@@ -242,11 +242,8 @@
 </head>
 
 <body class="loading">
-<a href="#home" class="skip-link">Skip to main content</a>
-  <!-- CURSOR -->
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
-  <div id="scroll-progress"></div>
+  <a href="#home" class="skip-link">Skip to main content</a>
+
   <!-- CANVAS BG -->
   <canvas id="bg-canvas"></canvas>
   <!--Back-to-Top-->
@@ -284,13 +281,17 @@
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
       <li><a href="#github">GitHub</a></li>
+      <li><a href="#experience">Experience</a></li>
       <li><a href="#certifications">Certs</a></li>
       <li><a href="#blog">Blog</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme"
+      aria-pressed="false">
+      <span class="icon-moon" aria-hidden="true">☾</span>
+      <span class="icon-sun" aria-hidden="true">☀</span>
+    </button>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -300,8 +301,8 @@
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
     <a href="#projects">Projects</a>
-    <a href="#experience">Experience</a>
     <a href="#github">GitHub</a>
+    <a href="#experience">Experience</a>
     <a href="#certifications">Certifications</a>
     <a href="#blog">Blog</a>
     <a href="#contact">Contact</a>
@@ -432,90 +433,80 @@
     </div>
   </section>
 
-<!-- GITHUB -->
-<section id="github" class="section-pad">
-  <div class="container">
+  <!-- GITHUB -->
+  <section id="github" class="section-pad">
+    <div class="container">
 
-    <div class="section-label reveal">Open Source</div>
+      <div class="section-label reveal">Open Source</div>
 
-    <h2 class="section-title reveal reveal-d1">
-      GitHub <span class="text-red">Activity</span>
-    </h2>
+      <h2 class="section-title reveal reveal-d1">
+        GitHub <span class="text-red">Activity</span>
+      </h2>
 
-    <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">
-      A snapshot of my open-source contributions and repositories.
-      Live data powered by GitHub API.
-    </p>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">
+        A snapshot of my open-source contributions and repositories.
+        Live data powered by GitHub API.
+      </p>
 
-    <div class="github-layout reveal reveal-d2">
+      <div class="github-layout reveal reveal-d2">
 
-      <div>
-        <div class="github-profile-card">
+        <div>
+          <div class="github-profile-card">
 
-          <!-- REAL GITHUB AVATAR -->
-          <img
-            id="gh-avatar"
-            class="github-avatar"
-            src="https://github.com/ItsWanheda.png"
-            alt="ItsWanheda"
-            loading="lazy"
-          >
+            <!-- REAL GITHUB AVATAR -->
+            <img id="gh-avatar" class="github-avatar" src="https://github.com/ItsWanheda.png" alt="ItsWanheda"
+              loading="lazy">
 
-          <div class="github-username" id="gh-username">
-            @ItsWanheda
+            <div class="github-username" id="gh-username">
+              @ItsWanheda
+            </div>
+
+            <div class="github-bio" id="gh-bio">
+              Loading GitHub profile...
+            </div>
+
+            <div class="github-stats">
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-repos-count">—</div>
+                <div class="gh-stat-label">Repos</div>
+              </div>
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-commits-count">—</div>
+                <div class="gh-stat-label">Commits</div>
+              </div>
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-followers-count">—</div>
+                <div class="gh-stat-label">Followers</div>
+              </div>
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-following-count">—</div>
+                <div class="gh-stat-label">Following</div>
+              </div>
+
+            </div>
+
+            <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener noreferrer" class="btn btn-primary"
+              style="width:100%;justify-content:center">
+              View Profile →
+            </a>
+
           </div>
-
-          <div class="github-bio" id="gh-bio">
-            Loading GitHub profile...
-          </div>
-
-          <div class="github-stats">
-
-            <div class="gh-stat">
-              <div class="gh-stat-num" id="gh-repos-count">—</div>
-              <div class="gh-stat-label">Repos</div>
-            </div>
-
-            <div class="gh-stat">
-              <div class="gh-stat-num" id="gh-commits-count">—</div>
-              <div class="gh-stat-label">Commits</div>
-            </div>
-
-            <div class="gh-stat">
-              <div class="gh-stat-num" id="gh-followers-count">—</div>
-              <div class="gh-stat-label">Followers</div>
-            </div>
-
-            <div class="gh-stat">
-              <div class="gh-stat-num" id="gh-following-count">—</div>
-              <div class="gh-stat-label">Following</div>
-            </div>
-
-          </div>
-
-          <a
-            href="https://github.com/ItsWanheda"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-primary"
-            style="width:100%;justify-content:center"
-          >
-            View Profile →
-          </a>
-
         </div>
-      </div>
 
-      <div class="repos-grid" id="repos-grid">
-        <div class="github-loading">
-          Loading repositories...
+        <div class="repos-grid" id="repos-grid">
+          <div class="github-loading">
+            Loading repositories...
+          </div>
         </div>
+
       </div>
 
     </div>
-
-  </div>
-</section>
+  </section>
 
   <!-- EXPERIENCE -->
   <section id="experience" class="section-pad">
@@ -585,7 +576,7 @@
             <div class="form-field">
               <label class="form-label" for="email">Email</label>
               <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com"
-                autocomplete="email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com"  required />
+                autocomplete="email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com" required />
               <p class="form-description">
                 This will help me respond to your query via email.
               </p>
