@@ -2431,55 +2431,501 @@ function openProjectModal(id) {
   openModal(p.name, body, p.emoji + ' Project');
 }
 
-/* ============================================================
+/* 
+============================================================
    GITHUB
 ============================================================ */
-export function renderGithub() {
-  const reposGrid = document.getElementById('repos-grid');
 
-  // Map through your data and inject r.github into the onclick
-  reposGrid.innerHTML = REPOS_DATA.map(r => `
-    <div class="repo-card reveal" onclick="window.open('${r.github}', '_blank', 'noopener,noreferrer')">
-      <div class="repo-name">📁 ${r.name}</div>
-      <div class="repo-desc">${r.desc}</div>
-      <div class="repo-meta">
-        <!-- Note: 'GO , JS' isn't a single color, so we default to gray or pick the first one -->
-        <div class="repo-lang">
-          <div class="repo-lang-dot" style="background:${getLangColor(r.lang)}"></div>
-          ${r.lang}
-        </div>
-        <div class="repo-stars">⭐ ${r.stars}</div>
-        <div class="repo-stars">🍴 ${r.forks}</div>
-      </div>
-    </div>
-  `).join('');
+const GITHUB_USERNAME = 'ItsWanheda';
+const GITHUB_API = 'https://api.github.com';
 
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
-  }, { threshold: 0.1 });
+const githubHeaders = {
+  Accept: 'application/vnd.github+json',
+  'X-GitHub-Api-Version': '2026-03-10'
+};
 
-  reposGrid.querySelectorAll('.repo-card').forEach(c => obs.observe(c));
+
+/* ============================================================
+   GITHUB API REQUEST
+============================================================ */
+
+async function githubRequest(endpoint) {
+  const response = await fetch(`${GITHUB_API}${endpoint}`, {
+    method: 'GET',
+    headers: githubHeaders,
+    cache: 'no-store'
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+
+    throw new Error(
+      `GitHub API ${response.status}: ${error}`
+    );
+  }
+
+  return response.json();
 }
 
-// Helper function to handle multi-language strings like 'GO , JS'
-function getLangColor(lang) {
-  if (!lang) return '#888';
 
-  // If it contains a comma/space, pick the first language
-  const primaryLang = lang.split(/[, ]+/)[0].trim();
+/* ============================================================
+   FORMAT NUMBERS
+============================================================ */
 
-  const colors = {
-    'TypeScript': '#3178C6',
-    'Go': '#00ADD8',
-    'Python': '#3572A5',
-    'JavaScript': '#f1e05a',
-    'HTML': '#e34c26',
-    'CSS': '#563d7c'
-  };
+function formatGithubNumber(value) {
+  if (typeof value !== 'number') {
+    return '0';
+  }
 
-  return colors[primaryLang] || '#888';
+  if (value >= 1000000) {
+    return `${(value / 1000000).toFixed(1)}M`;
+  }
+
+  if (value >= 1000) {
+    return `${(value / 1000).toFixed(1)}K`;
+  }
+
+  return value.toString();
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeGithubHTML(value = '') {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+
+/* ============================================================
+   LOAD PROFILE
+============================================================ */
+
+async function loadGithubProfile() {
+
+  const profile = await githubRequest(
+    `/users/${GITHUB_USERNAME}`
+  );
+
+  const avatar = document.getElementById('gh-avatar');
+  const username = document.getElementById('gh-username');
+  const bio = document.getElementById('gh-bio');
+
+  const reposCount =
+    document.getElementById('gh-repos-count');
+
+  const followersCount =
+    document.getElementById('gh-followers-count');
+
+  const followingCount =
+    document.getElementById('gh-following-count');
+
+
+  /* Avatar */
+
+  if (avatar) {
+    avatar.src = profile.avatar_url;
+    avatar.alt = `${profile.login} GitHub avatar`;
+  }
+
+
+  /* Username */
+
+  if (username) {
+    username.textContent = `@${profile.login}`;
+  }
+
+
+  /* Bio */
+
+  if (bio) {
+    bio.textContent =
+      profile.bio ||
+      'Cybersecurity enthusiast & backend developer.';
+  }
+
+
+  /* Repositories */
+
+  if (reposCount) {
+    reposCount.textContent =
+      formatGithubNumber(profile.public_repos);
+  }
+
+
+  /* Followers */
+
+  if (followersCount) {
+    followersCount.textContent =
+      formatGithubNumber(profile.followers);
+  }
+
+
+  /* Following */
+
+  if (followingCount) {
+    followingCount.textContent =
+      formatGithubNumber(profile.following);
+  }
+
+
+  return profile;
+}
+
+
+/* ============================================================
+   LOAD REPOSITORIES
+============================================================ */
+
+async function loadGithubRepositories() {
+
+  const repos = await githubRequest(
+    `/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`
+  );
+
+  /*
+   * Don't show forked repositories.
+   * Remove this filter if you want to show forks too.
+   */
+
+  return repos.filter(repo => !repo.fork);
+}
+
+
+/* ============================================================
+   TOTAL STARS
+============================================================ */
+
+function getTotalStars(repos) {
+
+  return repos.reduce(
+    (total, repo) =>
+      total + Number(repo.stargazers_count || 0),
+    0
+  );
+}
+
+
+/* ============================================================
+   TOTAL FORKS
+============================================================ */
+
+function getTotalForks(repos) {
+
+  return repos.reduce(
+    (total, repo) =>
+      total + Number(repo.forks_count || 0),
+    0
+  );
+}
+
+
+/* ============================================================
+   TOTAL COMMITS
+============================================================ */
+
+async function getTotalCommits(repos) {
+
+  let total = 0;
+
+  const results = await Promise.all(
+    repos.map(async (repo) => {
+
+      try {
+
+        const contributors = await githubRequest(
+          `/repos/${GITHUB_USERNAME}/${repo.name}/contributors?per_page=100`
+        );
+
+        const me = contributors.find(
+          contributor =>
+            contributor.login?.toLowerCase() ===
+            GITHUB_USERNAME.toLowerCase()
+        );
+
+        return me?.contributions || 0;
+
+      } catch (error) {
+
+        console.warn(
+          `[GitHub] Could not get commits for ${repo.name}`,
+          error
+        );
+
+        return 0;
+      }
+    })
+  );
+
+  total = results.reduce(
+    (sum, commits) => sum + commits,
+    0
+  );
+
+  return total;
+}
+
+
+/* ============================================================
+   RENDER REPOSITORIES
+============================================================ */
+
+function renderGithubRepositories(repos) {
+
+  const reposGrid =
+    document.getElementById('repos-grid');
+
+  if (!reposGrid) {
+
+    console.warn(
+      '[GitHub] #repos-grid was not found.'
+    );
+
+    return;
+  }
+
+
+  if (!repos.length) {
+
+    reposGrid.innerHTML = `
+      <div class="github-empty">
+        No public repositories found.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  reposGrid.innerHTML = repos.map(repo => {
+
+    const language =
+      repo.language || 'Other';
+
+    const description =
+      repo.description ||
+      'No description available.';
+
+
+    return `
+      <article class="repo-card">
+
+        <div class="repo-card-header">
+
+          <div class="repo-icon">
+            <i class="fa-brands fa-github"></i>
+          </div>
+
+          <div class="repo-title-wrapper">
+
+            <h3 class="repo-name">
+              ${escapeGithubHTML(repo.name)}
+            </h3>
+
+            <span class="repo-visibility">
+              ${repo.archived ? 'Archived' : 'Public'}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <p class="repo-description">
+          ${escapeGithubHTML(description)}
+        </p>
+
+
+        <div class="repo-meta">
+
+          <span class="repo-language">
+            ${escapeGithubHTML(language)}
+          </span>
+
+          <span class="repo-stars">
+            ★ ${formatGithubNumber(repo.stargazers_count)}
+          </span>
+
+          <span class="repo-forks">
+            ⑂ ${formatGithubNumber(repo.forks_count)}
+          </span>
+
+        </div>
+
+
+        <a
+          href="${repo.html_url}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="repo-link"
+        >
+          View Repository →
+        </a>
+
+      </article>
+    `;
+
+  }).join('');
+}
+
+
+/* ============================================================
+   MAIN GITHUB RENDER
+============================================================ */
+
+export async function renderGithub() {
+
+  const reposGrid =
+    document.getElementById('repos-grid');
+
+
+  if (!reposGrid) {
+
+    console.warn(
+      '[GitHub] #repos-grid does not exist.'
+    );
+
+    return;
+  }
+
+
+  /* Loading state */
+
+  reposGrid.innerHTML = `
+    <div class="github-loading">
+      Loading GitHub repositories...
+    </div>
+  `;
+
+
+  try {
+
+    console.log(
+      `[GitHub] Loading @${GITHUB_USERNAME}...`
+    );
+
+
+    /*
+     * Load profile and repositories.
+     */
+
+    const [
+      profile,
+      repos
+    ] = await Promise.all([
+      loadGithubProfile(),
+      loadGithubRepositories()
+    ]);
+
+
+    /*
+     * Render repositories.
+     */
+
+    renderGithubRepositories(repos);
+
+
+    /*
+     * Calculate stars and forks.
+     */
+
+    const totalStars =
+      getTotalStars(repos);
+
+    const totalForks =
+      getTotalForks(repos);
+
+
+    /*
+     * Calculate commits.
+     *
+     * This makes one contributor request
+     * for each public repository.
+     */
+
+    const totalCommits =
+      await getTotalCommits(repos);
+
+
+    /*
+     * Update commit counter.
+     */
+
+    const commitsCount =
+      document.getElementById('gh-commits-count');
+
+    if (commitsCount) {
+      commitsCount.textContent =
+        formatGithubNumber(totalCommits);
+    }
+
+
+    /*
+     * Debug information.
+     */
+
+    console.log(
+      '[GitHub] Profile loaded:',
+      profile
+    );
+
+    console.log(
+      '[GitHub] Repositories:',
+      repos.length
+    );
+
+    console.log(
+      '[GitHub] Total stars:',
+      totalStars
+    );
+
+    console.log(
+      '[GitHub] Total forks:',
+      totalForks
+    );
+
+    console.log(
+      '[GitHub] Total commits:',
+      totalCommits
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      '[GitHub] Failed to load data:',
+      error
+    );
+
+
+    reposGrid.innerHTML = `
+      <div class="github-error">
+
+        <strong>
+          GitHub data unavailable
+        </strong>
+
+        <span>
+          Could not load GitHub information right now.
+        </span>
+
+        <a
+          href="https://github.com/${GITHUB_USERNAME}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open GitHub Profile →
+        </a>
+
+      </div>
+    `;
+  }
 }
 
 /* ============================================================
@@ -2993,17 +3439,19 @@ function initAll() {
   typeLoop();
   initNav();
   initReveal();
+
   renderProjects();
   renderGithub();
   renderTimeline();
   renderCerts();
   renderBlog();
   renderContact();
+  renderSkills();
+
   updateLearningDaysStat();
   initCounters();
   initTheme();
   initContactForm();
   initClickParticles();
   initPWA();
-  renderSkills();
 }
