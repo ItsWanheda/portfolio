@@ -1537,9 +1537,10 @@ setTimeout(() => {
 
 /* ============================================================
    CANVAS BACKGROUND
-============================================================ */
+   ============================================================ */
 
 function initCanvas() {
+
     const canvas = document.getElementById('bg-canvas');
 
     if (!canvas) return;
@@ -1550,59 +1551,101 @@ function initCanvas() {
 
     if (!ctx) return;
 
+    /* --------------------------------------------------------
+       CONFIG
+       -------------------------------------------------------- */
+
+    const config = {
+
+        /* Network */
+        nodeDistance: 145,
+        mouseDistance: 190,
+
+        /* Movement */
+        nodeSpeed: 0.12,
+
+        /* Background grid */
+        gridSize: 70,
+
+        /* Visual */
+        baseOpacity: 0.22,
+        lineOpacity: 0.12,
+
+        /* Performance */
+        maxNodes: 75,
+
+        /* Mouse influence */
+        mouseStrength: 0.035
+    };
+
+
+    /* --------------------------------------------------------
+       STATE
+       -------------------------------------------------------- */
+
     let width = 0;
     let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    let dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
 
     let nodes = [];
 
-    const mouse = {
-        x: -9999,
-        y: -9999,
-        active: false
-    };
+    let animationFrame = null;
 
-    const config = {
-        nodeDistance: 150,
-        mouseDistance: 210,
+    let lastTime = 0;
 
-        nodeSpeed: 0.18,
-
-        gridSize: 70,
-
-        baseOpacity: 0.35,
-
-        maxNodes: 90
-    };
 
     /* --------------------------------------------------------
-       DEVICE PERFORMANCE
-    -------------------------------------------------------- */
+       MOUSE
+       -------------------------------------------------------- */
 
-    const isMobile =
-        window.matchMedia('(max-width: 700px)').matches;
+    const mouse = {
 
-    if (isMobile) {
-        config.maxNodes = 40;
-        config.nodeDistance = 120;
-        config.mouseDistance = 160;
-    }
+        x: -9999,
+        y: -9999,
+
+        active: false
+
+    };
+
+
+    /* --------------------------------------------------------
+       REDUCED MOTION
+       -------------------------------------------------------- */
+
+    const reducedMotion =
+        window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches;
+
 
     /* --------------------------------------------------------
        RESIZE
-    -------------------------------------------------------- */
+       -------------------------------------------------------- */
 
-    function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
+    function resizeCanvas() {
 
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rect =
+            canvas.getBoundingClientRect();
 
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
+        width = rect.width;
+        height = rect.height;
 
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
+        dpr =
+            Math.min(
+                window.devicePixelRatio || 1,
+                2
+            );
+
+        canvas.width =
+            Math.floor(width * dpr);
+
+        canvas.height =
+            Math.floor(height * dpr);
 
         ctx.setTransform(
             dpr,
@@ -1616,169 +1659,166 @@ function initCanvas() {
         createNodes();
     }
 
+
     /* --------------------------------------------------------
        CREATE NODES
-    -------------------------------------------------------- */
+       -------------------------------------------------------- */
 
     function createNodes() {
-        const area = width * height;
-
-        const calculatedCount = Math.floor(
-            area / 16000
-        );
-
-        const count = Math.min(
-            Math.max(calculatedCount, 25),
-            config.maxNodes
-        );
 
         nodes = [];
 
+        if (width <= 0 || height <= 0) {
+            return;
+        }
+
+        /*
+         * Scale node count based on viewport area.
+         * This prevents huge node counts on large screens.
+         */
+
+        const area =
+            width * height;
+
+        const calculated =
+            Math.floor(
+                area / 15000
+            );
+
+        const count =
+            Math.min(
+                Math.max(calculated, 35),
+                config.maxNodes
+            );
+
         for (let i = 0; i < count; i++) {
+
+            const angle =
+                Math.random() *
+                Math.PI *
+                2;
+
+            const speed =
+                config.nodeSpeed *
+                (0.5 + Math.random());
+
             nodes.push({
+
                 x: Math.random() * width,
                 y: Math.random() * height,
 
                 vx:
-                    (Math.random() - 0.5) *
-                    config.nodeSpeed,
+                    Math.cos(angle) *
+                    speed,
 
                 vy:
-                    (Math.random() - 0.5) *
-                    config.nodeSpeed,
+                    Math.sin(angle) *
+                    speed,
 
                 radius:
-                    Math.random() * 1.4 + 0.5,
+                    Math.random() * 1.4 + 0.7,
 
-                pulse:
+                opacity:
                     Math.random() *
-                    Math.PI *
-                    2,
+                    0.45 +
+                    0.15
 
-                pulseSpeed:
-                    Math.random() *
-                    0.025 +
-                    0.01
             });
+
         }
     }
 
+
     /* --------------------------------------------------------
-       GRID
-    -------------------------------------------------------- */
+       MOUSE EVENTS
+       -------------------------------------------------------- */
 
-    function drawGrid(time) {
-        const grid = config.gridSize;
+    window.addEventListener(
+        'mousemove',
+        event => {
 
-        ctx.lineWidth = 0.5;
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
 
-        /*
-         * Very subtle static grid.
-         */
+            mouse.active = true;
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    window.addEventListener(
+        'mouseleave',
+        () => {
+
+            mouse.active = false;
+
+            mouse.x = -9999;
+            mouse.y = -9999;
+
+        }
+    );
+
+
+    /* --------------------------------------------------------
+       DRAW GRID
+       -------------------------------------------------------- */
+
+    function drawGrid() {
+
+        ctx.beginPath();
 
         ctx.strokeStyle =
             'rgba(255, 0, 60, 0.025)';
 
-        for (let x = 0; x <= width; x += grid) {
-            ctx.beginPath();
+        ctx.lineWidth = 1;
+
+        const startX =
+            -(window.scrollX % config.gridSize);
+
+        const startY =
+            -(window.scrollY % config.gridSize);
+
+        for (
+            let x = startX;
+            x <= width;
+            x += config.gridSize
+        ) {
 
             ctx.moveTo(x, 0);
             ctx.lineTo(x, height);
 
-            ctx.stroke();
         }
 
-        for (let y = 0; y <= height; y += grid) {
-            ctx.beginPath();
+        for (
+            let y = startY;
+            y <= height;
+            y += config.gridSize
+        ) {
 
             ctx.moveTo(0, y);
             ctx.lineTo(width, y);
 
-            ctx.stroke();
         }
 
-        /*
-         * Moving scan line.
-         */
-
-        const scanY =
-            (time * 0.025) %
-            (height + 200) -
-            100;
-
-        const gradient =
-            ctx.createLinearGradient(
-                0,
-                scanY - 80,
-                0,
-                scanY + 80
-            );
-
-        gradient.addColorStop(
-            0,
-            'rgba(255, 0, 60, 0)'
-        );
-
-        gradient.addColorStop(
-            0.5,
-            'rgba(255, 0, 60, 0.025)'
-        );
-
-        gradient.addColorStop(
-            1,
-            'rgba(255, 0, 60, 0)'
-        );
-
-        ctx.fillStyle = gradient;
-
-        ctx.fillRect(
-            0,
-            scanY - 80,
-            width,
-            160
-        );
+        ctx.stroke();
     }
+
 
     /* --------------------------------------------------------
        UPDATE NODES
-    -------------------------------------------------------- */
+       -------------------------------------------------------- */
 
     function updateNodes() {
-        nodes.forEach(node => {
+
+        for (const node of nodes) {
+
             node.x += node.vx;
             node.y += node.vy;
 
-            node.pulse += node.pulseSpeed;
-
-            /*
-             * Mouse influence.
-             */
-
-            if (mouse.active) {
-                const dx = mouse.x - node.x;
-                const dy = mouse.y - node.y;
-
-                const distance =
-                    Math.sqrt(dx * dx + dy * dy);
-
-                if (
-                    distance > 0 &&
-                    distance < config.mouseDistance
-                ) {
-                    const force =
-                        (1 -
-                            distance /
-                                config.mouseDistance) *
-                        0.015;
-
-                    node.x -= dx * force;
-                    node.y -= dy * force;
-                }
-            }
-
-            /*
-             * Screen wrapping.
-             */
+            /* Wrap around screen */
 
             if (node.x < -10) {
                 node.x = width + 10;
@@ -1795,25 +1835,78 @@ function initCanvas() {
             if (node.y > height + 10) {
                 node.y = -10;
             }
-        });
+
+
+            /* Mouse interaction */
+
+            if (mouse.active) {
+
+                const dx =
+                    mouse.x - node.x;
+
+                const dy =
+                    mouse.y - node.y;
+
+                const distance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    );
+
+                if (
+                    distance <
+                    config.mouseDistance
+                ) {
+
+                    const force =
+                        (
+                            1 -
+                            distance /
+                            config.mouseDistance
+                        ) *
+                        config.mouseStrength;
+
+                    node.x -=
+                        dx * force;
+
+                    node.y -=
+                        dy * force;
+
+                }
+
+            }
+
+        }
     }
+
 
     /* --------------------------------------------------------
        DRAW CONNECTIONS
-    -------------------------------------------------------- */
+       -------------------------------------------------------- */
 
     function drawConnections() {
-        for (let i = 0; i < nodes.length; i++) {
+
+        for (
+            let i = 0;
+            i < nodes.length;
+            i++
+        ) {
+
+            const a = nodes[i];
+
             for (
                 let j = i + 1;
                 j < nodes.length;
                 j++
             ) {
-                const a = nodes[i];
+
                 const b = nodes[j];
 
-                const dx = b.x - a.x;
-                const dy = b.y - a.y;
+                const dx =
+                    a.x - b.x;
+
+                const dy =
+                    a.y - b.y;
 
                 const distance =
                     Math.sqrt(
@@ -1825,149 +1918,139 @@ function initCanvas() {
                     distance <
                     config.nodeDistance
                 ) {
+
                     const opacity =
-                        (1 -
+                        (
+                            1 -
                             distance /
-                                config.nodeDistance) *
-                        0.18;
-
-                    ctx.strokeStyle =
-                        `rgba(255,0,60,${opacity})`;
-
-                    ctx.lineWidth = 0.5;
+                            config.nodeDistance
+                        ) *
+                        config.lineOpacity;
 
                     ctx.beginPath();
 
-                    ctx.moveTo(a.x, a.y);
-                    ctx.lineTo(b.x, b.y);
+                    ctx.moveTo(
+                        a.x,
+                        a.y
+                    );
+
+                    ctx.lineTo(
+                        b.x,
+                        b.y
+                    );
+
+                    ctx.strokeStyle =
+                        `rgba(255, 0, 60, ${opacity})`;
+
+                    ctx.lineWidth = 1;
 
                     ctx.stroke();
+
                 }
+
             }
         }
     }
 
-    /* --------------------------------------------------------
-       MOUSE CONNECTIONS
-    -------------------------------------------------------- */
-
-    function drawMouseConnections() {
-        if (!mouse.active) return;
-
-        nodes.forEach(node => {
-            const dx =
-                mouse.x - node.x;
-
-            const dy =
-                mouse.y - node.y;
-
-            const distance =
-                Math.sqrt(
-                    dx * dx +
-                    dy * dy
-                );
-
-            if (
-                distance <
-                config.mouseDistance
-            ) {
-                const opacity =
-                    (1 -
-                        distance /
-                            config.mouseDistance) *
-                    0.45;
-
-                ctx.strokeStyle =
-                    `rgba(255,0,60,${opacity})`;
-
-                ctx.lineWidth = 0.7;
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    node.x,
-                    node.y
-                );
-
-                ctx.lineTo(
-                    mouse.x,
-                    mouse.y
-                );
-
-                ctx.stroke();
-            }
-        });
-    }
 
     /* --------------------------------------------------------
        DRAW NODES
-    -------------------------------------------------------- */
+       -------------------------------------------------------- */
 
     function drawNodes() {
-        nodes.forEach(node => {
-            const pulse =
-                Math.sin(node.pulse) *
-                    0.5 +
-                0.5;
 
-            const radius =
-                node.radius +
-                pulse * 0.7;
-
-            const opacity =
-                config.baseOpacity +
-                pulse * 0.35;
-
-            /*
-             * Glow.
-             */
-
-            ctx.shadowBlur =
-                8 + pulse * 8;
-
-            ctx.shadowColor =
-                'rgba(255,0,60,0.5)';
+        for (const node of nodes) {
 
             ctx.beginPath();
 
             ctx.arc(
                 node.x,
                 node.y,
-                radius,
+                node.radius,
                 0,
                 Math.PI * 2
             );
 
             ctx.fillStyle =
-                `rgba(255,0,60,${opacity})`;
+                `rgba(255, 0, 60, ${node.opacity})`;
 
             ctx.fill();
 
-            ctx.shadowBlur = 0;
-        });
+        }
     }
+
 
     /* --------------------------------------------------------
-       MOUSE POSITION
-    -------------------------------------------------------- */
+       MOUSE GLOW
+       -------------------------------------------------------- */
 
-    function updateMouse(e) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        mouse.active = true;
+    function drawMouseGlow() {
+
+        if (!mouse.active) {
+            return;
+        }
+
+        const gradient =
+            ctx.createRadialGradient(
+                mouse.x,
+                mouse.y,
+                0,
+                mouse.x,
+                mouse.y,
+                config.mouseDistance
+            );
+
+        gradient.addColorStop(
+            0,
+            'rgba(255, 0, 60, 0.07)'
+        );
+
+        gradient.addColorStop(
+            0.45,
+            'rgba(255, 0, 60, 0.025)'
+        );
+
+        gradient.addColorStop(
+            1,
+            'rgba(255, 0, 60, 0)'
+        );
+
+        ctx.fillStyle = gradient;
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
+        );
     }
 
-    function clearMouse() {
-        mouse.active = false;
-    }
 
     /* --------------------------------------------------------
-       ANIMATION
-    -------------------------------------------------------- */
+       RENDER
+       -------------------------------------------------------- */
 
-    let animationFrame;
+    function render(timestamp) {
 
-    function draw(time) {
+        /*
+         * Limit extremely high refresh rates.
+         */
+
+        if (
+            timestamp - lastTime < 16
+        ) {
+
+            animationFrame =
+                requestAnimationFrame(
+                    render
+                );
+
+            return;
+        }
+
+        lastTime = timestamp;
+
+
         ctx.clearRect(
             0,
             0,
@@ -1975,116 +2058,172 @@ function initCanvas() {
             height
         );
 
-        drawGrid(time);
 
-        updateNodes();
+        drawGrid();
+
+        drawMouseGlow();
+
+        if (!reducedMotion) {
+            updateNodes();
+        }
 
         drawConnections();
 
-        drawMouseConnections();
-
         drawNodes();
 
+
         animationFrame =
-            requestAnimationFrame(draw);
+            requestAnimationFrame(
+                render
+            );
     }
 
-    /* --------------------------------------------------------
-       VISIBILITY OPTIMIZATION
-    -------------------------------------------------------- */
-
-    document.addEventListener(
-        'visibilitychange',
-        () => {
-            if (
-                document.hidden &&
-                animationFrame
-            ) {
-                cancelAnimationFrame(
-                    animationFrame
-                );
-            } else if (
-                !document.hidden
-            ) {
-                animationFrame =
-                    requestAnimationFrame(draw);
-            }
-        }
-    );
 
     /* --------------------------------------------------------
-       EVENTS
-    -------------------------------------------------------- */
+       INITIALIZE
+       -------------------------------------------------------- */
+
+    resizeCanvas();
 
     window.addEventListener(
         'resize',
-        resize,
-        { passive: true }
+        resizeCanvas,
+        {
+            passive: true
+        }
     );
 
-    window.addEventListener(
-        'mousemove',
-        updateMouse,
-        { passive: true }
-    );
-
-    window.addEventListener(
-        'mouseleave',
-        clearMouse,
-        { passive: true }
-    );
-
-    /* --------------------------------------------------------
-       START
-    -------------------------------------------------------- */
-
-    resize();
 
     animationFrame =
-        requestAnimationFrame(draw);
+        requestAnimationFrame(render);
+
+
+    /* --------------------------------------------------------
+       CLEANUP
+       -------------------------------------------------------- */
+
+    window.addEventListener(
+        'beforeunload',
+        () => {
+
+            if (animationFrame) {
+                cancelAnimationFrame(
+                    animationFrame
+                );
+            }
+
+        },
+        {
+            once: true
+        }
+    );
+}
+
+
+/* ============================================================
+   START CANVAS
+   ============================================================ */
+
+if (
+    document.readyState === 'loading'
+) {
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        initCanvas
+    );
+
+} else {
+
+    initCanvas();
+
 }
 
 /* ============================================================
-   CURSOR
-============================================================ */
-const cursor = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursor-ring');
-let cx = 0, cy = 0, rx = 0, ry = 0;
-
-document.addEventListener('mousemove', e => {
-  cx = e.clientX; cy = e.clientY;
-  cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
-});
-setInterval(() => {
-  rx += (cx - rx) * 0.12; ry += (cy - ry) * 0.12;
-  cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px';
-}, 16);
-
-document.addEventListener('mouseover', e => {
-  if (e.target.matches('a,button,.proj-card,.skill-card,.contact-card,.repo-card,.blog-card,.cert-card,.stat-card'))
-    document.body.classList.add('cursor-hover');
-});
-document.addEventListener('mouseout', () => document.body.classList.remove('cursor-hover'));
+   MINIMAL CLICK EFFECT
+   ============================================================ */
 
 function initClickParticles() {
-  document.addEventListener('click', e => {
-    const count = 8;
-    for (let i = 0; i < count; i++) {
-      const p = document.createElement('div');
-      p.className = 'click-particle';
-      const angle = (Math.PI * 2 * i) / count;
-      const distance = 30 + Math.random() * 30;
-      const x = Math.cos(angle) * distance;
-      const y = Math.sin(angle) * distance;
-      p.style.setProperty('--x', x + 'px');
-      p.style.setProperty('--y', y + 'px');
-      p.style.left = e.clientX + 'px';
-      p.style.top = e.clientY + 'px';
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 600);
+
+  document.addEventListener('click', (event) => {
+
+    /* Ignore clicks on the scrollbar */
+    if (
+      event.clientX >= document.documentElement.clientWidth ||
+      event.clientY >= document.documentElement.clientHeight
+    ) {
+      return;
     }
+
+    /* --------------------------------------------------------
+       Ripple
+       -------------------------------------------------------- */
+
+    const ripple = document.createElement('span');
+
+    ripple.className = 'click-ripple';
+
+    ripple.style.left = `${event.clientX}px`;
+    ripple.style.top = `${event.clientY}px`;
+
+    document.body.appendChild(ripple);
+
+    ripple.addEventListener(
+      'animationend',
+      () => ripple.remove(),
+      { once: true }
+    );
+
+
+    /* --------------------------------------------------------
+       Small particle burst
+       -------------------------------------------------------- */
+
+    const particleCount = 6;
+
+    for (let i = 0; i < particleCount; i++) {
+
+      const particle =
+        document.createElement('span');
+
+      particle.className = 'click-particle';
+
+      const angle =
+        (Math.PI * 2 * i) / particleCount;
+
+      const distance =
+        18 + Math.random() * 16;
+
+      particle.style.left =
+        `${event.clientX}px`;
+
+      particle.style.top =
+        `${event.clientY}px`;
+
+      particle.style.setProperty(
+        '--x',
+        `${Math.cos(angle) * distance}px`
+      );
+
+      particle.style.setProperty(
+        '--y',
+        `${Math.sin(angle) * distance}px`
+      );
+
+      document.body.appendChild(particle);
+
+      particle.addEventListener(
+        'animationend',
+        () => particle.remove(),
+        { once: true }
+      );
+    }
+
   });
+
 }
+
+initClickParticles();
 
 /* ============================================================
    TYPING EFFECT
@@ -2112,26 +2251,118 @@ function typeLoop() {
 }
 
 /* ============================================================
-   Theme Toggle
-============================================================ */
+   THEME TOGGLE
+   ============================================================ */
+
 function initTheme() {
-  const btn = document.getElementById('theme-toggle');
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') {
-    document.body.classList.add('light-theme');
-    btn.textContent = '☀️';
-  }
-  btn?.addEventListener('click', () => {
-    document.body.classList.toggle('light-theme');
-    const isLight = document.body.classList.contains('light-theme');
-    btn.textContent = isLight ? '☀️' : '🌙';
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+
+  const btn =
+    document.getElementById('theme-toggle');
+
+  if (!btn) return;
+
+
+  /* ----------------------------------------------------------
+     LOAD SAVED THEME
+     ---------------------------------------------------------- */
+
+  const savedTheme =
+    localStorage.getItem('theme');
+
+  const prefersLight =
+    window.matchMedia(
+      '(prefers-color-scheme: light)'
+    ).matches;
+
+  const isLight =
+    savedTheme === 'light' ||
+    (!savedTheme && prefersLight);
+
+
+  applyTheme(isLight, false);
+
+
+  /* ----------------------------------------------------------
+     TOGGLE
+     ---------------------------------------------------------- */
+
+  btn.addEventListener('click', () => {
+
+    const currentlyLight =
+      document.body.classList.contains(
+        'light-theme'
+      );
+
+    applyTheme(
+      !currentlyLight,
+      true
+    );
+
   });
+
+
+  /* ----------------------------------------------------------
+     APPLY THEME
+     ---------------------------------------------------------- */
+
+  function applyTheme(isLight, animate) {
+
+    if (animate) {
+      document.body.classList.add(
+        'theme-changing'
+      );
+    }
+
+    document.body.classList.toggle(
+      'light-theme',
+      isLight
+    );
+
+    localStorage.setItem(
+      'theme',
+      isLight ? 'light' : 'dark'
+    );
+
+
+    /* Accessibility */
+
+    btn.setAttribute(
+      'aria-pressed',
+      String(isLight)
+    );
+
+    btn.setAttribute(
+      'aria-label',
+      isLight
+        ? 'Switch to dark theme'
+        : 'Switch to light theme'
+    );
+
+
+    if (animate) {
+      requestAnimationFrame(() => {
+        document.body.classList.remove(
+          'theme-changing'
+        );
+      });
+    }
+
+  }
 }
 
-function toggleTheme() { // Now the palette can call this
-  document.getElementById('theme-toggle')?.click();
+
+/* ============================================================
+   EXTERNAL THEME CONTROL
+   ============================================================ */
+
+function toggleTheme() {
+
+  document
+    .getElementById('theme-toggle')
+    ?.click();
+
 }
+
 /* ============================================================
    NAV
 ============================================================ */
@@ -2986,7 +3217,7 @@ function renderBlog() {
         <div class="blog-excerpt">${b.excerpt}</div>
         <div class="blog-meta">
           <span class="blog-date">${b.date} · ${b.readTime}</span>
-          <span class="blog-read" data-index="${i}">Read more →</span>
+          <span class="blog-read" data-index="${i}">Read more </span>
         </div>
       </div>
     </div>
