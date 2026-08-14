@@ -3977,6 +3977,190 @@ setTimeout(() => {
 }, 3000);
 
 /* ============================================================
+   DEVIL CURSOR
+   ============================================================ */
+
+function initDevilCursor() {
+
+  const cursor =
+    document.getElementById('devil-cursor');
+
+  if (!cursor) return;
+
+  if (
+    window.matchMedia(
+      '(pointer: coarse)'
+    ).matches
+  ) {
+    return;
+  }
+
+  const mouse = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    currentX: window.innerWidth / 2,
+    currentY: window.innerHeight / 2
+  };
+
+  let animationId;
+
+
+  /* --------------------------------------------------------
+     MOVE
+     -------------------------------------------------------- */
+
+  const onMouseMove = event => {
+
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+
+    cursor.style.opacity = '1';
+  };
+
+
+  /* --------------------------------------------------------
+     HOVER
+     -------------------------------------------------------- */
+
+  const onMouseOver = event => {
+
+    const target =
+      event.target.closest(
+        'a, button, input, textarea, select, [role="button"]'
+      );
+
+    if (target) {
+      document.body.classList.add(
+        'cursor-hover'
+      );
+    }
+  };
+
+
+  const onMouseOut = event => {
+
+    const target =
+      event.target.closest(
+        'a, button, input, textarea, select, [role="button"]'
+      );
+
+    if (
+      target &&
+      !target.contains(
+        event.relatedTarget
+      )
+    ) {
+      document.body.classList.remove(
+        'cursor-hover'
+      );
+    }
+  };
+
+
+  /* --------------------------------------------------------
+     CLICK
+     -------------------------------------------------------- */
+
+  const onMouseDown = () => {
+
+    document.body.classList.add(
+      'cursor-click'
+    );
+  };
+
+
+  const onMouseUp = () => {
+
+    document.body.classList.remove(
+      'cursor-click'
+    );
+  };
+
+
+  /* --------------------------------------------------------
+     SMOOTH MOVEMENT
+     -------------------------------------------------------- */
+
+  function animate() {
+
+    animationId =
+      requestAnimationFrame(
+        animate
+      );
+
+    mouse.currentX +=
+      (
+        mouse.x -
+        mouse.currentX
+      ) * 0.2;
+
+    mouse.currentY +=
+      (
+        mouse.y -
+        mouse.currentY
+      ) * 0.2;
+
+    cursor.style.transform =
+      `translate3d(
+                ${mouse.currentX}px,
+                ${mouse.currentY}px,
+                0
+            ) translate3d(-50%, -50%, 0)`;
+  }
+
+
+  /* --------------------------------------------------------
+     EVENTS
+     -------------------------------------------------------- */
+
+  window.addEventListener(
+    'mousemove',
+    onMouseMove,
+    { passive: true }
+  );
+
+  document.addEventListener(
+    'mouseover',
+    onMouseOver
+  );
+
+  document.addEventListener(
+    'mouseout',
+    onMouseOut
+  );
+
+  window.addEventListener(
+    'mousedown',
+    onMouseDown
+  );
+
+  window.addEventListener(
+    'mouseup',
+    onMouseUp
+  );
+
+
+  animate();
+
+
+  /* --------------------------------------------------------
+     CLEANUP
+     -------------------------------------------------------- */
+
+  window.addEventListener(
+    'beforeunload',
+    () => {
+
+      cancelAnimationFrame(
+        animationId
+      );
+
+    },
+    { once: true }
+  );
+}
+
+/* ============================================================
    MINIMAL CLICK EFFECT
    ============================================================ */
 
@@ -5506,6 +5690,7 @@ function initAll() {
   typeLoop();
   initNav();
   initReveal();
+  initDevilCursor();
 
   renderProjects();
   renderGithub();
