@@ -1475,13 +1475,13 @@ func TestScanner_Localhost(t *testing.T) {
     `
   },
   {
-  num: '07',
-  tag: 'Internet & Networking',
-  title: 'HTTP Under the Hood: What Really Happens When You Open a Website',
-  excerpt: 'A deep technical journey through DNS, TCP, TLS, HTTP, headers, cookies, caching, and the complete lifecycle of a browser request — from typing a URL to rendering a webpage.',
-  date: 'Aug 2026',
-  readTime: '16 min',
-  content: `
+    num: '07',
+    tag: 'Internet & Networking',
+    title: 'HTTP Under the Hood: What Really Happens When You Open a Website',
+    excerpt: 'A deep technical journey through DNS, TCP, TLS, HTTP, headers, cookies, caching, and the complete lifecycle of a browser request — from typing a URL to rendering a webpage.',
+    date: 'Aug 2026',
+    readTime: '16 min',
+    content: `
     <p>When you type <code>https://example.com</code> into your browser and press Enter, it feels almost instantaneous. Within a fraction of a second, a webpage appears on your screen. But behind that simple action is a surprisingly complex chain of network operations involving <strong>DNS resolution</strong>, <strong>TCP connections</strong>, <strong>TLS encryption</strong>, <strong>HTTP requests</strong>, caching layers, servers, databases, and finally the browser's rendering engine.</p>
 
     <p>Understanding this lifecycle is one of the most important foundations for anyone working in <strong>web development, backend engineering, networking, DevOps, or cybersecurity</strong>. If you understand what happens between the browser and server, debugging performance problems and security issues becomes significantly easier.</p>
@@ -2405,14 +2405,15 @@ strict-transport-security: ...</code></pre>
 
     <p>That invisible pipeline is the foundation of the modern Internet.</p>
   `
-},
-{num: '08',
-tag: 'API Security & Penetration Testing',
-title: 'API Attack Surface: How Pentesters Discover, Access, and Test APIs',
-excerpt: 'A practical deep dive into API reconnaissance, authentication, authorization, endpoint discovery, tokens, HTTP methods, common security weaknesses, and the defensive mindset behind modern API penetration testing.',
-date: 'Aug 2026',
-readTime: '18 min',
-content: `
+  },
+  {
+    num: '08',
+    tag: 'API Security & Penetration Testing',
+    title: 'API Attack Surface: How Pentesters Discover, Access, and Test APIs',
+    excerpt: 'A practical deep dive into API reconnaissance, authentication, authorization, endpoint discovery, tokens, HTTP methods, common security weaknesses, and the defensive mindset behind modern API penetration testing.',
+    date: 'Aug 2026',
+    readTime: '18 min',
+    content: `
   <p>Modern applications rarely exist as a single webpage. Behind almost every dashboard, mobile application, SaaS platform, and interactive interface is an <strong>API</strong> responsible for exchanging data between clients and backend systems.</p>
 
   <p>This creates an important security question: <strong>how does a penetration tester discover an API, understand how it works, and determine whether access controls are actually enforcing security?</strong></p>
@@ -3144,16 +3145,16 @@ checks before returning the resource.</code></pre>
 
   <p>For a penetration tester, the objective is to prove where those controls fail. For a backend developer, the objective is to make sure they never fail in the first place.</p>
 `
-},
-{
-  id: '9x4p7m',
-  num: '09',
-  tag: 'Backend Security',
-  title: 'The Hidden Risks of a Weak Backend',
-  excerpt: 'A backend can look perfectly functional while quietly exposing an application to data leaks, account takeover, privilege escalation, insecure APIs, and complete system compromise.',
-  date: 'Aug 2026',
-  readTime: '16 min',
-  content: `
+  },
+  {
+    id: '9x4p7m',
+    num: '09',
+    tag: 'Backend Security',
+    title: 'The Hidden Risks of a Weak Backend',
+    excerpt: 'A backend can look perfectly functional while quietly exposing an application to data leaks, account takeover, privilege escalation, insecure APIs, and complete system compromise.',
+    date: 'Aug 2026',
+    readTime: '16 min',
+    content: `
     <p>A modern application can have a beautiful interface, smooth animations, responsive layouts, and an impressive user experience. But none of that matters if the backend behind it is poorly designed or insecure.</p>
 
     <p>The backend is where authentication, authorization, business logic, database operations, file processing, payments, API communication, and sensitive data handling usually happen.</p>
@@ -3913,7 +3914,7 @@ Private keys
 
     <p>It becomes the security foundation of the entire application.</p>
   `
-},
+  },
 ];
 
 const CONTACT_DATA = [
@@ -3981,182 +3982,182 @@ setTimeout(() => {
 
 function initDevilCursor() {
 
-    const cursor =
-        document.getElementById('devil-cursor');
+  const cursor =
+    document.getElementById('devil-cursor');
 
-    if (!cursor) return;
+  if (!cursor) return;
+
+  if (
+    window.matchMedia(
+      '(pointer: coarse)'
+    ).matches
+  ) {
+    return;
+  }
+
+  const mouse = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    currentX: window.innerWidth / 2,
+    currentY: window.innerHeight / 2
+  };
+
+  let animationId;
+
+
+  /* --------------------------------------------------------
+     MOVE
+     -------------------------------------------------------- */
+
+  const onMouseMove = event => {
+
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+
+    cursor.style.opacity = '1';
+  };
+
+
+  /* --------------------------------------------------------
+     HOVER
+     -------------------------------------------------------- */
+
+  const onMouseOver = event => {
+
+    const target =
+      event.target.closest(
+        'a, button, input, textarea, select, [role="button"]'
+      );
+
+    if (target) {
+      document.body.classList.add(
+        'cursor-hover'
+      );
+    }
+  };
+
+
+  const onMouseOut = event => {
+
+    const target =
+      event.target.closest(
+        'a, button, input, textarea, select, [role="button"]'
+      );
 
     if (
-        window.matchMedia(
-            '(pointer: coarse)'
-        ).matches
+      target &&
+      !target.contains(
+        event.relatedTarget
+      )
     ) {
-        return;
+      document.body.classList.remove(
+        'cursor-hover'
+      );
     }
-
-    const mouse = {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-        currentX: window.innerWidth / 2,
-        currentY: window.innerHeight / 2
-    };
-
-    let animationId;
+  };
 
 
-    /* --------------------------------------------------------
-       MOVE
-       -------------------------------------------------------- */
+  /* --------------------------------------------------------
+     CLICK
+     -------------------------------------------------------- */
 
-    const onMouseMove = event => {
+  const onMouseDown = () => {
 
-        mouse.x = event.clientX;
-        mouse.y = event.clientY;
-
-        cursor.style.opacity = '1';
-    };
-
-
-    /* --------------------------------------------------------
-       HOVER
-       -------------------------------------------------------- */
-
-    const onMouseOver = event => {
-
-        const target =
-            event.target.closest(
-                'a, button, input, textarea, select, [role="button"]'
-            );
-
-        if (target) {
-            document.body.classList.add(
-                'cursor-hover'
-            );
-        }
-    };
+    document.body.classList.add(
+      'cursor-click'
+    );
+  };
 
 
-    const onMouseOut = event => {
+  const onMouseUp = () => {
 
-        const target =
-            event.target.closest(
-                'a, button, input, textarea, select, [role="button"]'
-            );
-
-        if (
-            target &&
-            !target.contains(
-                event.relatedTarget
-            )
-        ) {
-            document.body.classList.remove(
-                'cursor-hover'
-            );
-        }
-    };
+    document.body.classList.remove(
+      'cursor-click'
+    );
+  };
 
 
-    /* --------------------------------------------------------
-       CLICK
-       -------------------------------------------------------- */
+  /* --------------------------------------------------------
+     SMOOTH MOVEMENT
+     -------------------------------------------------------- */
 
-    const onMouseDown = () => {
+  function animate() {
 
-        document.body.classList.add(
-            'cursor-click'
-        );
-    };
+    animationId =
+      requestAnimationFrame(
+        animate
+      );
 
+    mouse.currentX +=
+      (
+        mouse.x -
+        mouse.currentX
+      ) * 0.2;
 
-    const onMouseUp = () => {
+    mouse.currentY +=
+      (
+        mouse.y -
+        mouse.currentY
+      ) * 0.2;
 
-        document.body.classList.remove(
-            'cursor-click'
-        );
-    };
-
-
-    /* --------------------------------------------------------
-       SMOOTH MOVEMENT
-       -------------------------------------------------------- */
-
-    function animate() {
-
-        animationId =
-            requestAnimationFrame(
-                animate
-            );
-
-        mouse.currentX +=
-            (
-                mouse.x -
-                mouse.currentX
-            ) * 0.2;
-
-        mouse.currentY +=
-            (
-                mouse.y -
-                mouse.currentY
-            ) * 0.2;
-
-        cursor.style.transform =
-            `translate3d(
+    cursor.style.transform =
+      `translate3d(
                 ${mouse.currentX}px,
                 ${mouse.currentY}px,
                 0
             ) translate3d(-50%, -50%, 0)`;
-    }
+  }
 
 
-    /* --------------------------------------------------------
-       EVENTS
-       -------------------------------------------------------- */
+  /* --------------------------------------------------------
+     EVENTS
+     -------------------------------------------------------- */
 
-    window.addEventListener(
-        'mousemove',
-        onMouseMove,
-        { passive: true }
-    );
+  window.addEventListener(
+    'mousemove',
+    onMouseMove,
+    { passive: true }
+  );
 
-    document.addEventListener(
-        'mouseover',
-        onMouseOver
-    );
+  document.addEventListener(
+    'mouseover',
+    onMouseOver
+  );
 
-    document.addEventListener(
-        'mouseout',
-        onMouseOut
-    );
+  document.addEventListener(
+    'mouseout',
+    onMouseOut
+  );
 
-    window.addEventListener(
-        'mousedown',
-        onMouseDown
-    );
+  window.addEventListener(
+    'mousedown',
+    onMouseDown
+  );
 
-    window.addEventListener(
-        'mouseup',
-        onMouseUp
-    );
-
-
-    animate();
+  window.addEventListener(
+    'mouseup',
+    onMouseUp
+  );
 
 
-    /* --------------------------------------------------------
-       CLEANUP
-       -------------------------------------------------------- */
+  animate();
 
-    window.addEventListener(
-        'beforeunload',
-        () => {
 
-            cancelAnimationFrame(
-                animationId
-            );
+  /* --------------------------------------------------------
+     CLEANUP
+     -------------------------------------------------------- */
 
-        },
-        { once: true }
-    );
+  window.addEventListener(
+    'beforeunload',
+    () => {
+
+      cancelAnimationFrame(
+        animationId
+      );
+
+    },
+    { once: true }
+  );
 }
 
 /* ============================================================
@@ -4441,8 +4442,8 @@ function initReveal() {
 //  SKILLS — render + category filter + click-to-expand
 // ============================================================
 
-const grid          = document.getElementById('skills-grid');
-const catContainer  = document.getElementById('skill-cats');
+const grid = document.getElementById('skills-grid');
+const catContainer = document.getElementById('skill-cats');
 
 let activeCategory = 'all';
 
