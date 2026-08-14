@@ -1,0 +1,1822 @@
+/* ============================================================
+   RESPONSIVE SYSTEM
+   ============================================================ */
+
+/*
+   BREAKPOINTS
+   ------------------------------------------------------------
+   1024px  → Tablet / layout transition
+    900px  → Tablet / hero + about
+    768px  → Mobile navigation + major layout changes
+    700px  → Small tablet
+    640px  → Mobile
+    540px  → Small mobile layout
+    480px  → Phone
+    430px  → Small phone
+    420px  → Very small phone
+    360px  → Compact phone
+    340px  → Ultra-small phone
+*/
+
+
+/* ============================================================
+   TABLET — 1024px
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+    /* ----------------------------------------------------------
+     GITHUB
+     ---------------------------------------------------------- */
+
+    .github-layout,
+    .repos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .repos-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    /* ----------------------------------------------------------
+     HERO
+     ---------------------------------------------------------- */
+
+    .hero-wrap {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        gap: var(--space-12);
+    }
+
+    .hero-left {
+        max-width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-greeting {
+        justify-content: center;
+    }
+
+    .hero-typed-wrap {
+        justify-content: center;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-right {
+        order: -1;
+    }
+
+
+    /* ----------------------------------------------------------
+     CONTACT
+     ---------------------------------------------------------- */
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-12);
+    }
+
+    .contact-info-text {
+        max-width: 720px;
+    }
+
+    .contact-layout>.reveal:last-child {
+        width: 100%;
+        max-width: 760px;
+        margin-inline: auto;
+    }
+}
+
+
+/* ============================================================
+   TABLET — 900px
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    /* ----------------------------------------------------------
+     GITHUB
+     ---------------------------------------------------------- */
+
+    .github-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+    }
+
+    .github-profile-card {
+        padding:
+            var(--space-7) var(--space-6);
+    }
+
+    .github-avatar {
+        width: 82px;
+        height: 82px;
+    }
+
+    .github-bio {
+        max-width: 520px;
+    }
+
+    .github-stats {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .contrib-graph {
+        padding: var(--space-5);
+    }
+
+    /*
+   * Keep the contribution graph's natural width.
+   * The graph can scroll horizontally instead of
+   * destroying the page layout.
+   */
+    .contrib-graph {
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .contrib-cells {
+        width: max-content;
+        min-width: 700px;
+    }
+
+    .repos-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    /* ----------------------------------------------------------
+     HERO
+     ---------------------------------------------------------- */
+
+    .hero-wrap {
+        gap: var(--space-10);
+        padding: var(--space-14) 0;
+    }
+
+    .hero-right {
+        order: -1;
+    }
+
+    .hero-avatar {
+        width: 220px;
+        height: 220px;
+    }
+
+    .hero-ring1 {
+        inset: -6px;
+    }
+
+    .hero-ring2 {
+        inset: -14px;
+    }
+
+    .hero-ring3 {
+        inset: -24px;
+    }
+
+    .hero-glow {
+        inset: -15px;
+    }
+
+
+    /* ----------------------------------------------------------
+     ABOUT
+     ---------------------------------------------------------- */
+
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-12);
+    }
+
+
+    /* ----------------------------------------------------------
+     BLOG
+     ---------------------------------------------------------- */
+
+    .blog-card.featured {
+        grid-column: span 1;
+    }
+
+    .blog-card.featured .blog-title {
+        font-size: var(--text-lg);
+    }
+
+
+    /* ----------------------------------------------------------
+     THEME
+     ---------------------------------------------------------- */
+
+    .theme-toggle {
+        width: 34px;
+        height: 34px;
+
+        font-size: 0.95rem;
+
+        margin-right: var(--space-3);
+    }
+}
+
+
+/* ============================================================
+   TABLET / LARGE MOBILE — 768px
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    /* ----------------------------------------------------------
+     NAVIGATION
+     ---------------------------------------------------------- */
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-hamburger {
+        display: flex;
+    }
+
+    .theme-toggle {
+        width: 34px;
+        height: 34px;
+
+        margin-right: var(--space-3);
+    }
+
+    .nav-logo {
+        font-size: 0.95rem;
+        gap: var(--space-2);
+    }
+
+
+    /* ----------------------------------------------------------
+     GENERAL
+     ---------------------------------------------------------- */
+
+    .section-title {
+        font-size: var(--text-3xl);
+    }
+
+    .section-desc {
+        font-size: var(--text-sm);
+    }
+
+    .section-pad {
+        padding:
+            calc(var(--section-pad) * 0.6) 0;
+    }
+
+
+    /* ----------------------------------------------------------
+     BUTTONS
+     ---------------------------------------------------------- */
+
+    .btn {
+        min-height: 44px;
+    }
+
+
+    /* ----------------------------------------------------------
+     MAIN GRIDS
+     ---------------------------------------------------------- */
+
+    .projects-grid,
+    .certs-grid,
+    .blog-grid,
+    .repos-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* ----------------------------------------------------------
+     STATS
+     ---------------------------------------------------------- */
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    /* ----------------------------------------------------------
+     SKILLS
+     ---------------------------------------------------------- */
+
+    .skills-grid {
+        grid-template-columns:
+            repeat(auto-fill, minmax(110px, 1fr));
+
+        gap: var(--space-3);
+    }
+
+
+    /* ----------------------------------------------------------
+     CERTIFICATIONS
+     ---------------------------------------------------------- */
+
+    .certs-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: var(--space-4);
+    }
+
+    .cert-card {
+        min-height: 205px;
+
+        padding:
+            var(--space-6) var(--space-5);
+    }
+
+
+    /* ----------------------------------------------------------
+     PROJECTS
+     ---------------------------------------------------------- */
+
+    .projects-grid {
+        grid-template-columns:
+            repeat(auto-fit,
+                minmax(min(100%, 280px), 1fr));
+    }
+
+    .proj-img {
+        height: 170px;
+    }
+
+    .proj-card:hover {
+        transform: translateY(-5px);
+    }
+
+
+    /* ----------------------------------------------------------
+     HERO
+     ---------------------------------------------------------- */
+
+    .hero-avatar {
+        width: 200px;
+        height: 200px;
+    }
+
+    .hero-ring1 {
+        inset: -6px;
+    }
+
+    .hero-ring2 {
+        inset: -12px;
+    }
+
+    .hero-ring3 {
+        inset: -22px;
+    }
+
+    .hero-glow {
+        inset: -15px;
+    }
+
+
+    /* ----------------------------------------------------------
+     CURSOR
+     ---------------------------------------------------------- */
+
+    #cursor,
+    #cursor-ring {
+        display: none;
+    }
+
+    body {
+        cursor: auto;
+    }
+
+
+    /* ----------------------------------------------------------
+     MODALS
+     ---------------------------------------------------------- */
+
+    .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-content {
+        max-height: 92vh;
+
+        margin: 0;
+
+        border-radius:
+            var(--r-xl) var(--r-xl) 0 0;
+    }
+
+    .modal-header {
+        padding:
+            var(--space-6) var(--space-5) var(--space-4);
+    }
+
+    .modal-number {
+        font-size: var(--text-2xl);
+    }
+
+    .modal-title {
+        font-size: var(--text-xl);
+        padding-right: var(--space-10);
+    }
+
+    .modal-body {
+        padding: var(--space-5);
+    }
+
+
+    /* ----------------------------------------------------------
+     TIMELINE
+     ---------------------------------------------------------- */
+
+    .timeline {
+        padding-left: var(--space-10);
+    }
+
+    .timeline-dot {
+        left:
+            calc(-1 * var(--space-10) + var(--space-2));
+
+        width: 14px;
+        height: 14px;
+    }
+
+
+    /* ----------------------------------------------------------
+     PRELOADER
+     ---------------------------------------------------------- */
+
+    #preloader {
+        gap: var(--space-6);
+    }
+
+    .pre-shield {
+        width: 64px;
+        height: 64px;
+    }
+
+    .pre-ring {
+        inset: -10px;
+    }
+
+    .pre-ring2 {
+        inset: -18px;
+    }
+
+    .pre-text {
+        width: 90%;
+
+        margin: 0 auto;
+
+        font-size: var(--text-xs);
+    }
+
+
+    /* ----------------------------------------------------------
+     CONTACT
+     ---------------------------------------------------------- */
+
+    .contact-layout {
+        gap: var(--space-10);
+    }
+
+    .contact-info-text {
+        max-width: 100%;
+        font-size: var(--text-sm);
+        line-height: var(--lh-relaxed);
+        margin-bottom: var(--space-6);
+    }
+
+    .contact-links {
+        gap: var(--space-3);
+    }
+
+    .contact-item {
+        padding: var(--space-4);
+        gap: var(--space-3);
+    }
+
+    .contact-link-info,
+    .contact-static-info {
+        gap: var(--space-3);
+    }
+
+    .contact-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
+    }
+
+    .contact-label {
+        font-size: 0.65rem;
+    }
+
+    .contact-value {
+        font-size: var(--text-sm);
+    }
+
+    .contact-copy {
+        min-width: 68px;
+        min-height: 36px;
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .contact-layout>.reveal:last-child {
+        padding: var(--space-7);
+    }
+
+    .contact-form {
+        gap: var(--space-4);
+    }
+
+    .form-input {
+        padding: var(--space-4);
+    }
+
+    textarea.form-input {
+        min-height: 120px;
+    }
+}
+
+
+/* ============================================================
+   SMALL TABLET — 700px
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    .skills-grid {
+        grid-template-columns:
+            repeat(auto-fill,
+                minmax(135px, 1fr));
+    }
+
+    .skill-card {
+        min-height: 140px;
+    }
+
+    .github-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+    }
+
+    .github-profile-card {
+        padding:
+            var(--space-6) var(--space-5);
+    }
+
+    .github-avatar {
+        width: 76px;
+        height: 76px;
+    }
+
+    .github-bio {
+        max-width: 100%;
+        font-size: var(--text-sm);
+    }
+
+    .github-stats {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 6px;
+        margin-bottom: var(--space-5);
+    }
+
+    .gh-stat {
+        padding:
+            var(--space-3) var(--space-2);
+    }
+
+    .gh-stat-num {
+        font-size: var(--text-base);
+    }
+
+    .gh-stat-label {
+        font-size: 8px;
+        letter-spacing: 0.06em;
+    }
+
+    .contrib-graph {
+        padding: var(--space-5);
+        margin-bottom: var(--space-5);
+    }
+
+    .contrib-title {
+        gap: var(--space-2);
+        margin-bottom: var(--space-4);
+    }
+
+    /*
+   * Prevent the 52-column contribution graph
+   * from forcing the entire page wider.
+   */
+    .contrib-cells {
+        min-width: 680px;
+    }
+
+    .repos-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+
+    .repo-card {
+        padding: var(--space-5);
+    }
+
+    .repo-card:hover {
+        transform: translateY(-3px);
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE — 640px
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+    /* ----------------------------------------------------------
+     MODALS
+     ---------------------------------------------------------- */
+
+    .modal-overlay,
+    .generic-modal-overlay {
+        padding: var(--space-3);
+
+        align-items: flex-end;
+    }
+
+    .modal-content {
+        max-height: 92vh;
+
+        border-radius:
+            var(--r-xl) var(--r-xl) var(--r-lg) var(--r-lg);
+
+        transform:
+            translateY(35px) scale(0.98);
+    }
+
+    .modal-header {
+        padding:
+            var(--space-8) var(--space-5) var(--space-6);
+    }
+
+    .modal-body {
+        padding:
+            var(--space-6) var(--space-5) var(--space-7);
+    }
+
+    .modal-title {
+        max-width:
+            calc(100% - 30px);
+    }
+
+    .modal-close,
+    .generic-modal-close {
+        top: var(--space-3);
+        right: var(--space-3);
+
+        width: 36px;
+        height: 36px;
+    }
+
+    .generic-modal {
+        max-height: 90vh;
+
+        padding: var(--space-7);
+
+        overflow-y: auto;
+    }
+
+
+    /* ----------------------------------------------------------
+     BLOG
+     ---------------------------------------------------------- */
+
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+    }
+
+    .blog-card {
+        min-height: 360px;
+    }
+
+    .blog-header {
+        min-height: 155px;
+
+        padding:
+            var(--space-7) var(--space-5) var(--space-5);
+    }
+
+    .blog-body {
+        padding:
+            var(--space-5);
+    }
+
+    .blog-number {
+        font-size: 3.2rem;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-4px);
+    }
+
+
+    /* ----------------------------------------------------------
+     BACK TO TOP / SCROLL
+     ---------------------------------------------------------- */
+
+    #back-to-top {
+        right: 18px;
+        bottom: 18px;
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 1rem;
+    }
+
+    #scroll-progress {
+        height: 2px;
+    }
+
+    #scroll-progress::after {
+        width: 6px;
+        height: 6px;
+    }
+
+
+    /* ----------------------------------------------------------
+     FOOTER
+     ---------------------------------------------------------- */
+
+    footer {
+        padding:
+            var(--space-12) 0 var(--space-7);
+    }
+
+    .footer-quote {
+        max-width: 90%;
+        font-size: var(--text-xs);
+    }
+
+    .footer-social {
+        width: 38px;
+        height: 38px;
+    }
+
+    .footer-copy {
+        max-width: 90%;
+        line-height: 1.8;
+    }
+}
+
+
+/* ============================================================
+   MOBILE — 540px
+   ============================================================ */
+
+@media (max-width: 540px) {
+
+    /* ----------------------------------------------------------
+     CERTIFICATIONS
+     ---------------------------------------------------------- */
+
+    .certs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cert-card {
+        min-height: auto;
+        padding: var(--space-6);
+    }
+
+    .cert-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .cert-icon {
+        width: 48px;
+        height: 48px;
+
+        font-size: 1.5rem;
+    }
+
+
+    /* ----------------------------------------------------------
+     CONTACT
+     ---------------------------------------------------------- */
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+    }
+
+    .contact-info-text {
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-5);
+    }
+
+    .contact-links {
+        gap: var(--space-3);
+    }
+
+    .contact-item {
+        padding: var(--space-4);
+        border-radius: var(--r-md);
+        gap: var(--space-3);
+    }
+
+    .contact-link-info,
+    .contact-static-info {
+        gap: var(--space-3);
+    }
+
+    .contact-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: var(--r-sm);
+        font-size: 0.95rem;
+    }
+
+    .contact-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+    }
+
+    .contact-value {
+        max-width: 100%;
+        font-size: var(--text-sm);
+    }
+
+    .contact-copy {
+        min-width: 62px;
+        min-height: 34px;
+        padding: var(--space-2);
+        font-size: 0.65rem;
+    }
+
+    .contact-layout>.reveal:last-child {
+        padding: var(--space-6);
+        border-radius: var(--r-lg);
+    }
+
+    .contact-form-title {
+        margin-bottom: var(--space-5);
+        font-size: var(--text-sm);
+    }
+
+    .contact-form {
+        gap: var(--space-3);
+    }
+
+    .form-input {
+        min-height: 46px;
+        padding: var(--space-3) var(--space-4);
+        font-size: var(--text-sm);
+    }
+
+    textarea.form-input {
+        min-height: 120px;
+    }
+
+    .form-submit {
+        min-height: 46px;
+    }
+
+    .form-status {
+        font-size: var(--text-xs);
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE — 480px
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    /* ----------------------------------------------------------
+     NAVIGATION
+     ---------------------------------------------------------- */
+
+    nav {
+        padding:
+            0 var(--space-3);
+    }
+
+    .nav-logo {
+        font-size: var(--text-sm);
+        letter-spacing: var(--ls-wide);
+    }
+
+    .nav-logo-dot {
+        width: 7px;
+        height: 7px;
+    }
+
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+
+        margin-right: var(--space-2);
+
+        font-size: 0.9rem;
+
+        border-radius: var(--r-sm);
+    }
+
+    .nav-mobile {
+        padding:
+            var(--space-8) var(--space-4);
+    }
+
+
+    /* ----------------------------------------------------------
+     SECTIONS
+     ---------------------------------------------------------- */
+
+    .section-label {
+        gap: var(--space-2);
+    }
+
+    .section-label::before {
+        width: 20px;
+    }
+
+    .section-title {
+        font-size: var(--text-2xl);
+    }
+
+
+    /* ----------------------------------------------------------
+     BUTTONS
+     ---------------------------------------------------------- */
+
+    .btn {
+        width: 100%;
+
+        justify-content: center;
+
+        padding:
+            var(--space-4) var(--space-5);
+    }
+
+
+    /* ----------------------------------------------------------
+     HERO
+     ---------------------------------------------------------- */
+
+    .hero-wrap {
+        padding:
+            var(--space-6) 0 var(--space-14);
+
+        gap: var(--space-7);
+    }
+
+    .hero-greeting {
+        font-size: var(--text-xs);
+
+        letter-spacing: var(--ls-wider);
+
+        margin-bottom: var(--space-3);
+
+        gap: var(--space-2);
+    }
+
+    .hero-greeting::before {
+        width: 16px;
+    }
+
+    .hero-name {
+        font-size: var(--text-5xl);
+        margin-bottom: var(--space-3);
+    }
+
+    .hero-roles {
+        font-size: var(--text-base);
+        margin-bottom: var(--space-4);
+    }
+
+    .hero-typed-wrap {
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-5);
+    }
+
+    .hero-avatar {
+        width: 160px;
+        height: 160px;
+
+        border-width: 2px;
+    }
+
+    .hero-ring1 {
+        inset: -4px;
+    }
+
+    .hero-ring2 {
+        inset: -10px;
+    }
+
+    .hero-ring3 {
+        inset: -18px;
+    }
+
+    .hero-glow {
+        inset: -10px;
+    }
+
+    .hero-avatar-wrap {
+        padding: var(--space-4);
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        width: 100%;
+
+        gap: var(--space-3);
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+
+        justify-content: center;
+
+        padding:
+            var(--space-4) var(--space-5);
+    }
+
+
+    /* ----------------------------------------------------------
+     STATS
+     ---------------------------------------------------------- */
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: var(--space-3);
+    }
+
+    .stat-card {
+        padding:
+            var(--space-5) var(--space-4);
+    }
+
+    .stat-number {
+        font-size: var(--text-2xl);
+    }
+
+
+    /* ----------------------------------------------------------
+     SKILLS
+     ---------------------------------------------------------- */
+
+    .skills-categories {
+        gap: 6px;
+
+        overflow-x: auto;
+
+        flex-wrap: nowrap;
+
+        padding-bottom: var(--space-3);
+
+        scrollbar-width: none;
+
+        -ms-overflow-style: none;
+    }
+
+    .skills-categories::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cat-btn {
+        flex-shrink: 0;
+    }
+
+    .skills-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: var(--space-3);
+    }
+
+    .skill-card {
+        min-height: 135px;
+
+        padding:
+            var(--space-5) var(--space-3);
+    }
+
+    .skill-icon {
+        width: 46px;
+        height: 46px;
+
+        font-size: 1.6rem;
+    }
+
+
+    /* ----------------------------------------------------------
+     PROJECTS
+     ---------------------------------------------------------- */
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+    }
+
+    .proj-img {
+        height: 160px;
+    }
+
+    .proj-body {
+        padding: var(--space-5);
+    }
+
+    .proj-actions {
+        align-items: stretch;
+    }
+
+    .proj-actions .btn {
+        flex: 1;
+    }
+
+
+    /* ----------------------------------------------------------
+     GITHUB
+     ---------------------------------------------------------- */
+
+    .github-layout {
+        gap: var(--space-5);
+    }
+
+    .github-profile-card {
+        padding:
+            var(--space-6) var(--space-4);
+    }
+
+    .github-avatar {
+        width: 72px;
+        height: 72px;
+        margin-bottom: var(--space-3);
+    }
+
+    .github-username {
+        font-size: var(--text-sm);
+    }
+
+    .github-bio {
+        margin-bottom: var(--space-5);
+        font-size: var(--text-xs);
+        line-height: var(--lh-relaxed);
+    }
+
+    .github-stats {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+    .gh-stat {
+        padding:
+            var(--space-4) var(--space-3);
+    }
+
+    .gh-stat-num {
+        font-size: var(--text-lg);
+    }
+
+    .gh-stat-label {
+        margin-top: 5px;
+        font-size: 8px;
+        letter-spacing: 0.05em;
+    }
+
+    .contrib-graph {
+        padding:
+            var(--space-4);
+    }
+
+    .contrib-title {
+        flex-wrap: wrap;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .contrib-cells {
+        min-width: 650px;
+        gap: 3px;
+    }
+
+    .contrib-cell {
+        min-width: 8px;
+    }
+
+    .repo-card {
+        padding: var(--space-4);
+    }
+
+    .repo-card-header {
+        gap: var(--space-3);
+        margin-bottom: var(--space-3);
+    }
+
+    .repo-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    .repo-name {
+        font-size: var(--text-xs);
+    }
+
+    .repo-visibility {
+        font-size: 7px;
+        padding: 2px 6px;
+    }
+
+    .repo-description,
+    .repo-desc {
+        font-size: var(--text-xs);
+        margin-bottom: var(--space-4);
+        min-height: 0;
+    }
+
+    .repo-meta {
+        gap: var(--space-3);
+        padding-top: var(--space-3);
+    }
+
+    .repo-language,
+    .repo-lang,
+    .repo-stars,
+    .repo-forks {
+        font-size: 10px;
+    }
+
+    .repo-link {
+        margin-top: var(--space-3);
+        padding-top: var(--space-3);
+        font-size: 10px;
+    }
+
+    .github-loading,
+    .github-error {
+        min-height: 150px;
+        padding: var(--space-5);
+    }
+
+    .github-empty {
+        padding: var(--space-6) var(--space-4);
+        font-size: var(--text-xs);
+    }
+
+
+
+    /* ----------------------------------------------------------
+     BLOG
+     ---------------------------------------------------------- */
+
+    .blog-card {
+        min-height: 340px;
+    }
+
+    .blog-title {
+        max-width: 100%;
+        font-size: var(--text-base);
+    }
+
+    .blog-excerpt {
+        font-size: var(--text-xs);
+    }
+
+    .blog-meta {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    /* ----------------------------------------------------------
+     PRELOADER
+     ---------------------------------------------------------- */
+
+    #preloader {
+        gap: var(--space-5);
+    }
+
+    .pre-shield {
+        width: 50px;
+        height: 50px;
+    }
+
+    .pre-ring {
+        inset: -8px;
+    }
+
+    .pre-ring2 {
+        inset: -14px;
+    }
+
+    .pre-bar-wrap {
+        width: min(260px, 72vw);
+    }
+
+    .pre-text {
+        font-size: var(--text-xs);
+
+        line-height: var(--lh-normal);
+
+        padding:
+            0 var(--space-3);
+    }
+
+    .pre-percent {
+        font-size: 0.55rem;
+    }
+
+
+    /* ----------------------------------------------------------
+     TIMELINE
+     ---------------------------------------------------------- */
+
+    .timeline {
+        padding-left: 30px;
+    }
+
+    .timeline::before {
+        left: 5px;
+    }
+
+    .timeline::after {
+        left: 4px;
+    }
+
+    .timeline-dot {
+        left: -31px;
+
+        width: 14px;
+        height: 14px;
+
+        box-shadow:
+            0 0 0 3px rgba(255, 0, 60, 0.06),
+            0 0 10px rgba(255, 0, 60, 0.5);
+    }
+
+    .timeline-dot::after {
+        width: 4px;
+        height: 4px;
+    }
+
+    .timeline-card {
+        padding: var(--space-5);
+        border-radius:
+            calc(var(--r-lg) - 2px);
+    }
+
+    .timeline-title {
+        font-size: var(--text-base);
+    }
+
+    .timeline-desc {
+        font-size: var(--text-xs);
+    }
+
+    .timeline-date {
+        font-size: 10px;
+    }
+
+
+    /* ----------------------------------------------------------
+     CONTACT
+     ---------------------------------------------------------- */
+
+    .contact-item {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: var(--space-3);
+    }
+
+    .contact-copy {
+        margin-left: 0;
+        align-self: flex-start;
+    }
+
+
+    /* ----------------------------------------------------------
+     FOOTER
+     ---------------------------------------------------------- */
+
+    .footer-quote {
+        font-size: var(--text-xs);
+    }
+
+
+    /* ----------------------------------------------------------
+     HERO SCROLL
+     ---------------------------------------------------------- */
+
+    .hero-scroll {
+        display: none;
+
+        bottom: var(--space-5);
+
+        font-size: 0.55rem;
+    }
+
+    .hero-scroll-line {
+        height: 30px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE — 430px
+   ============================================================ */
+
+@media (max-width: 430px) {
+
+    /* ----------------------------------------------------------
+     GITHUB STATS
+     ---------------------------------------------------------- */
+
+    .github-stats {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+    .gh-stat {
+        padding:
+            var(--space-4) var(--space-3);
+    }
+
+    .gh-stat-num {
+        font-size: var(--text-lg);
+    }
+
+    .gh-stat-label {
+        font-size: 8px;
+    }
+
+
+    /* ----------------------------------------------------------
+     SKILLS
+     ---------------------------------------------------------- */
+
+    .skills-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    /* ----------------------------------------------------------
+     MODALS
+     ---------------------------------------------------------- */
+
+    .modal-meta {
+        gap: var(--space-2);
+    }
+
+    .modal-number {
+        font-size: var(--text-xl);
+    }
+
+    .modal-tag {
+        font-size: 10px;
+    }
+
+    .modal-title {
+        font-size: var(--text-xl);
+    }
+
+    .modal-body {
+        font-size: var(--text-sm);
+    }
+
+    .modal-body pre {
+        margin-left: -4px;
+        margin-right: -4px;
+
+        border-radius: var(--r-sm);
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE — 420px
+   ============================================================ */
+
+@media (max-width: 420px) {
+
+    .blog-card {
+        min-height: 340px;
+    }
+
+
+    /* ----------------------------------------------------------
+     CONTACT
+     ---------------------------------------------------------- */
+
+    .contact-layout {
+        gap: var(--space-7);
+    }
+
+    .contact-info-text {
+        font-size: var(--text-xs);
+        line-height: var(--lh-relaxed);
+    }
+
+    .contact-item {
+        padding: var(--space-3);
+    }
+
+    .contact-link-info,
+    .contact-static-info {
+        gap: var(--space-2);
+    }
+
+    .contact-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 0.85rem;
+    }
+
+    .contact-label {
+        font-size: 0.55rem;
+    }
+
+    .contact-value {
+        font-size: var(--text-xs);
+    }
+
+    .contact-copy {
+        min-width: 56px;
+        min-height: 32px;
+        padding: 6px 8px;
+        font-size: 0.58rem;
+    }
+
+    .contact-layout>.reveal:last-child {
+        padding: var(--space-5);
+        border-radius: var(--r-md);
+    }
+
+    .contact-form-title {
+        gap: var(--space-2);
+        font-size: var(--text-xs);
+        letter-spacing: var(--ls-wide);
+    }
+
+    .form-input {
+        min-height: 44px;
+        padding: var(--space-3);
+        font-size: var(--text-xs);
+    }
+
+    textarea.form-input {
+        min-height: 110px;
+    }
+
+    .form-submit {
+        min-height: 44px;
+        font-size: var(--text-xs);
+    }
+}
+
+
+/* ============================================================
+   COMPACT MOBILE — 360px
+   ============================================================ */
+
+@media (max-width: 360px) {
+
+    /* ----------------------------------------------------------
+     HERO
+     ---------------------------------------------------------- */
+
+    .hero-name {
+        font-size: var(--text-4xl);
+    }
+
+    .hero-greeting {
+        font-size: 0.6rem;
+    }
+
+    .hero-ring1 {
+        inset: -4px;
+    }
+
+    .hero-ring2 {
+        inset: -10px;
+    }
+
+    .hero-ring3 {
+        inset: -18px;
+    }
+
+    .hero-glow {
+        inset: -10px;
+    }
+
+
+    /* ----------------------------------------------------------
+     NAV
+     ---------------------------------------------------------- */
+
+    .theme-toggle {
+        width: 30px;
+        height: 30px;
+
+        font-size: 0.85rem;
+    }
+
+
+    /* ----------------------------------------------------------
+     GITHUB
+     ---------------------------------------------------------- */
+
+    .github-profile-card {
+        padding:
+            var(--space-5) var(--space-3);
+    }
+
+    .github-avatar {
+        width: 64px;
+        height: 64px;
+    }
+
+    .github-username {
+        font-size: var(--text-xs);
+    }
+
+    .github-bio {
+        font-size: 11px;
+    }
+
+    .github-stats {
+        gap: 6px;
+    }
+
+    .gh-stat {
+        padding:
+            var(--space-3) var(--space-2);
+    }
+
+    .gh-stat-num {
+        font-size: var(--text-base);
+    }
+
+    .gh-stat-label {
+        font-size: 7px;
+    }
+
+    .contrib-graph {
+        padding:
+            var(--space-3);
+    }
+
+    .contrib-cells {
+        min-width: 620px;
+        gap: 2px;
+    }
+
+    .repo-card {
+        padding: var(--space-4);
+    }
+
+    .repo-card-header {
+        gap: var(--space-2);
+    }
+
+    .repo-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .repo-description,
+    .repo-desc {
+        font-size: 11px;
+    }
+
+    /* ----------------------------------------------------------
+     CONTACT
+     ---------------------------------------------------------- */
+
+    .contact-item {
+        align-items: flex-start;
+    }
+
+    .contact-link-info,
+    .contact-static-info {
+        align-items: flex-start;
+    }
+
+    .contact-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .contact-value {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: var(--lh-normal);
+    }
+
+    .contact-copy {
+        align-self: center;
+        min-width: 52px;
+    }
+
+    .contact-layout>.reveal:last-child {
+        padding: var(--space-4);
+    }
+}
+
+
+/* ============================================================
+   ULTRA SMALL — 340px
+   ============================================================ */
+
+@media (max-width: 340px) {
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 320px) {
+
+    .github-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .gh-stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+
+        text-align: left;
+    }
+
+    .gh-stat-label {
+        margin-top: 0;
+    }
+
+    .contrib-cells {
+        min-width: 600px;
+    }
+
+}
+
+/* ============================================================
+   TOUCH DEVICES
+   ============================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+
+    .github-profile-card:hover {
+        transform: none;
+    }
+
+    .github-profile-card:hover .github-avatar {
+        transform: none;
+    }
+
+    .gh-stat:hover {
+        transform: none;
+    }
+
+    .repo-card:hover {
+        transform: none;
+    }
+
+    .contrib-cell:hover {
+        transform: none;
+    }
+
+}
