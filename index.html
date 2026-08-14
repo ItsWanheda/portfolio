@@ -10,30 +10,69 @@
   <!-- =========================
      SECURITY HEADERS
      ========================= -->
-
   <meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self';
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  font-src 'self' https://fonts.gstatic.com data:;
-  img-src 'self' data: https: blob:;
-  connect-src 'self' https://api.github.com https://formspree.io;
-  form-action 'self' https://formspree.io;
-  base-uri 'self';
-  frame-ancestors 'none';
-  object-src 'none';
-  upgrade-insecure-requests;
-">
+        default-src 'self';
+
+        script-src
+            'self'
+            https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval';;
+            
+            
+
+        style-src
+            'self'
+            'unsafe-inline'
+            https://fonts.googleapis.com;
+
+        font-src
+            'self'
+            https://fonts.gstatic.com
+            data:;
+
+        img-src
+            'self'
+            data:
+            https:
+            blob:;
+
+        connect-src
+            'self'
+            https://api.github.com
+            https://formspree.io;
+
+        form-action
+            'self'
+            https://formspree.io;
+
+        base-uri
+            'self';
+
+        frame-ancestors
+            'none';
+
+        object-src
+            'none';
+
+        worker-src
+            'self'
+            blob:;
+
+        child-src
+            'self'
+            blob:;
+
+        upgrade-insecure-requests;
+    ">
 
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="
-  camera=(),
-  microphone=(),
-  geolocation=(),
-  payment=(),
-  usb=()
-">
 
+  <meta http-equiv="Permissions-Policy" content="
+        camera=(),
+        microphone=(),
+        geolocation=(),
+        payment=(),
+        usb=()
+    ">
 
   <!-- =========================
        PRIMARY META TAGS
@@ -150,6 +189,7 @@
   <meta name="google-site-verification" content="fPE4fDYumFkpoetTY3Cweod8xdN4jvjV2QD4zHHeE88">
 
   <!-- =========================
+        SCRIPTS
        ========================= -->
   <script type="application/ld+json">
   {
@@ -232,6 +272,29 @@
   }
   </script>
 
+  <!-- =====================================================
+         THREE.JS IMPORT MAP
+         IMPORTANT: This MUST come before eye.js
+         ===================================================== -->
+
+  <script type="importmap">
+  {
+      "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+  }
+  </script>
+
+<!-- ============================================================
+     THREE.JS CANVAS
+     ============================================================ -->
+
+<script
+    type="module"
+    src="./src/js/canvas.js"
+></script>
+
   <!-- =========================
        STYLESHEETS & FONTS
        ========================= -->
@@ -242,10 +305,13 @@
 </head>
 
 <body class="loading">
-  <a href="#home" class="skip-link">Skip to main content</a>
-
   <!-- CANVAS BG -->
   <canvas id="bg-canvas"></canvas>
+  <a href="#home" class="skip-link">Skip to main content</a>
+  <!-- MINIMAL CURSOR -->
+  <div id="devil-cursor" aria-hidden="true">
+    <span class="cursor-dot"></span>
+  </div>
   <!--Back-to-Top-->
   <button id="back-to-top" aria-label="Back to top">↑</button>
 
