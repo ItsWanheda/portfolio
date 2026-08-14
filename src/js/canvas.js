@@ -2107,7 +2107,7 @@ import {
 
                         if (
                             Array.isArray(
-                                object.material
+                                object.mateFrial
                             )
                         ) {
 
