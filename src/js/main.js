@@ -1474,6 +1474,2446 @@ func TestScanner_Localhost(t *testing.T) {
       <p>⚠️ <strong>Only scan systems you own or have explicit written permission to test.</strong> Unauthorized port scanning can violate laws like the <strong>Computer Fraud and Abuse Act (CFAA)</strong> in the US, the <strong>Computer Misuse Act</strong> in the UK, and similar laws worldwide. Use <code>scanme.nmap.org</code> for practice — it's provided by the Nmap project specifically for testing.</p>
     `
   },
+  {
+  num: '07',
+  tag: 'Internet & Networking',
+  title: 'HTTP Under the Hood: What Really Happens When You Open a Website',
+  excerpt: 'A deep technical journey through DNS, TCP, TLS, HTTP, headers, cookies, caching, and the complete lifecycle of a browser request — from typing a URL to rendering a webpage.',
+  date: 'Aug 2026',
+  readTime: '16 min',
+  content: `
+    <p>When you type <code>https://example.com</code> into your browser and press Enter, it feels almost instantaneous. Within a fraction of a second, a webpage appears on your screen. But behind that simple action is a surprisingly complex chain of network operations involving <strong>DNS resolution</strong>, <strong>TCP connections</strong>, <strong>TLS encryption</strong>, <strong>HTTP requests</strong>, caching layers, servers, databases, and finally the browser's rendering engine.</p>
+
+    <p>Understanding this lifecycle is one of the most important foundations for anyone working in <strong>web development, backend engineering, networking, DevOps, or cybersecurity</strong>. If you understand what happens between the browser and server, debugging performance problems and security issues becomes significantly easier.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        <strong style="color: #00ff41;">URL</strong>
+        →
+        <strong style="color: #ffaa00;">DNS</strong>
+        →
+        <strong style="color: #ff0055;">TCP</strong>
+        →
+        <strong style="color: #00ff41;">TLS</strong>
+        →
+        <strong style="color: #ffaa00;">HTTP</strong>
+        →
+        <strong style="color: #ff0055;">SERVER</strong>
+        →
+        <strong style="color: #00ff41;">RESPONSE</strong>
+        →
+        <strong style="color: #ffaa00;">BROWSER</strong>
+      </code>
+    </div>
+
+    <h3 style="color: #ff0055;">1. It Starts With a URL</h3>
+
+    <p>Everything begins with a URL, or <strong>Uniform Resource Locator</strong>. Consider this example:</p>
+
+    <pre><code>https://api.example.com:443/users?id=42#profile</code></pre>
+
+    <p>A URL contains several different components, and each one has a specific purpose.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Component</th>
+          <th style="padding: 8px; border: 1px solid #333;">Example</th>
+          <th style="padding: 8px; border: 1px solid #333;">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Protocol</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">https</td>
+          <td style="padding: 8px; border: 1px solid #333;">Defines how communication occurs</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Hostname</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">api.example.com</td>
+          <td style="padding: 8px; border: 1px solid #333;">Identifies the destination server</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Port</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">443</td>
+          <td style="padding: 8px; border: 1px solid #333;">Identifies the network service</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Path</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">/users</td>
+          <td style="padding: 8px; border: 1px solid #333;">Identifies the requested resource</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Query</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">?id=42</td>
+          <td style="padding: 8px; border: 1px solid #333;">Provides additional parameters</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Fragment</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">#profile</td>
+          <td style="padding: 8px; border: 1px solid #333;">Client-side document location</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>One important detail is that the <code>#profile</code> fragment is normally <strong>not sent to the server</strong>. It is interpreted by the browser after the resource has been retrieved.</p>
+
+    <h3 style="color: #ff0055;">2. DNS: Turning a Domain Into an IP Address</h3>
+
+    <p>Computers communicate across IP networks using addresses such as <code>142.250.72.14</code> or IPv6 addresses. Humans, however, prefer names such as <code>google.com</code>.</p>
+
+    <p>DNS, or <strong>Domain Name System</strong>, bridges this gap.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        example.com
+        →
+        DNS Resolver
+        →
+        Root Server
+        →
+        TLD Server
+        →
+        Authoritative Server
+        →
+        IP Address
+      </code>
+    </div>
+
+    <p>The browser does not necessarily perform the entire DNS lookup every time. DNS information can be cached at several levels:</p>
+
+    <ul>
+      <li>Browser DNS cache</li>
+      <li>Operating system cache</li>
+      <li>Local network or router cache</li>
+      <li>Recursive DNS resolver cache</li>
+      <li>Authoritative DNS infrastructure</li>
+    </ul>
+
+    <p>This caching system dramatically reduces lookup latency and network traffic.</p>
+
+    <h4 style="color: #00ff41;">Checking DNS From the Command Line</h4>
+
+    <pre><code># Linux / macOS
+$ dig example.com
+
+# Windows
+&gt; nslookup example.com
+
+# Alternative
+$ host example.com</code></pre>
+
+    <p>A typical DNS response can contain records such as:</p>
+
+    <pre><code>A       → IPv4 address
+AAAA    → IPv6 address
+CNAME   → Canonical name
+MX      → Mail server
+TXT     → Text / verification records
+NS      → Authoritative name server</code></pre>
+
+    <p>From a security perspective, DNS is extremely important. Incorrect DNS configuration can result in problems such as <strong>subdomain takeover, DNS spoofing, cache poisoning, and traffic redirection</strong>.</p>
+
+    <h3 style="color: #ff0055;">3. The Browser Establishes a Connection</h3>
+
+    <p>Once the browser knows the destination IP address, it needs a way to communicate with that server.</p>
+
+    <p>For traditional HTTPS connections, this historically means establishing a <strong>TCP connection</strong>.</p>
+
+    <h4 style="color: #00ff41;">The TCP Three-Way Handshake</h4>
+
+    <p>TCP establishes a reliable connection using a three-way handshake:</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffaa00; margin: 15px 0;">
+      <code>
+        CLIENT → SYN → SERVER<br>
+        CLIENT ← SYN-ACK ← SERVER<br>
+        CLIENT → ACK → SERVER
+      </code>
+    </div>
+
+    <p>The first packet contains a <code>SYN</code> flag indicating that the client wants to establish a connection.</p>
+
+    <p>The server responds with <code>SYN-ACK</code>, acknowledging the request and indicating that it is also ready to communicate.</p>
+
+    <p>The client then sends <code>ACK</code>, completing the handshake.</p>
+
+    <p>At this point, the TCP connection is established.</p>
+
+    <h4 style="color: #00ff41;">Why TCP Matters</h4>
+
+    <p>TCP provides several important guarantees:</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Feature</th>
+          <th style="padding: 8px; border: 1px solid #333;">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Reliability</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Lost data can be retransmitted</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Ordering</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Data is reconstructed in the correct order</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Flow Control</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Prevents overwhelming the receiver</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Congestion Control</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Adapts transmission to network conditions</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="color: #ff0055;">4. TLS: Encrypting the Connection</h3>
+
+    <p>TCP provides reliable transport, but it does <strong>not</strong> provide encryption.</p>
+
+    <p>This is where <strong>TLS — Transport Layer Security</strong> enters the picture.</p>
+
+    <p>HTTPS is essentially HTTP transported through a secure TLS connection.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        HTTP + TLS = HTTPS
+      </code>
+    </div>
+
+    <p>During the TLS handshake, the client and server negotiate cryptographic parameters and establish keys used to protect the session.</p>
+
+    <h4 style="color: #00ff41;">TLS Provides Three Major Properties</h4>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Property</th>
+          <th style="padding: 8px; border: 1px solid #333;">Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Confidentiality</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Attackers cannot easily read encrypted traffic</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Integrity</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Tampering can be detected</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Authentication</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Certificates help verify the server identity</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The server presents a certificate containing information about the domain and its public key. The browser validates the certificate chain against trusted Certificate Authorities.</p>
+
+    <p>If certificate validation fails, modern browsers will usually display a security warning rather than silently continuing.</p>
+
+    <h3 style="color: #ff0055;">5. HTTP: The Actual Request</h3>
+
+    <p>After the connection has been established, the browser can finally send the HTTP request.</p>
+
+    <p>A simplified HTTP request might look like this:</p>
+
+    <pre><code>GET /users?id=42 HTTP/1.1
+Host: api.example.com
+Accept: application/json
+User-Agent: Mozilla/5.0
+Accept-Language: en-US
+Connection: keep-alive</code></pre>
+
+    <p>Each component has a purpose.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Part</th>
+          <th style="padding: 8px; border: 1px solid #333;">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>GET</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">HTTP method</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>/users?id=42</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Requested resource</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Host</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Target hostname</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Accept</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Preferred response format</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>User-Agent</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Client identification information</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="color: #ff0055;">6. HTTP Methods</h3>
+
+    <p>HTTP provides several methods for interacting with resources.</p>
+
+    <pre><code>GET      → Retrieve data
+POST     → Create / submit data
+PUT      → Replace a resource
+PATCH    → Partially modify a resource
+DELETE   → Remove a resource
+HEAD     → Retrieve headers without the response body
+OPTIONS  → Discover supported communication options</code></pre>
+
+    <p>One of the most important concepts in API development is understanding that these methods communicate <strong>intent</strong>.</p>
+
+    <p>For example, a REST API might expose:</p>
+
+    <pre><code>GET    /api/users
+GET    /api/users/42
+POST   /api/users
+PATCH  /api/users/42
+DELETE /api/users/42</code></pre>
+
+    <p>This predictable structure makes APIs easier to consume, document, test, and maintain.</p>
+
+    <h3 style="color: #ff0055;">7. HTTP Headers: The Metadata of Communication</h3>
+
+    <p>Headers carry metadata about the request and response.</p>
+
+    <p>Some important request headers include:</p>
+
+    <pre><code>Authorization
+Content-Type
+Accept
+Cookie
+Origin
+Referer
+User-Agent
+Cache-Control</code></pre>
+
+    <p>Servers also return their own headers:</p>
+
+    <pre><code>Content-Type
+Content-Length
+Set-Cookie
+Cache-Control
+ETag
+Location
+Content-Security-Policy
+Strict-Transport-Security</code></pre>
+
+    <p>Security headers are particularly important for modern web applications.</p>
+
+    <h4 style="color: #00ff41;">Example Security Headers</h4>
+
+    <pre><code>Content-Security-Policy: default-src 'self'
+Strict-Transport-Security: max-age=31536000
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=()</code></pre>
+
+    <p>These headers can significantly reduce the impact of certain browser-based attacks when configured correctly.</p>
+
+    <h3 style="color: #ff0055;">8. Cookies and Sessions</h3>
+
+    <p>HTTP itself is fundamentally stateless. A server does not automatically remember that two requests came from the same user.</p>
+
+    <p>Cookies provide one mechanism for maintaining state between requests.</p>
+
+    <pre><code>Set-Cookie: session_id=abc123;
+HttpOnly;
+Secure;
+SameSite=Lax</code></pre>
+
+    <p>The browser stores the cookie and sends it on subsequent matching requests.</p>
+
+    <p>Several cookie attributes are particularly important from a security perspective:</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Attribute</th>
+          <th style="padding: 8px; border: 1px solid #333;">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>HttpOnly</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Prevents JavaScript from directly reading the cookie</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Secure</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Restricts transmission to secure connections</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>SameSite</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Controls cross-site cookie behavior</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Path</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Controls where the cookie is sent</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>Max-Age</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Controls cookie lifetime</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="color: #ff0055;">9. The Server Receives the Request</h3>
+
+    <p>The request has now traveled across the network and reached the server infrastructure.</p>
+
+    <p>But the web server may not be the application itself.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        Browser
+        →
+        CDN
+        →
+        Load Balancer
+        →
+        Reverse Proxy
+        →
+        Application Server
+        →
+        Database
+        →
+        Response
+      </code>
+    </div>
+
+    <p>Modern applications are often composed of multiple layers.</p>
+
+    <h4 style="color: #00ff41;">Reverse Proxy</h4>
+
+    <p>A reverse proxy such as Nginx or another edge proxy can handle TLS termination, routing, compression, caching, rate limiting, and other responsibilities before forwarding traffic to the application.</p>
+
+    <h4 style="color: #00ff41;">Application Server</h4>
+
+    <p>The application server executes business logic.</p>
+
+    <p>For example, a Node.js API might receive:</p>
+
+    <pre><code>GET /api/users/42</code></pre>
+
+    <p>and execute logic similar to:</p>
+
+    <pre><code>app.get('/api/users/:id', async (req, res) => {
+  const user = await db.users.findUnique({
+    where: {
+      id: Number(req.params.id)
+    }
+  });
+
+  if (!user) {
+    return res.status(404).json({
+      error: 'User not found'
+    });
+  }
+
+  return res.json(user);
+});</code></pre>
+
+    <p>The application may then query a database before constructing the HTTP response.</p>
+
+    <h3 style="color: #ff0055;">10. Database Communication</h3>
+
+    <p>If the requested data is dynamic, the application may need to communicate with a database.</p>
+
+    <pre><code>Client
+  ↓
+API
+  ↓
+Application Logic
+  ↓
+Database Query
+  ↓
+Database
+  ↓
+Result
+  ↓
+API Response</code></pre>
+
+    <p>This is one reason backend performance can become complicated. The network request itself might be fast while the database query takes hundreds of milliseconds.</p>
+
+    <p>Developers therefore monitor things such as:</p>
+
+    <ul>
+      <li>Database query latency</li>
+      <li>Connection pool utilization</li>
+      <li>CPU usage</li>
+      <li>Memory usage</li>
+      <li>Cache hit ratio</li>
+      <li>API response time</li>
+      <li>Error rates</li>
+    </ul>
+
+    <h3 style="color: #ff0055;">11. HTTP Status Codes</h3>
+
+    <p>Once the server has processed the request, it returns an HTTP response containing a status code.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Code</th>
+          <th style="padding: 8px; border: 1px solid #333;">Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>200</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">OK</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>201</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Created</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>204</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">No Content</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>301</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Permanent Redirect</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>304</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Not Modified</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>400</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Bad Request</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>401</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Unauthorized</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>403</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Forbidden</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>404</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Not Found</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>429</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Too Many Requests</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>500</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Internal Server Error</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>503</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Service Unavailable</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="color: #ff0055;">12. The Response</h3>
+
+    <p>A complete HTTP response could look like this:</p>
+
+    <pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Cache-Control: private, max-age=60
+Content-Length: 86
+
+{
+  "id": 42,
+  "username": "wanheda",
+  "role": "developer"
+}</code></pre>
+
+    <p>The browser receives the response and determines what to do with it based on the headers, status code, content type, and requested resource.</p>
+
+    <h3 style="color: #ff0055;">13. Caching: Avoiding Unnecessary Work</h3>
+
+    <p>One of the biggest performance improvements available to web applications is caching.</p>
+
+    <p>Without caching, the same resource might repeatedly travel from the browser to the server even when nothing has changed.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffaa00; margin: 15px 0;">
+      <code>
+        First Request → Server → Resource<br>
+        Second Request → Cache → Resource<br>
+        Third Request → Cache → Resource
+      </code>
+    </div>
+
+    <p>HTTP supports mechanisms such as:</p>
+
+    <pre><code>Cache-Control
+ETag
+Last-Modified
+Expires
+If-None-Match
+If-Modified-Since</code></pre>
+
+    <p>For example:</p>
+
+    <pre><code>ETag: "abc123"</code></pre>
+
+    <p>The browser can later send:</p>
+
+    <pre><code>If-None-Match: "abc123"</code></pre>
+
+    <p>If the resource has not changed, the server can respond with:</p>
+
+    <pre><code>304 Not Modified</code></pre>
+
+    <p>This allows the browser to reuse its cached copy instead of downloading the entire resource again.</p>
+
+    <h3 style="color: #ff0055;">14. HTTP/1.1 vs HTTP/2 vs HTTP/3</h3>
+
+    <p>The web has evolved significantly since the early versions of HTTP.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Version</th>
+          <th style="padding: 8px; border: 1px solid #333;">Transport</th>
+          <th style="padding: 8px; border: 1px solid #333;">Important Feature</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>HTTP/1.1</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">TCP</td>
+          <td style="padding: 8px; border: 1px solid #333;">Persistent connections</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>HTTP/2</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">TCP</td>
+          <td style="padding: 8px; border: 1px solid #333;">Multiplexing and header compression</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>HTTP/3</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">QUIC / UDP</td>
+          <td style="padding: 8px; border: 1px solid #333;">Reduced connection latency and improved transport behavior</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>HTTP/2 introduced multiplexing, allowing multiple streams to share a single connection instead of requiring separate connections for every resource.</p>
+
+    <p>HTTP/3 goes further by using <strong>QUIC</strong>, which operates over UDP while implementing modern transport features at the protocol level.</p>
+
+    <h3 style="color: #ff0055;">15. What Happens After the Response?</h3>
+
+    <p>Receiving HTML is not the end of the process.</p>
+
+    <p>The browser must parse the document and construct the structures required to display the page.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        HTML
+        →
+        DOM
+        <br>
+        CSS
+        →
+        CSSOM
+        <br>
+        DOM + CSSOM
+        →
+        Render Tree
+        →
+        Layout
+        →
+        Paint
+        →
+        Composite
+      </code>
+    </div>
+
+    <p>The browser may discover additional resources during HTML parsing:</p>
+
+    <pre><code>&lt;link rel="stylesheet" href="/style.css"&gt;
+&lt;script src="/app.js"&gt;&lt;/script&gt;
+&lt;img src="/hero.webp"&gt;</code></pre>
+
+    <p>Each of these resources can trigger additional network requests.</p>
+
+    <p>This is why a webpage is rarely just "one request." A single HTML document can lead to dozens or even hundreds of additional requests for stylesheets, JavaScript, fonts, images, API calls, analytics, and third-party resources.</p>
+
+    <h3 style="color: #ff0055;">16. Security: Where Things Can Go Wrong</h3>
+
+    <p>Every layer of this process introduces potential security risks.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Layer</th>
+          <th style="padding: 8px; border: 1px solid #333;">Potential Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>DNS</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Spoofing, poisoning, misconfiguration</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>TLS</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Certificate or configuration failures</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>HTTP</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Header injection, insecure transport, request manipulation</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Cookies</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Session theft and CSRF-related issues</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Application</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Injection, broken authorization, logic flaws</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Database</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Unauthorized access and injection vulnerabilities</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="color: #ff0055;">17. Useful Developer Tools</h3>
+
+    <p>You do not need to guess what is happening on the network. Modern tools allow developers to inspect almost every stage.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Tool</th>
+          <th style="padding: 8px; border: 1px solid #333;">Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>curl</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Manual HTTP requests</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>dig</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">DNS investigation</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>ping</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Basic network reachability testing</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>traceroute</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Inspecting network paths</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Wireshark</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Packet analysis</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Browser DevTools</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">HTTP requests, timing, storage and rendering inspection</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Burp Suite</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Web traffic inspection and security testing</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 style="color: #00ff41;">Inspecting an HTTP Request</h4>
+
+    <pre><code>$ curl -I https://example.com
+
+HTTP/2 200
+content-type: text/html
+cache-control: max-age=0
+server: ...
+strict-transport-security: ...</code></pre>
+
+    <p>The <code>-I</code> option asks curl to retrieve the response headers without downloading the complete response body.</p>
+
+    <h3 style="color: #ff0055;">18. Performance: Measuring the Journey</h3>
+
+    <p>When a website feels slow, simply saying "the server is slow" is not enough.</p>
+
+    <p>The delay could originate from several different stages:</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffaa00; margin: 15px 0;">
+      <code>
+        DNS Lookup
+        + TCP Connection
+        + TLS Handshake
+        + Server Processing
+        + Database Query
+        + Response Transfer
+        + Browser Rendering
+      </code>
+    </div>
+
+    <p>A useful performance investigation therefore asks:</p>
+
+    <ul>
+      <li>How long did DNS resolution take?</li>
+      <li>Was the connection reused?</li>
+      <li>How long did TLS negotiation take?</li>
+      <li>How long until the server began responding?</li>
+      <li>How large was the response?</li>
+      <li>Was the resource served from cache?</li>
+      <li>How much JavaScript blocked rendering?</li>
+      <li>Were additional requests unnecessarily expensive?</li>
+    </ul>
+
+    <h3 style="color: #ff0055;">19. The Complete Lifecycle</h3>
+
+    <p>We can now summarize the entire journey.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        01. User enters URL<br>
+        ↓<br>
+        02. Browser checks local caches<br>
+        ↓<br>
+        03. DNS resolves hostname<br>
+        ↓<br>
+        04. Browser obtains destination IP<br>
+        ↓<br>
+        05. TCP connection is established<br>
+        ↓<br>
+        06. TLS handshake secures the connection<br>
+        ↓<br>
+        07. Browser sends HTTP request<br>
+        ↓<br>
+        08. Request reaches edge infrastructure<br>
+        ↓<br>
+        09. Reverse proxy / load balancer routes request<br>
+        ↓<br>
+        10. Application processes request<br>
+        ↓<br>
+        11. Database/cache may be queried<br>
+        ↓<br>
+        12. Server generates response<br>
+        ↓<br>
+        13. HTTP response travels back<br>
+        ↓<br>
+        14. Browser parses the response<br>
+        ↓<br>
+        15. Additional resources are requested<br>
+        ↓<br>
+        16. Browser constructs the render tree<br>
+        ↓<br>
+        17. Layout → Paint → Composite<br>
+        ↓<br>
+        18. User sees the final interface
+      </code>
+    </div>
+
+    <h3 style="color: #ff0055;">20. Defensive Blueprint</h3>
+
+    <p>Understanding the request lifecycle also gives developers a practical security checklist.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="text-align: left; padding: 8px; border: 1px solid #333;">Control</th>
+          <th style="text-align: left; padding: 8px; border: 1px solid #333;">Recommended Practice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>HTTPS</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Use HTTPS everywhere and redirect insecure HTTP traffic</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>TLS</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Use modern TLS configurations and valid certificates</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Cookies</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Use Secure, HttpOnly and appropriate SameSite settings</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Headers</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Deploy appropriate security headers</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Validation</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Validate all untrusted input on the server</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Rate Limiting</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Limit abusive or excessive requests</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Logging</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Monitor authentication, errors and suspicious traffic</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Dependencies</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Keep server and application dependencies maintained</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="border: 1px dashed #00ff41; padding: 15px; margin-top: 20px;">
+      <h4 style="margin-top: 0; color: #00ff41;">💡 Pro Tip: Use DevTools Like a Network Engineer</h4>
+      <p style="margin-bottom: 0;">Open your browser's Network panel and reload a website. Instead of looking only at the final page, inspect the individual requests. Look at DNS timing, connection timing, TLS negotiation, request headers, response headers, transferred size, caching behavior, status codes, and waterfall timing. Learning to read this panel is one of the fastest ways to understand how the modern web actually works.</p>
+    </div>
+
+    <h3 style="color: #ff0055;">Conclusion</h3>
+
+    <p>Opening a website is one of those everyday actions that looks simple only because modern browsers hide almost all of the complexity.</p>
+
+    <p>Behind a single URL is an entire chain of systems: <strong>DNS, IP routing, TCP, TLS, HTTP, proxies, load balancers, application servers, databases, caches, and browser rendering engines</strong>.</p>
+
+    <p>For frontend developers, this knowledge explains why some resources load slowly and why certain browser behaviors exist. For backend developers, it explains how requests reach their applications and how responses travel back to clients. For network engineers, it provides the foundation for understanding traffic flow. And for security engineers, every layer represents another place where trust must be established and carefully enforced.</p>
+
+    <p>The next time you type a URL and a webpage appears almost instantly, remember what actually happened:</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ff0055; margin: 15px 0;">
+      <code>
+        <strong style="color: #00ff41;">URL</strong>
+        →
+        <strong style="color: #ffaa00;">DNS</strong>
+        →
+        <strong style="color: #ff0055;">NETWORK</strong>
+        →
+        <strong style="color: #00ff41;">TLS</strong>
+        →
+        <strong style="color: #ffaa00;">HTTP</strong>
+        →
+        <strong style="color: #ff0055;">BACKEND</strong>
+        →
+        <strong style="color: #00ff41;">DATABASE</strong>
+        →
+        <strong style="color: #ffaa00;">RESPONSE</strong>
+        →
+        <strong style="color: #ff0055;">BROWSER</strong>
+      </code>
+    </div>
+
+    <p>That invisible pipeline is the foundation of the modern Internet.</p>
+  `
+},
+{num: '08',
+tag: 'API Security & Penetration Testing',
+title: 'API Attack Surface: How Pentesters Discover, Access, and Test APIs',
+excerpt: 'A practical deep dive into API reconnaissance, authentication, authorization, endpoint discovery, tokens, HTTP methods, common security weaknesses, and the defensive mindset behind modern API penetration testing.',
+date: 'Aug 2026',
+readTime: '18 min',
+content: `
+  <p>Modern applications rarely exist as a single webpage. Behind almost every dashboard, mobile application, SaaS platform, and interactive interface is an <strong>API</strong> responsible for exchanging data between clients and backend systems.</p>
+
+  <p>This creates an important security question: <strong>how does a penetration tester discover an API, understand how it works, and determine whether access controls are actually enforcing security?</strong></p>
+
+  <p>API penetration testing is not simply about sending random requests and hoping something breaks. A professional assessment starts by understanding the application's architecture, identifying its attack surface, mapping authentication mechanisms, and testing whether the server correctly enforces authorization.</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+    <code>
+      <strong style="color: #00ff41;">DISCOVER</strong>
+      →
+      <strong style="color: #ffaa00;">MAP</strong>
+      →
+      <strong style="color: #ff0055;">AUTHENTICATE</strong>
+      →
+      <strong style="color: #00ff41;">AUTHORIZE</strong>
+      →
+      <strong style="color: #ffaa00;">TEST</strong>
+      →
+      <strong style="color: #ff0055;">REPORT</strong>
+    </code>
+  </div>
+
+  <h3 style="color: #ff0055;">1. What Exactly Is an API?</h3>
+
+  <p>An API, or <strong>Application Programming Interface</strong>, provides a structured way for software components to communicate.</p>
+
+  <p>A browser frontend might request:</p>
+
+  <pre><code>GET /api/users/me</code></pre>
+
+  <p>The backend processes the request and returns structured data:</p>
+
+  <pre><code>{
+  "id": 42,
+  "username": "wanheda",
+  "role": "user"
+}</code></pre>
+
+  <p>The frontend does not need to know how the database works internally. It only needs to understand the API contract.</p>
+
+  <p>This separation is useful for development, but it also creates an important security boundary:</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ff0055; margin: 15px 0;">
+    <code>
+      CLIENT = untrusted<br>
+      <br>
+      API = security boundary<br>
+      <br>
+      DATABASE = protected resource
+    </code>
+  </div>
+
+  <p>The server must never assume that a request is trustworthy simply because it came from an official frontend.</p>
+
+  <h3 style="color: #ff0055;">2. The First Step: Define the Scope</h3>
+
+  <p>A real penetration test begins before technical testing.</p>
+
+  <p>The tester needs clearly defined authorization and scope.</p>
+
+  <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+    <thead>
+      <tr style="background: #222; color: #00ff41;">
+        <th style="padding: 8px; border: 1px solid #333;">Question</th>
+        <th style="padding: 8px; border: 1px solid #333;">Why It Matters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>What domains are in scope?</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Prevents testing unrelated systems</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Which API environments?</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Production and staging may differ significantly</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Which accounts are provided?</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Allows authorization testing</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>What actions are prohibited?</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Prevents destructive testing</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Without authorization, security testing against systems you do not own or have permission to test can cross legal and ethical boundaries.</p>
+
+  <h3 style="color: #ff0055;">3. Discovering the API</h3>
+
+  <p>One of the first questions during an assessment is:</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+    <strong style="color: #00ff41;">"Where is the API?"</strong>
+  </div>
+
+  <p>The answer is not always obvious.</p>
+
+  <p>A modern web application may communicate with:</p>
+
+  <pre><code>https://example.com/api/
+https://api.example.com/
+https://api.example.com/v1/
+https://api.example.com/v2/
+https://graphql.example.com/
+https://auth.example.com/
+https://upload.example.com/</code></pre>
+
+  <p>Endpoints can often be identified through authorized application traffic, documentation, frontend JavaScript, API specifications, and browser developer tools.</p>
+
+  <h4 style="color: #00ff41;">Browser Network Inspection</h4>
+
+  <p>One of the most useful techniques is simply observing what the application itself does.</p>
+
+  <p>Open the browser's Network panel, perform an action inside the application, and inspect the resulting request.</p>
+
+  <pre><code>POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "tester@example.com",
+  "password": "********"
+}</code></pre>
+
+  <p>The tester can then document the endpoint, method, parameters, response, authentication requirements, and security controls.</p>
+
+  <h3 style="color: #ff0055;">4. Building an API Map</h3>
+
+  <p>Random testing is inefficient. Professional testers build an <strong>endpoint inventory</strong>.</p>
+
+  <table style="width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em;">
+    <thead>
+      <tr style="background: #222; color: #00ff41;">
+        <th style="padding: 8px; border: 1px solid #333;">Method</th>
+        <th style="padding: 8px; border: 1px solid #333;">Endpoint</th>
+        <th style="padding: 8px; border: 1px solid #333;">Auth</th>
+        <th style="padding: 8px; border: 1px solid #333;">Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>POST</code></td>
+        <td style="padding: 8px; border: 1px solid #333;"><code>/api/auth/login</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">No</td>
+        <td style="padding: 8px; border: 1px solid #333;">Authenticate user</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>GET</code></td>
+        <td style="padding: 8px; border: 1px solid #333;"><code>/api/users/me</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">Yes</td>
+        <td style="padding: 8px; border: 1px solid #333;">Current user</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>GET</code></td>
+        <td style="padding: 8px; border: 1px solid #333;"><code>/api/users/:id</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">Yes</td>
+        <td style="padding: 8px; border: 1px solid #333;">User information</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>PATCH</code></td>
+        <td style="padding: 8px; border: 1px solid #333;"><code>/api/users/:id</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">Yes</td>
+        <td style="padding: 8px; border: 1px solid #333;">Update user</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>DELETE</code></td>
+        <td style="padding: 8px; border: 1px solid #333;"><code>/api/users/:id</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">Admin</td>
+        <td style="padding: 8px; border: 1px solid #333;">Delete account</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>This map becomes the foundation of the assessment.</p>
+
+  <h3 style="color: #ff0055;">5. Authentication vs Authorization</h3>
+
+  <p>These two concepts are frequently confused.</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffaa00; margin: 15px 0;">
+    <code>
+      <strong style="color: #00ff41;">Authentication</strong>
+      = Who are you?
+      <br><br>
+      <strong style="color: #ff0055;">Authorization</strong>
+      = What are you allowed to do?
+    </code>
+  </div>
+
+  <p>A user can be successfully authenticated while still being unauthorized to access a particular resource.</p>
+
+  <p>For example:</p>
+
+  <pre><code>Authentication:
+User #42 is logged in.
+
+Authorization:
+User #42 is allowed to access their own profile.
+
+User #42 is NOT automatically allowed
+to modify User #43's profile.</code></pre>
+
+  <p>This distinction is at the center of many serious API security issues.</p>
+
+  <h3 style="color: #ff0055;">6. How APIs Give Clients Access</h3>
+
+  <p>APIs can use several authentication mechanisms.</p>
+
+  <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+    <thead>
+      <tr style="background: #222; color: #00ff41;">
+        <th style="padding: 8px; border: 1px solid #333;">Mechanism</th>
+        <th style="padding: 8px; border: 1px solid #333;">Typical Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Session Cookie</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Traditional web applications</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>JWT</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Stateless authentication systems</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>OAuth 2.0</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Delegated authorization</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>API Key</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Service-to-service or developer APIs</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>mTLS</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">High-trust service communication</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="color: #ff0055;">7. Bearer Tokens</h3>
+
+  <p>A common API pattern is the HTTP Authorization header.</p>
+
+  <pre><code>GET /api/users/me HTTP/1.1
+Host: api.example.com
+Authorization: Bearer &lt;access-token&gt;</code></pre>
+
+  <p>The server validates the token and determines which identity and permissions are associated with it.</p>
+
+  <p>A secure implementation should validate more than simply checking whether a token exists.</p>
+
+  <pre><code>Token Present
+      ↓
+Signature Valid?
+      ↓
+Issuer Valid?
+      ↓
+Audience Valid?
+      ↓
+Expiration Valid?
+      ↓
+User Exists?
+      ↓
+Permission Valid?
+      ↓
+Allow Request</code></pre>
+
+  <p>Skipping one of these checks can create unexpected security gaps.</p>
+
+  <h3 style="color: #ff0055;">8. Authorization Testing</h3>
+
+  <p>Once a tester has two authorized test accounts, authorization controls can be evaluated safely.</p>
+
+  <p>Imagine:</p>
+
+  <pre><code>Account A → User ID 1001
+Account B → User ID 1002</code></pre>
+
+  <p>Account A should normally be prevented from accessing resources belonging to Account B unless the application explicitly permits it.</p>
+
+  <p>The security question is therefore:</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ff0055; margin: 15px 0;">
+    <strong style="color: #ff0055;">
+      Does the server check ownership and permissions,
+      or does it trust the identifier supplied by the client?
+    </strong>
+  </div>
+
+  <p>This class of weakness is commonly associated with <strong>Broken Object Level Authorization (BOLA)</strong>.</p>
+
+  <h3 style="color: #ff0055;">9. The Dangerous Assumption</h3>
+
+  <p>Consider this backend logic:</p>
+
+  <pre><code>app.get('/api/users/:id', authenticate, async (req, res) => {
+
+  const user = await db.user.findUnique({
+    where: {
+      id: Number(req.params.id)
+    }
+  });
+
+  return res.json(user);
+});</code></pre>
+
+  <p>The user is authenticated, but the code does not demonstrate that the requested resource belongs to the authenticated user.</p>
+
+  <p>A safer design explicitly checks authorization:</p>
+
+  <pre><code>app.get('/api/users/:id', authenticate, async (req, res) => {
+
+  const requestedId = Number(req.params.id);
+
+  if (requestedId !== req.user.id && req.user.role !== 'admin') {
+    return res.status(403).json({
+      error: 'Forbidden'
+    });
+  }
+
+  const user = await db.user.findUnique({
+    where: {
+      id: requestedId
+    }
+  });
+
+  return res.json(user);
+});</code></pre>
+
+  <p>The important lesson is that <strong>authentication middleware does not automatically provide authorization</strong>.</p>
+
+  <h3 style="color: #ff0055;">10. Testing HTTP Methods</h3>
+
+  <p>An API may expose several methods for the same resource.</p>
+
+  <pre><code>GET    /api/profile
+POST   /api/profile
+PATCH  /api/profile
+DELETE /api/profile</code></pre>
+
+  <p>A tester verifies whether each method is intentionally exposed and correctly protected.</p>
+
+  <p>For example:</p>
+
+  <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+    <thead>
+      <tr style="background: #222; color: #00ff41;">
+        <th style="padding: 8px; border: 1px solid #333;">Endpoint</th>
+        <th style="padding: 8px; border: 1px solid #333;">Expected Access</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>GET /profile</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">Authenticated user</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>PATCH /profile</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">Profile owner</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><code>DELETE /profile</code></td>
+        <td style="padding: 8px; border: 1px solid #333;">Owner + additional controls</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="color: #ff0055;">11. Input Validation</h3>
+
+  <p>Authentication and authorization are not the only concerns.</p>
+
+  <p>Every API accepts input, and that input should be treated as untrusted.</p>
+
+  <pre><code>POST /api/users
+
+{
+  "username": "wanheda",
+  "email": "user@example.com",
+  "role": "user"
+}</code></pre>
+
+  <p>The backend should define exactly which fields the client is allowed to control.</p>
+
+  <p>For example, a client should not normally be able to assign itself administrative privileges simply by adding:</p>
+
+  <pre><code>{
+  "username": "wanheda",
+  "role": "admin"
+}</code></pre>
+
+  <p>This type of problem is related to <strong>mass assignment</strong> and improper object binding.</p>
+
+  <p>A safer implementation uses an explicit allowlist:</p>
+
+  <pre><code>const allowedFields = {
+  username: body.username,
+  email: body.email
+};</code></pre>
+
+  <p>Security should be based on what the server explicitly permits, not on what the client happens to send.</p>
+
+  <h3 style="color: #ff0055;">12. Rate Limiting</h3>
+
+  <p>APIs frequently expose sensitive operations such as login, password reset, verification, and account recovery.</p>
+
+  <p>These endpoints should have appropriate abuse protections.</p>
+
+  <pre><code>Request
+   ↓
+Rate Limiter
+   ↓
+Authentication
+   ↓
+Validation
+   ↓
+Application Logic</code></pre>
+
+  <p>Example policy:</p>
+
+  <pre><code>Login:
+5 failed attempts
+→ temporary throttling
+
+Password Reset:
+Limited requests per account/IP
+
+Public API:
+Requests limited per client</code></pre>
+
+  <p>Rate limiting should be designed around the application's threat model rather than blindly applying the same limit everywhere.</p>
+
+  <h3 style="color: #ff0055;">13. API Keys Are Not User Authentication</h3>
+
+  <p>API keys are useful, but they should not automatically be treated as proof of a human user's identity.</p>
+
+  <pre><code>Authorization: ApiKey abc123...</code></pre>
+
+  <p>An API key may identify an application, integration, or developer account.</p>
+
+  <p>For sensitive user operations, additional authentication and authorization controls may be required.</p>
+
+  <p>API keys should also be:</p>
+
+  <ul>
+    <li>Kept out of public repositories</li>
+    <li>Rotated when compromised</li>
+    <li>Scoped to the minimum required permissions</li>
+    <li>Stored securely</li>
+    <li>Monitored for suspicious usage</li>
+  </ul>
+
+  <h3 style="color: #ff0055;">14. Common API Security Weaknesses</h3>
+
+  <p>A professional API assessment commonly evaluates several categories of weaknesses.</p>
+
+  <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+    <thead>
+      <tr style="background: #222; color: #00ff41;">
+        <th style="padding: 8px; border: 1px solid #333;">Category</th>
+        <th style="padding: 8px; border: 1px solid #333;">Security Question</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Authentication</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Can unauthenticated users reach protected resources?</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Authorization</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Can users access resources they do not own?</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Validation</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Does the server validate all input?</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Rate Limiting</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Can sensitive endpoints be abused?</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Data Exposure</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Does the API return unnecessary sensitive information?</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Configuration</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Are debug endpoints or insecure settings exposed?</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Business Logic</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Can workflows be manipulated?</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="color: #ff0055;">15. Excessive Data Exposure</h3>
+
+  <p>An API may technically enforce authorization correctly while still returning more information than the client needs.</p>
+
+  <p>For example:</p>
+
+  <pre><code>{
+  "id": 42,
+  "username": "wanheda",
+  "email": "user@example.com",
+  "role": "user",
+  "internalFlags": "...",
+  "accountMetadata": "...",
+  "createdByAdmin": true
+}</code></pre>
+
+  <p>If the frontend only needs the username and profile picture, returning unnecessary internal fields increases the application's attack surface.</p>
+
+  <p>A better API response exposes only what the client actually needs.</p>
+
+  <h3 style="color: #ff0055;">16. Error Messages Can Reveal Architecture</h3>
+
+  <p>Error responses are another useful area to inspect.</p>
+
+  <p>A production API should avoid leaking unnecessary implementation details.</p>
+
+  <p>Instead of returning:</p>
+
+  <pre><code>{
+  "error": "PrismaClientKnownRequestError:
+  relation users_internal does not exist"
+}</code></pre>
+
+  <p>a production API should return a controlled response such as:</p>
+
+  <pre><code>{
+  "error": "Internal server error",
+  "requestId": "req_7f92a"
+}</code></pre>
+
+  <p>Detailed diagnostics should remain in server-side logs rather than being exposed directly to clients.</p>
+
+  <h3 style="color: #ff0055;">17. API Documentation Is Part of the Attack Surface</h3>
+
+  <p>Many APIs use OpenAPI or Swagger documentation.</p>
+
+  <p>A specification might describe:</p>
+
+  <pre><code>GET /api/users/{id}
+
+Parameters:
+  id → integer
+
+Responses:
+  200 → User
+  401 → Unauthorized
+  403 → Forbidden
+  404 → Not Found</code></pre>
+
+  <p>Documentation is extremely valuable to developers and testers because it describes the intended API contract.</p>
+
+  <p>However, documentation should not accidentally expose private administrative endpoints, internal services, credentials, or development infrastructure.</p>
+
+  <h3 style="color: #ff0055;">18. Testing With Interception Proxies</h3>
+
+  <p>During an authorized assessment, an interception proxy can help the tester understand and replay application traffic.</p>
+
+  <p>A simplified workflow looks like:</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+    <code>
+      Browser
+      →
+      Proxy
+      →
+      API
+      →
+      Backend
+      <br><br>
+      Backend
+      →
+      Proxy
+      →
+      Browser
+    </code>
+  </div>
+
+  <p>Tools such as Burp Suite and OWASP ZAP are commonly used for this type of authorized testing.</p>
+
+  <p>The goal is not simply to generate traffic. The tester is trying to understand:</p>
+
+  <ul>
+    <li>Which endpoint is being called?</li>
+    <li>Which authentication mechanism is used?</li>
+    <li>Which parameters are trusted?</li>
+    <li>Which response fields are exposed?</li>
+    <li>Which permissions are enforced?</li>
+    <li>How does the application behave when requests are invalid?</li>
+  </ul>
+
+  <h3 style="color: #ff0055;">19. A Safe API Testing Methodology</h3>
+
+  <p>A structured assessment can be organized into phases.</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffaa00; margin: 15px 0;">
+    <code>
+      Phase 01 → Scope<br>
+      Phase 02 → Discovery<br>
+      Phase 03 → API Mapping<br>
+      Phase 04 → Authentication Review<br>
+      Phase 05 → Authorization Review<br>
+      Phase 06 → Input Validation<br>
+      Phase 07 → Business Logic<br>
+      Phase 08 → Rate Limiting<br>
+      Phase 09 → Error Handling<br>
+      Phase 10 → Reporting
+    </code>
+  </div>
+
+  <p>This approach prevents testers from becoming overly focused on a single vulnerability category.</p>
+
+  <h3 style="color: #ff0055;">20. What a Good Finding Looks Like</h3>
+
+  <p>A professional penetration test does not simply say:</p>
+
+  <pre><code>"API is vulnerable."</code></pre>
+
+  <p>A useful finding explains the issue clearly.</p>
+
+  <pre><code>Title:
+Broken Object Level Authorization
+
+Severity:
+High
+
+Affected Endpoint:
+GET /api/users/{id}
+
+Description:
+The API authenticates the requesting user but does
+not verify that the requested object belongs to that user.
+
+Impact:
+An authenticated user may access another user's
+authorized resources.
+
+Evidence:
+Controlled test accounts demonstrated that Account A
+could request resources belonging to Account B.
+
+Recommendation:
+Perform server-side ownership and role authorization
+checks before returning the resource.</code></pre>
+
+  <p>The report should give developers enough information to understand and reproduce the issue safely within the authorized environment.</p>
+
+  <h3 style="color: #ff0055;">21. Defensive Blueprint for API Developers</h3>
+
+  <p>The best API security strategy is to assume that every request is potentially hostile.</p>
+
+  <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+    <thead>
+      <tr style="background: #222; color: #00ff41;">
+        <th style="text-align: left; padding: 8px; border: 1px solid #333;">Control</th>
+        <th style="text-align: left; padding: 8px; border: 1px solid #333;">Implementation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Authentication</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Use well-tested authentication protocols and validate credentials correctly.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Authorization</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Enforce ownership and role checks on every protected resource.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Validation</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Validate type, format, length and allowed values server-side.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Least Privilege</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Give identities only the permissions they actually need.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Rate Limiting</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Protect authentication and resource-intensive endpoints.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Logging</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Record security-relevant events without exposing secrets.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Secrets</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Never hard-code API keys, credentials, or signing secrets.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Error Handling</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Return safe errors while keeping diagnostics server-side.</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #333;"><strong>Monitoring</strong></td>
+        <td style="padding: 8px; border: 1px solid #333;">Detect unusual authentication and API activity.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="border: 1px dashed #00ff41; padding: 15px; margin-top: 20px;">
+    <h4 style="margin-top: 0; color: #00ff41;">💡 Pro Tip: Never Trust the Frontend</h4>
+    <p style="margin-bottom: 0;">A hidden button is not authorization. A disabled input is not validation. A JavaScript role check is not access control. Anything running in the browser can potentially be modified by the client. Real authorization must happen on the server, at the point where the protected resource is accessed.</p>
+  </div>
+
+  <h3 style="color: #ff0055;">Conclusion</h3>
+
+  <p>API penetration testing is fundamentally an exercise in understanding <strong>trust boundaries</strong>.</p>
+
+  <p>The tester asks where trust is established, what information is trusted, which identity is associated with the request, and whether the server actually verifies that the requested action is permitted.</p>
+
+  <p>The most important mindset is simple:</p>
+
+  <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ff0055; margin: 15px 0;">
+    <code>
+      <strong style="color: #00ff41;">Never ask only:</strong>
+      "Can I reach this endpoint?"
+      <br><br>
+      <strong style="color: #ff0055;">Also ask:</strong>
+      "Should this identity be able to perform this action?"
+    </code>
+  </div>
+
+  <p>A secure API does not depend on the client behaving correctly. It assumes that requests can be modified, parameters can be changed, and clients can be completely untrusted.</p>
+
+  <p>That is why strong API security comes down to a few fundamentals: <strong>authenticate identities, authorize every sensitive action, validate every input, minimize exposed data, enforce least privilege, monitor suspicious behavior, and continuously test the implementation.</strong></p>
+
+  <p>For a penetration tester, the objective is to prove where those controls fail. For a backend developer, the objective is to make sure they never fail in the first place.</p>
+`
+},
+{
+  id: '9x4p7m',
+  num: '09',
+  tag: 'Backend Security',
+  title: 'The Hidden Risks of a Weak Backend',
+  excerpt: 'A backend can look perfectly functional while quietly exposing an application to data leaks, account takeover, privilege escalation, insecure APIs, and complete system compromise.',
+  date: 'Aug 2026',
+  readTime: '16 min',
+  content: `
+    <p>A modern application can have a beautiful interface, smooth animations, responsive layouts, and an impressive user experience. But none of that matters if the backend behind it is poorly designed or insecure.</p>
+
+    <p>The backend is where authentication, authorization, business logic, database operations, file processing, payments, API communication, and sensitive data handling usually happen.</p>
+
+    <p>When the backend is weak, the consequences can go far beyond a simple bug.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ff0055; margin: 15px 0;">
+      <code>
+        <strong style="color: #00ff41;">Weak Backend</strong>
+        →
+        <strong style="color: #ffaa00;">Weak Controls</strong>
+        →
+        <strong style="color: #ff0055;">Data Exposure</strong>
+        →
+        <strong style="color: #ff0055;">Account Abuse</strong>
+        →
+        <strong style="color: #ff0055;">System Impact</strong>
+      </code>
+    </div>
+
+    <p>This article explores why backend security matters, what makes a backend weak, and how seemingly small implementation mistakes can become serious security problems.</p>
+
+    <h3 style="color: #ff0055;">1. The Backend Is the Real Security Boundary</h3>
+
+    <p>One of the most important concepts in web security is understanding that the frontend should never be considered trustworthy.</p>
+
+    <p>HTML, CSS, and JavaScript execute on the user's device.</p>
+
+    <p>That means a user can inspect the application, modify requests, disable JavaScript, change parameters, or communicate directly with the API.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        Browser
+        →
+        API
+        →
+        Backend
+        →
+        Database
+      </code>
+    </div>
+
+    <p>The backend therefore has to assume that every incoming request may be manipulated.</p>
+
+    <p>A secure application does not ask:</p>
+
+    <pre><code>"Would a normal user send this request?"</code></pre>
+
+    <p>It asks:</p>
+
+    <pre><code>"Should this request be allowed regardless of what the client sends?"</code></pre>
+
+    <h3 style="color: #ff0055;">2. What Makes a Backend Weak?</h3>
+
+    <p>A weak backend is not necessarily one that crashes or produces obvious errors.</p>
+
+    <p>Sometimes everything appears to work normally while the underlying security model is fundamentally broken.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Weakness</th>
+          <th style="padding: 8px; border: 1px solid #333;">Potential Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Broken Authorization</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Unauthorized access to resources</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Weak Authentication</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Account compromise</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Poor Input Validation</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Injection and logic problems</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Excessive Data Exposure</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Sensitive information leakage</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Hardcoded Secrets</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Credential compromise</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Weak Session Handling</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Session hijacking</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Missing Rate Limits</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Abuse and automated attacks</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Unsafe File Handling</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Malicious uploads and data exposure</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="color: #ff0055;">3. Broken Authentication</h3>
+
+    <p>Authentication answers one fundamental question:</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <strong style="color: #00ff41;">Who are you?</strong>
+    </div>
+
+    <p>A weak authentication system may rely on predictable tokens, poor password handling, missing expiration, insecure recovery mechanisms, or incorrectly implemented login logic.</p>
+
+    <p>For example, a backend should never store passwords directly:</p>
+
+    <pre><code>{
+  "email": "user@example.com",
+  "password": "MyPassword123"
+}</code></pre>
+
+    <p>Instead, passwords should be processed using a modern password hashing algorithm designed for password storage.</p>
+
+    <p>The database should contain a password hash rather than the original password.</p>
+
+    <pre><code>{
+  "email": "user@example.com",
+  "passwordHash": "$argon2id$..."
+}</code></pre>
+
+    <p>If the database is compromised, properly hashed passwords are significantly harder to recover than plaintext credentials.</p>
+
+    <h3 style="color: #ff0055;">4. Weak Password Recovery</h3>
+
+    <p>Password reset functionality is often overlooked during development.</p>
+
+    <p>A secure reset flow might look like:</p>
+
+    <pre><code>
+User requests reset
+        ↓
+Server generates random token
+        ↓
+Short expiration
+        ↓
+Token delivered through trusted channel
+        ↓
+User creates new password
+        ↓
+Token becomes invalid
+        ↓
+Existing sessions may be reviewed/revoked
+    </code></pre>
+
+    <p>A dangerous implementation could use predictable reset values or tokens that never expire.</p>
+
+    <p>The password reset mechanism effectively becomes another authentication system, so it deserves the same security attention as the login endpoint.</p>
+
+    <h3 style="color: #ff0055;">5. Authentication Does Not Mean Authorization</h3>
+
+    <p>This is one of the most common backend security mistakes.</p>
+
+    <p>Imagine a user successfully logs in.</p>
+
+    <pre><code>
+User ID: 42
+Role: user
+Authenticated: true
+</code></pre>
+
+    <p>The backend may correctly identify the user, but that does not mean the user should have access to every resource.</p>
+
+    <p>For example:</p>
+
+    <pre><code>
+GET /api/admin/users
+</code></pre>
+
+    <p>Authentication answers:</p>
+
+    <pre><code>
+"Is this user logged in?"
+</code></pre>
+
+    <p>Authorization answers:</p>
+
+    <pre><code>
+"Is this user allowed to access the admin endpoint?"
+</code></pre>
+
+    <p>A secure backend must enforce both.</p>
+
+    <h3 style="color: #ff0055;">6. Broken Access Control</h3>
+
+    <p>Consider an API that returns user profiles:</p>
+
+    <pre><code>
+GET /api/users/:id
+</code></pre>
+
+    <p>A weak implementation might only check whether the requester is authenticated.</p>
+
+    <pre><code>
+if (!req.user) {
+  return res.status(401).json({
+    error: 'Unauthorized'
+  });
+}
+
+return getUser(req.params.id);
+</code></pre>
+
+    <p>The problem is that the code verifies identity but not ownership.</p>
+
+    <p>A stronger implementation verifies whether the requesting identity has permission to access the requested resource.</p>
+
+    <pre><code>
+if (
+  req.user.id !== requestedUserId &&
+  req.user.role !== 'admin'
+) {
+  return res.status(403).json({
+    error: 'Forbidden'
+  });
+}
+</code></pre>
+
+    <p>This distinction can prevent entire classes of unauthorized data access.</p>
+
+    <h3 style="color: #ff0055;">7. Trusting Client-Side Values</h3>
+
+    <p>One of the biggest mistakes a backend developer can make is trusting values that come from the client.</p>
+
+    <p>Imagine a frontend sends:</p>
+
+    <pre><code>
+{
+  "username": "wanheda",
+  "role": "admin"
+}
+</code></pre>
+
+    <p>The backend should never assume that because the frontend normally sends <code>role: user</code>, nobody can change it.</p>
+
+    <p>The browser belongs to the client.</p>
+
+    <p>The client controls the request.</p>
+
+    <p>Therefore:</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ff0055; margin: 15px 0;">
+      <strong style="color: #ff0055;">
+        Never use frontend restrictions as backend security controls.
+      </strong>
+    </div>
+
+    <h3 style="color: #ff0055;">8. Mass Assignment</h3>
+
+    <p>Consider this backend code:</p>
+
+    <pre><code>
+await User.update({
+  where: { id: userId },
+  data: req.body
+});
+</code></pre>
+
+    <p>This may look convenient, but it can be dangerous.</p>
+
+    <p>The developer may only expect users to update:</p>
+
+    <pre><code>
+{
+  "username": "newName",
+  "bio": "Hello"
+}
+</code></pre>
+
+    <p>But the backend potentially accepts every property provided by the client.</p>
+
+    <p>A safer approach is to explicitly select allowed fields:</p>
+
+    <pre><code>
+const updateData = {
+  username: req.body.username,
+  bio: req.body.bio
+};
+</code></pre>
+
+    <p>Security improves when the backend explicitly defines what the client is allowed to control.</p>
+
+    <h3 style="color: #ff0055;">9. Database Security</h3>
+
+    <p>The backend is often directly connected to the application's most valuable asset: the database.</p>
+
+    <p>A weak database architecture can turn a small API vulnerability into a much larger incident.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ffaa00; margin: 15px 0;">
+      <code>
+        API Vulnerability
+        →
+        Database Access
+        →
+        Sensitive Data
+        →
+        Large-Scale Impact
+      </code>
+    </div>
+
+    <p>Database security should include:</p>
+
+    <ul>
+      <li>Strong authentication</li>
+      <li>Least-privilege database accounts</li>
+      <li>Encrypted connections</li>
+      <li>Secure secret management</li>
+      <li>Parameterized queries or safe ORM usage</li>
+      <li>Regular backups</li>
+      <li>Monitoring and auditing</li>
+    </ul>
+
+    <h3 style="color: #ff0055;">10. SQL Injection</h3>
+
+    <p>When user-controlled data is directly combined with SQL queries, attackers may be able to manipulate the query's meaning.</p>
+
+    <p>Unsafe code conceptually looks like:</p>
+
+    <pre><code>
+query = "SELECT * FROM users WHERE email = '" + email + "'";
+</code></pre>
+
+    <p>The fundamental problem is mixing data with executable query syntax.</p>
+
+    <p>Modern applications should use parameterized queries or properly designed database abstractions.</p>
+
+    <pre><code>
+SELECT *
+FROM users
+WHERE email = ?
+</code></pre>
+
+    <p>The database then treats the supplied value as data rather than query syntax.</p>
+
+    <h3 style="color: #ff0055;">11. Sensitive Data Exposure</h3>
+
+    <p>A backend may accidentally expose information that the frontend never needed.</p>
+
+    <pre><code>
+{
+  "id": 42,
+  "username": "wanheda",
+  "email": "user@example.com",
+  "role": "user",
+  "internalNotes": "...",
+  "lastLoginIp": "...",
+  "passwordHash": "...",
+  "securityFlags": "..."
+}
+</code></pre>
+
+    <p>Even if the user is authorized to access their profile, returning unnecessary internal fields creates additional risk.</p>
+
+    <p>A secure API should follow the principle of <strong>data minimization</strong>.</p>
+
+    <p>Return what the client needs, not everything the database happens to contain.</p>
+
+    <h3 style="color: #ff0055;">12. Hardcoded Secrets</h3>
+
+    <p>Another common backend mistake is putting credentials directly into source code.</p>
+
+    <pre><code>
+const DB_PASSWORD = "super-secret-password";
+const JWT_SECRET = "my-secret-key";
+const API_KEY = "abc123...";
+</code></pre>
+
+    <p>Source code frequently ends up in Git repositories, backups, CI logs, container images, or developer machines.</p>
+
+    <p>A better approach is to use environment variables or a dedicated secret-management system.</p>
+
+    <pre><code>
+const jwtSecret = process.env.JWT_SECRET;
+</code></pre>
+
+    <p>Secrets should also be rotated when exposure is suspected.</p>
+
+    <h3 style="color: #ff0055;">13. Poor Session Management</h3>
+
+    <p>After authentication, the application needs a secure way to maintain the user's authenticated state.</p>
+
+    <p>Depending on the architecture, this could involve secure cookies, server-side sessions, or access and refresh tokens.</p>
+
+    <p>A weak session implementation might suffer from:</p>
+
+    <ul>
+      <li>Very long-lived sessions</li>
+      <li>Missing expiration</li>
+      <li>Insecure cookie configuration</li>
+      <li>Failure to revoke sessions</li>
+      <li>Predictable session identifiers</li>
+      <li>Improper token validation</li>
+    </ul>
+
+    <p>Session security becomes especially important when the application handles sensitive accounts.</p>
+
+    <h3 style="color: #ff0055;">14. JWT Misconfiguration</h3>
+
+    <p>JSON Web Tokens can be useful, but simply using JWT does not automatically make an authentication system secure.</p>
+
+    <p>The backend should properly validate important token properties such as:</p>
+
+    <pre><code>
+Signature
+Issuer
+Audience
+Expiration
+Not-Before
+Required Claims
+</code></pre>
+
+    <p>The server should also carefully control which algorithms and signing keys are accepted.</p>
+
+    <p>Authentication libraries should be configured deliberately rather than relying on assumptions about their defaults.</p>
+
+    <h3 style="color: #ff0055;">15. Missing Rate Limiting</h3>
+
+    <p>Some endpoints are naturally more sensitive to automation than others.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Endpoint</th>
+          <th style="padding: 8px; border: 1px solid #333;">Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>/login</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Credential abuse</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>/password-reset</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Recovery abuse</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>/verify</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Automated verification attempts</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><code>/search</code></td>
+          <td style="padding: 8px; border: 1px solid #333;">Resource exhaustion</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Rate limiting should be combined with monitoring and appropriate account protections.</p>
+
+    <h3 style="color: #ff0055;">16. Unsafe File Uploads</h3>
+
+    <p>File uploads introduce another security boundary.</p>
+
+    <p>A backend should not blindly trust:</p>
+
+    <pre><code>
+filename
+extension
+MIME type
+file size
+file contents
+</code></pre>
+
+    <p>A secure upload pipeline can include:</p>
+
+    <pre><code>
+Upload
+  ↓
+Size Validation
+  ↓
+Type Validation
+  ↓
+Content Inspection
+  ↓
+Safe Storage
+  ↓
+Randomized Filename
+  ↓
+Controlled Access
+</code></pre>
+
+    <p>Uploaded files should ideally be stored separately from executable application code and served using appropriate security controls.</p>
+
+    <h3 style="color: #ff0055;">17. Weak Error Handling</h3>
+
+    <p>Backend errors can reveal useful information about the application's internal architecture.</p>
+
+    <p>Development environments may produce errors such as:</p>
+
+    <pre><code>
+DatabaseError:
+Connection refused at postgres://...
+File:
+/var/www/backend/src/controllers/user.ts
+
+Stack trace:
+...
+</code></pre>
+
+    <p>This information may be useful to developers but should not normally be exposed to public users.</p>
+
+    <p>Production systems should return controlled error messages while keeping detailed diagnostics in protected server-side logs.</p>
+
+    <h3 style="color: #ff0055;">18. Debug Mode in Production</h3>
+
+    <p>Debugging features are useful during development.</p>
+
+    <p>They can become dangerous when accidentally enabled in production.</p>
+
+    <p>Debug configurations may expose:</p>
+
+    <ul>
+      <li>Stack traces</li>
+      <li>Environment information</li>
+      <li>Internal routes</li>
+      <li>Database errors</li>
+      <li>Framework information</li>
+      <li>Configuration details</li>
+    </ul>
+
+    <p>Production deployments should use hardened configuration and explicitly disable development-only functionality.</p>
+
+    <h3 style="color: #ff0055;">19. The Risk of Overpowered Service Accounts</h3>
+
+    <p>Not every component needs full access to everything.</p>
+
+    <p>Imagine an API server connecting to a database using an account with permissions to:</p>
+
+    <pre><code>
+READ
+WRITE
+DELETE
+ALTER
+CREATE
+DROP
+</code></pre>
+
+    <p>If the application is compromised, the attacker may inherit the privileges of that database account.</p>
+
+    <p>Least privilege reduces the blast radius.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <strong style="color: #00ff41;">
+        Give every component only the permissions it actually needs.
+      </strong>
+    </div>
+
+    <h3 style="color: #ff0055;">20. Dependency Risk</h3>
+
+    <p>Backend applications rarely consist entirely of custom code.</p>
+
+    <p>They depend on frameworks, libraries, database drivers, authentication packages, logging systems, and other third-party components.</p>
+
+    <pre><code>
+Application
+    ↓
+Framework
+    ↓
+Authentication Library
+    ↓
+Database Driver
+    ↓
+Database
+</code></pre>
+
+    <p>A vulnerability in a dependency can potentially affect the entire application.</p>
+
+    <p>That is why dependency management should include:</p>
+
+    <ul>
+      <li>Regular updates</li>
+      <li>Dependency auditing</li>
+      <li>Lockfiles</li>
+      <li>Removing unused packages</li>
+      <li>Monitoring security advisories</li>
+    </ul>
+
+    <h3 style="color: #ff0055;">21. Logging Is Not Optional</h3>
+
+    <p>A secure backend needs visibility.</p>
+
+    <p>Important security events may include:</p>
+
+    <pre><code>
+Login success
+Login failure
+Password reset
+Permission changes
+Token refresh
+Administrative actions
+Suspicious request patterns
+Account lockouts
+</code></pre>
+
+    <p>However, logging itself must be designed carefully.</p>
+
+    <p>Never casually log sensitive information such as:</p>
+
+    <pre><code>
+Passwords
+Access tokens
+Refresh tokens
+API secrets
+Private keys
+</code></pre>
+
+    <p>Logs should help defenders investigate incidents without becoming another source of sensitive data exposure.</p>
+
+    <h3 style="color: #ff0055;">22. What Happens When the Backend Fails?</h3>
+
+    <p>A weak backend can produce several levels of impact.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+      <thead>
+        <tr style="background: #222; color: #00ff41;">
+          <th style="padding: 8px; border: 1px solid #333;">Level</th>
+          <th style="padding: 8px; border: 1px solid #333;">Possible Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Low</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Information disclosure</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Medium</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Unauthorized account actions</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>High</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Sensitive data exposure</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #333;"><strong>Critical</strong></td>
+          <td style="padding: 8px; border: 1px solid #333;">Large-scale compromise or infrastructure impact</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The final severity depends on the actual vulnerability, affected assets, required privileges, exploitability, and business impact.</p>
+
+    <h3 style="color: #ff0055;">23. Defense-in-Depth</h3>
+
+    <p>A strong backend should not rely on a single security mechanism.</p>
+
+    <p>Instead, multiple independent controls should work together.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        HTTPS
+        ↓
+        Authentication
+        ↓
+        Authorization
+        ↓
+        Input Validation
+        ↓
+        Rate Limiting
+        ↓
+        Business Logic
+        ↓
+        Database Permissions
+        ↓
+        Logging & Monitoring
+      </code>
+    </div>
+
+    <p>If one control fails, another layer can potentially limit the damage.</p>
+
+    <h3 style="color: #ff0055;">24. Security Starts With Architecture</h3>
+
+    <p>Security should not be something added after the backend is finished.</p>
+
+    <p>It should influence architectural decisions from the beginning.</p>
+
+    <p>Before writing an endpoint, developers should ask:</p>
+
+    <ul>
+      <li>Who can call this endpoint?</li>
+      <li>What data does it expose?</li>
+      <li>Which fields can the client modify?</li>
+      <li>What permissions are required?</li>
+      <li>What happens if the request is manipulated?</li>
+      <li>What happens if the database is unavailable?</li>
+      <li>What information should be logged?</li>
+      <li>How will suspicious activity be detected?</li>
+    </ul>
+
+    <p>Security becomes much easier when these questions are answered before vulnerabilities become production incidents.</p>
+
+    <h3 style="color: #ff0055;">25. A Secure Backend Checklist</h3>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #00ff41; margin: 15px 0;">
+      <code>
+        [✓] HTTPS enforced<br>
+        [✓] Passwords securely hashed<br>
+        [✓] Authentication properly implemented<br>
+        [✓] Authorization enforced server-side<br>
+        [✓] Input validated<br>
+        [✓] Database queries parameterized<br>
+        [✓] Secrets stored securely<br>
+        [✓] Sensitive data minimized<br>
+        [✓] Rate limiting implemented<br>
+        [✓] Sessions/tokens expire appropriately<br>
+        [✓] File uploads restricted<br>
+        [✓] Production debugging disabled<br>
+        [✓] Dependencies monitored<br>
+        [✓] Security events logged<br>
+        [✓] Least privilege enforced<br>
+        [✓] Errors safely handled<br>
+        [✓] Security testing performed
+      </code>
+    </div>
+
+    <h3 style="color: #ff0055;">Conclusion</h3>
+
+    <p>A backend can be technically functional and still be dangerously insecure.</p>
+
+    <p>The biggest backend vulnerabilities often come from simple assumptions:</p>
+
+    <pre><code>
+"The frontend won't send that."
+
+"The user won't change this value."
+
+"They already authenticated."
+
+"Nobody knows this endpoint."
+
+"This API key is only in the code."
+
+"The database account needs full access."
+
+"Nobody will see this error."
+
+"It's only a development endpoint."
+</code></pre>
+
+    <p>Security engineering means designing the system under the assumption that these assumptions are wrong.</p>
+
+    <div style="background: #1a1a1a; padding: 15px; border-left: 4px solid #ff0055; margin: 15px 0;">
+      <strong style="color: #ff0055;">
+        Never trust the client. Never assume authorization. Never expose what you do not need to expose.
+      </strong>
+    </div>
+
+    <p>The backend is the part of the application responsible for protecting the data, enforcing the rules, and maintaining trust.</p>
+
+    <p>When it is weak, every frontend feature built on top of it inherits that weakness.</p>
+
+    <p>When it is designed correctly, tested continuously, and protected with multiple layers of security, the backend becomes something much more valuable than a collection of API routes.</p>
+
+    <p>It becomes the security foundation of the entire application.</p>
+  `
+},
 ];
 
 const CONTACT_DATA = [
@@ -1536,566 +3976,170 @@ setTimeout(() => {
 }, 3000);
 
 /* ============================================================
-   CANVAS BACKGROUND
+   MINIMAL DEVIL CURSOR
    ============================================================ */
 
-function initCanvas() {
+function initDevilCursor() {
 
-    const canvas = document.getElementById('bg-canvas');
+    const cursor =
+        document.getElementById('devil-cursor');
 
-    if (!canvas) return;
+    if (!cursor) return;
 
-    const ctx = canvas.getContext('2d', {
-        alpha: true
-    });
-
-    if (!ctx) return;
-
-    /* --------------------------------------------------------
-       CONFIG
-       -------------------------------------------------------- */
-
-    const config = {
-
-        /* Network */
-        nodeDistance: 145,
-        mouseDistance: 190,
-
-        /* Movement */
-        nodeSpeed: 0.12,
-
-        /* Background grid */
-        gridSize: 70,
-
-        /* Visual */
-        baseOpacity: 0.22,
-        lineOpacity: 0.12,
-
-        /* Performance */
-        maxNodes: 75,
-
-        /* Mouse influence */
-        mouseStrength: 0.035
-    };
-
-
-    /* --------------------------------------------------------
-       STATE
-       -------------------------------------------------------- */
-
-    let width = 0;
-    let height = 0;
-
-    let dpr =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
-
-    let nodes = [];
-
-    let animationFrame = null;
-
-    let lastTime = 0;
-
-
-    /* --------------------------------------------------------
-       MOUSE
-       -------------------------------------------------------- */
+    if (
+        window.matchMedia(
+            '(pointer: coarse)'
+        ).matches
+    ) {
+        return;
+    }
 
     const mouse = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+        currentX: window.innerWidth / 2,
+        currentY: window.innerHeight / 2
+    };
 
-        x: -9999,
-        y: -9999,
+    let animationId;
 
-        active: false
 
+    /* --------------------------------------------------------
+       MOVE
+       -------------------------------------------------------- */
+
+    const onMouseMove = event => {
+
+        mouse.x = event.clientX;
+        mouse.y = event.clientY;
+
+        cursor.style.opacity = '1';
     };
 
 
     /* --------------------------------------------------------
-       REDUCED MOTION
+       HOVER
        -------------------------------------------------------- */
 
-    const reducedMotion =
-        window.matchMedia(
-            '(prefers-reduced-motion: reduce)'
-        ).matches;
+    const onMouseOver = event => {
+
+        const target =
+            event.target.closest(
+                'a, button, input, textarea, select, [role="button"]'
+            );
+
+        if (target) {
+            document.body.classList.add(
+                'cursor-hover'
+            );
+        }
+    };
+
+
+    const onMouseOut = event => {
+
+        const target =
+            event.target.closest(
+                'a, button, input, textarea, select, [role="button"]'
+            );
+
+        if (
+            target &&
+            !target.contains(
+                event.relatedTarget
+            )
+        ) {
+            document.body.classList.remove(
+                'cursor-hover'
+            );
+        }
+    };
 
 
     /* --------------------------------------------------------
-       RESIZE
+       CLICK
        -------------------------------------------------------- */
 
-    function resizeCanvas() {
+    const onMouseDown = () => {
 
-        const rect =
-            canvas.getBoundingClientRect();
-
-        width = rect.width;
-        height = rect.height;
-
-        dpr =
-            Math.min(
-                window.devicePixelRatio || 1,
-                2
-            );
-
-        canvas.width =
-            Math.floor(width * dpr);
-
-        canvas.height =
-            Math.floor(height * dpr);
-
-        ctx.setTransform(
-            dpr,
-            0,
-            0,
-            dpr,
-            0,
-            0
+        document.body.classList.add(
+            'cursor-click'
         );
+    };
 
-        createNodes();
-    }
+
+    const onMouseUp = () => {
+
+        document.body.classList.remove(
+            'cursor-click'
+        );
+    };
 
 
     /* --------------------------------------------------------
-       CREATE NODES
+       SMOOTH MOVEMENT
        -------------------------------------------------------- */
 
-    function createNodes() {
+    function animate() {
 
-        nodes = [];
-
-        if (width <= 0 || height <= 0) {
-            return;
-        }
-
-        /*
-         * Scale node count based on viewport area.
-         * This prevents huge node counts on large screens.
-         */
-
-        const area =
-            width * height;
-
-        const calculated =
-            Math.floor(
-                area / 15000
+        animationId =
+            requestAnimationFrame(
+                animate
             );
 
-        const count =
-            Math.min(
-                Math.max(calculated, 35),
-                config.maxNodes
-            );
+        mouse.currentX +=
+            (
+                mouse.x -
+                mouse.currentX
+            ) * 0.2;
 
-        for (let i = 0; i < count; i++) {
+        mouse.currentY +=
+            (
+                mouse.y -
+                mouse.currentY
+            ) * 0.2;
 
-            const angle =
-                Math.random() *
-                Math.PI *
-                2;
-
-            const speed =
-                config.nodeSpeed *
-                (0.5 + Math.random());
-
-            nodes.push({
-
-                x: Math.random() * width,
-                y: Math.random() * height,
-
-                vx:
-                    Math.cos(angle) *
-                    speed,
-
-                vy:
-                    Math.sin(angle) *
-                    speed,
-
-                radius:
-                    Math.random() * 1.4 + 0.7,
-
-                opacity:
-                    Math.random() *
-                    0.45 +
-                    0.15
-
-            });
-
-        }
+        cursor.style.transform =
+            `translate3d(
+                ${mouse.currentX}px,
+                ${mouse.currentY}px,
+                0
+            ) translate3d(-50%, -50%, 0)`;
     }
 
 
     /* --------------------------------------------------------
-       MOUSE EVENTS
+       EVENTS
        -------------------------------------------------------- */
 
     window.addEventListener(
         'mousemove',
-        event => {
-
-            mouse.x = event.clientX;
-            mouse.y = event.clientY;
-
-            mouse.active = true;
-
-        },
-        {
-            passive: true
-        }
+        onMouseMove,
+        { passive: true }
     );
 
+    document.addEventListener(
+        'mouseover',
+        onMouseOver
+    );
+
+    document.addEventListener(
+        'mouseout',
+        onMouseOut
+    );
 
     window.addEventListener(
-        'mouseleave',
-        () => {
-
-            mouse.active = false;
-
-            mouse.x = -9999;
-            mouse.y = -9999;
-
-        }
+        'mousedown',
+        onMouseDown
     );
-
-
-    /* --------------------------------------------------------
-       DRAW GRID
-       -------------------------------------------------------- */
-
-    function drawGrid() {
-
-        ctx.beginPath();
-
-        ctx.strokeStyle =
-            'rgba(255, 0, 60, 0.025)';
-
-        ctx.lineWidth = 1;
-
-        const startX =
-            -(window.scrollX % config.gridSize);
-
-        const startY =
-            -(window.scrollY % config.gridSize);
-
-        for (
-            let x = startX;
-            x <= width;
-            x += config.gridSize
-        ) {
-
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-
-        }
-
-        for (
-            let y = startY;
-            y <= height;
-            y += config.gridSize
-        ) {
-
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-
-        }
-
-        ctx.stroke();
-    }
-
-
-    /* --------------------------------------------------------
-       UPDATE NODES
-       -------------------------------------------------------- */
-
-    function updateNodes() {
-
-        for (const node of nodes) {
-
-            node.x += node.vx;
-            node.y += node.vy;
-
-            /* Wrap around screen */
-
-            if (node.x < -10) {
-                node.x = width + 10;
-            }
-
-            if (node.x > width + 10) {
-                node.x = -10;
-            }
-
-            if (node.y < -10) {
-                node.y = height + 10;
-            }
-
-            if (node.y > height + 10) {
-                node.y = -10;
-            }
-
-
-            /* Mouse interaction */
-
-            if (mouse.active) {
-
-                const dx =
-                    mouse.x - node.x;
-
-                const dy =
-                    mouse.y - node.y;
-
-                const distance =
-                    Math.sqrt(
-                        dx * dx +
-                        dy * dy
-                    );
-
-                if (
-                    distance <
-                    config.mouseDistance
-                ) {
-
-                    const force =
-                        (
-                            1 -
-                            distance /
-                            config.mouseDistance
-                        ) *
-                        config.mouseStrength;
-
-                    node.x -=
-                        dx * force;
-
-                    node.y -=
-                        dy * force;
-
-                }
-
-            }
-
-        }
-    }
-
-
-    /* --------------------------------------------------------
-       DRAW CONNECTIONS
-       -------------------------------------------------------- */
-
-    function drawConnections() {
-
-        for (
-            let i = 0;
-            i < nodes.length;
-            i++
-        ) {
-
-            const a = nodes[i];
-
-            for (
-                let j = i + 1;
-                j < nodes.length;
-                j++
-            ) {
-
-                const b = nodes[j];
-
-                const dx =
-                    a.x - b.x;
-
-                const dy =
-                    a.y - b.y;
-
-                const distance =
-                    Math.sqrt(
-                        dx * dx +
-                        dy * dy
-                    );
-
-                if (
-                    distance <
-                    config.nodeDistance
-                ) {
-
-                    const opacity =
-                        (
-                            1 -
-                            distance /
-                            config.nodeDistance
-                        ) *
-                        config.lineOpacity;
-
-                    ctx.beginPath();
-
-                    ctx.moveTo(
-                        a.x,
-                        a.y
-                    );
-
-                    ctx.lineTo(
-                        b.x,
-                        b.y
-                    );
-
-                    ctx.strokeStyle =
-                        `rgba(255, 0, 60, ${opacity})`;
-
-                    ctx.lineWidth = 1;
-
-                    ctx.stroke();
-
-                }
-
-            }
-        }
-    }
-
-
-    /* --------------------------------------------------------
-       DRAW NODES
-       -------------------------------------------------------- */
-
-    function drawNodes() {
-
-        for (const node of nodes) {
-
-            ctx.beginPath();
-
-            ctx.arc(
-                node.x,
-                node.y,
-                node.radius,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fillStyle =
-                `rgba(255, 0, 60, ${node.opacity})`;
-
-            ctx.fill();
-
-        }
-    }
-
-
-    /* --------------------------------------------------------
-       MOUSE GLOW
-       -------------------------------------------------------- */
-
-    function drawMouseGlow() {
-
-        if (!mouse.active) {
-            return;
-        }
-
-        const gradient =
-            ctx.createRadialGradient(
-                mouse.x,
-                mouse.y,
-                0,
-                mouse.x,
-                mouse.y,
-                config.mouseDistance
-            );
-
-        gradient.addColorStop(
-            0,
-            'rgba(255, 0, 60, 0.07)'
-        );
-
-        gradient.addColorStop(
-            0.45,
-            'rgba(255, 0, 60, 0.025)'
-        );
-
-        gradient.addColorStop(
-            1,
-            'rgba(255, 0, 60, 0)'
-        );
-
-        ctx.fillStyle = gradient;
-
-        ctx.fillRect(
-            0,
-            0,
-            width,
-            height
-        );
-    }
-
-
-    /* --------------------------------------------------------
-       RENDER
-       -------------------------------------------------------- */
-
-    function render(timestamp) {
-
-        /*
-         * Limit extremely high refresh rates.
-         */
-
-        if (
-            timestamp - lastTime < 16
-        ) {
-
-            animationFrame =
-                requestAnimationFrame(
-                    render
-                );
-
-            return;
-        }
-
-        lastTime = timestamp;
-
-
-        ctx.clearRect(
-            0,
-            0,
-            width,
-            height
-        );
-
-
-        drawGrid();
-
-        drawMouseGlow();
-
-        if (!reducedMotion) {
-            updateNodes();
-        }
-
-        drawConnections();
-
-        drawNodes();
-
-
-        animationFrame =
-            requestAnimationFrame(
-                render
-            );
-    }
-
-
-    /* --------------------------------------------------------
-       INITIALIZE
-       -------------------------------------------------------- */
-
-    resizeCanvas();
 
     window.addEventListener(
-        'resize',
-        resizeCanvas,
-        {
-            passive: true
-        }
+        'mouseup',
+        onMouseUp
     );
 
 
-    animationFrame =
-        requestAnimationFrame(render);
+    animate();
 
 
     /* --------------------------------------------------------
@@ -2106,37 +4150,13 @@ function initCanvas() {
         'beforeunload',
         () => {
 
-            if (animationFrame) {
-                cancelAnimationFrame(
-                    animationFrame
-                );
-            }
+            cancelAnimationFrame(
+                animationId
+            );
 
         },
-        {
-            once: true
-        }
+        { once: true }
     );
-}
-
-
-/* ============================================================
-   START CANVAS
-   ============================================================ */
-
-if (
-    document.readyState === 'loading'
-) {
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        initCanvas
-    );
-
-} else {
-
-    initCanvas();
-
 }
 
 /* ============================================================
@@ -3666,10 +5686,10 @@ function initPalette() {
    INIT ALL
 ============================================================ */
 function initAll() {
-  initCanvas();
   typeLoop();
   initNav();
   initReveal();
+  initDevilCursor();
 
   renderProjects();
   renderGithub();
