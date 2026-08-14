@@ -143,6 +143,57 @@ body.loading {
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+  /* ============================================================
+   DEVIL CURSOR
+   ============================================================ */
+#devil-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 22px;
+  height: 22px;
+
+  pointer-events: none;
+  z-index: 99999;
+
+  border: 1px solid rgba(255, 0, 60, 0.35);
+  border-radius: 50%;
+
+  opacity: 0;
+
+  box-shadow: 0 0 8px rgba(255, 0, 60, 0.18);
+
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+
+  will-change: transform;
+}
+
+.cursor-dot {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 4px;
+  height: 4px;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: #ff003c;
+
+  box-shadow:
+    0 0 6px #ff003c,
+    0 0 12px rgba(255, 0, 60, 0.55);
+}
+
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
