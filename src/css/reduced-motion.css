@@ -1,0 +1,341 @@
+/* ============================================================
+   REDUCED MOTION
+   Accessibility: respect user's motion preferences
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  /* ==========================================================
+     GLOBAL
+     ========================================================== */
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cursor-core,
+  .cursor-ring,
+  .cursor-dot {
+    animation: none !important;
+  }
+
+  /* ==========================================================
+     NAVBAR
+     ========================================================== */
+
+  .nav-logo-dot,
+  .nav-logo-dot::after {
+    animation: none;
+  }
+
+  .nav-links a,
+  .nav-mobile a,
+  .nav-hamburger span,
+  .nav-mobile {
+    transition: none;
+  }
+
+
+  /* ==========================================================
+     HERO
+     ========================================================== */
+
+  .hero-greeting,
+  .hero-name,
+  .hero-roles,
+  .hero-typed-wrap,
+  .hero-buttons,
+  .hero-right,
+  .hero-scroll {
+    opacity: 1;
+    animation: none;
+  }
+
+  .hero-ring1,
+  .hero-ring2,
+  .hero-ring3,
+  .hero-glow,
+  .hero-scroll-line,
+  .hero-cursor {
+    animation: none;
+  }
+
+  .hero-profile-img {
+    transition: none;
+  }
+
+
+  /* ==========================================================
+     SCROLL / NAVIGATION UTILITIES
+     ========================================================== */
+
+  #scroll-progress {
+    transition: none;
+  }
+
+  #back-to-top {
+    transition:
+      opacity 0.2s ease,
+      visibility 0.2s ease;
+  }
+
+  #back-to-top:hover {
+    transform: none;
+  }
+
+
+  /* ==========================================================
+     ABOUT
+     ========================================================== */
+
+  .about-highlight::before {
+    animation: none;
+  }
+
+  .stat-card,
+  .stat-card::before,
+  .stat-card::after {
+    transition: none;
+  }
+
+
+  /* ==========================================================
+     EXPERIENCE / TIMELINE
+     ========================================================== */
+
+  .timeline::after,
+  .timeline-date::before {
+    animation: none;
+  }
+
+  .timeline-dot,
+  .timeline-card,
+  .timeline-card::before,
+  .timeline-dot::before,
+  .timeline-dot::after {
+    transition: none;
+  }
+
+  .timeline-card:hover {
+    transform: none;
+  }
+
+  .timeline-item:hover .timeline-dot {
+    transform: none;
+  }
+
+
+  /* ==========================================================
+     SCROLL REVEALS
+     ========================================================== */
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+
+  /* ==========================================================
+     SKILLS
+     ========================================================== */
+
+  .cat-btn,
+  .skill-card,
+  .skill-icon,
+  .skill-modal,
+  .skill-modal-close,
+  .skill-modal-level-fill {
+    transition: none;
+  }
+
+
+  /* ==========================================================
+     CERTIFICATIONS
+     ========================================================== */
+
+  .cert-card,
+  .cert-card::before,
+  .cert-card::after,
+  .cert-icon,
+  .cert-name,
+  .cert-corner {
+    transition: none;
+  }
+
+  .cert-card:hover {
+    transform: none;
+  }
+
+  .cert-card:hover::after {
+    animation: none;
+  }
+
+
+  /* ==========================================================
+     BUTTONS / TAGS
+     ========================================================== */
+
+  .btn,
+  .btn::before,
+  .btn svg,
+  .btn i,
+  .tag {
+    transition: none;
+  }
+
+
+  /* ==========================================================
+     PROJECTS
+     ========================================================== */
+
+  .proj-card,
+  .proj-card::before,
+  .proj-card::after,
+  .proj-img img,
+  .proj-img-grid,
+  .proj-icon,
+  .proj-name,
+  .proj-link {
+    transition: none;
+  }
+
+  .proj-status::before {
+    animation: none;
+  }
+
+
+  /* ==========================================================
+     BLOG
+     ========================================================== */
+
+  .blog-card,
+  .blog-card::before,
+  .blog-card::after,
+  .blog-title,
+  .blog-number,
+  .blog-read,
+  .blog-read::after {
+    transition: none;
+  }
+
+  .blog-card:hover {
+    transform: none;
+  }
+
+  .blog-card:hover::after {
+    animation: none;
+  }
+
+
+  /* ==========================================================
+     THEME TOGGLE
+     ========================================================== */
+
+  .theme-toggle,
+  .theme-toggle .icon-sun,
+  .theme-toggle .icon-moon {
+    transition: none;
+  }
+
+  .theme-toggle:active {
+    transform: none;
+  }
+
+
+  /* ==========================================================
+     PRELOADER
+     ========================================================== */
+
+  #preloader *,
+  #preloader::before,
+  #preloader::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  #preloader::after,
+  .pre-shield svg,
+  .pre-ring,
+  .pre-ring2,
+  .pre-text::after,
+  .pre-bar::after {
+    animation: none;
+  }
+
+  #preloader,
+  .pre-bar {
+    transition: none;
+  }
+
+
+  /* ----------------------------------------------------------
+     GITHUB
+     ---------------------------------------------------------- */
+
+  .github-profile-card,
+  .github-avatar,
+  .gh-stat,
+  .repo-card,
+  .repo-link,
+  .contrib-cell {
+    transition: none;
+  }
+
+  /* ==========================================================
+     FOOTER
+     ========================================================== */
+
+  .footer-name,
+  .footer-social,
+  .footer-social::before {
+    transition: none;
+  }
+
+  .footer-status::before {
+    animation: none;
+  }
+
+  .footer-social:hover,
+  .footer-name:hover {
+    transform: none;
+  }
+
+
+  /* ==========================================================
+     INTERACTION EFFECTS
+     ========================================================== */
+
+  .click-particle,
+  .click-ripple {
+    display: none;
+  }
+}
+
+@media (hover: none) {
+  .theme-toggle:hover {
+    border-color: var(--border);
+    color: var(--muted);
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .theme-toggle {
+    border-width: 2px;
+  }
+
+  .theme-toggle:focus-visible {
+    outline-width: 3px;
+  }
+}
