@@ -8668,6 +8668,68 @@ footer::after {
   }
 }
 
+/* ============================================================
+   BACK TO TOP — IPAD / TABLET
+   ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  #back-to-top {
+    right: 20px;
+    bottom: 20px;
+
+    width: 44px;
+    height: 44px;
+
+    font-size: 1rem;
+
+    box-shadow:
+      0 7px 20px rgba(0, 0, 0, 0.32),
+      0 0 10px rgba(255, 0, 60, 0.07);
+  }
+
+  #back-to-top::before {
+    inset: 4px;
+  }
+
+  #back-to-top:hover {
+    transform: translateY(-4px) scale(1.03);
+
+    box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.38),
+      0 0 16px rgba(255, 0, 60, 0.2),
+      0 0 30px rgba(255, 0, 60, 0.06);
+  }
+}
+
+
+/* ============================================================
+   IPAD PORTRAIT
+   ============================================================ */
+
+@media (min-width: 768px) and (max-width: 834px) {
+  #back-to-top {
+    right: 18px;
+    bottom: 18px;
+
+    width: 42px;
+    height: 42px;
+  }
+}
+
+
+/* ============================================================
+   IPAD LANDSCAPE
+   ============================================================ */
+
+@media (min-width: 835px) and (max-width: 1024px) {
+  #back-to-top {
+    right: 22px;
+    bottom: 22px;
+
+    width: 44px;
+    height: 44px;
+  }
+}
 
 /* ============================================================
    SMALL TABLET — 700px
@@ -9935,6 +9997,42 @@ footer::after {
     transform: none;
   }
 
+}
+
+/* ============================================================
+   TOUCH DEVICES
+   Prevent hover state from getting "stuck"
+   ============================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  #back-to-top:hover {
+    color: var(--red);
+
+    border-color: rgba(255, 0, 60, 0.3);
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 0, 60, 0.14),
+        rgba(255, 0, 60, 0.04)
+      ),
+      rgba(10, 10, 10, 0.88);
+
+    transform:
+      translateY(0) scale(1);
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.35),
+      0 0 12px rgba(255, 0, 60, 0.08);
+  }
+
+  #back-to-top:hover::after {
+    transform: none;
+  }
+
+  #back-to-top:active {
+    transform: scale(0.94);
+  }
 }
 
 /* ============================================================
