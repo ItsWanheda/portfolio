@@ -3924,13 +3924,112 @@ const CONTACT_DATA = [
 ];
 
 
+/* ============================================================
+   PWA / SERVICE WORKER
+   ============================================================ */
+
 function initPWA() {
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .catch(err => console.log('SW registration failed:', err));
-    });
+
+  if (!('serviceWorker' in navigator)) {
+    console.warn('[PWA] Service Workers are not supported.');
+    return;
   }
+
+  window.addEventListener('load', async () => {
+
+    try {
+
+      const registration =
+        await navigator.serviceWorker.register('/sw.js');
+
+      console.log(
+        '[PWA] Service Worker registered:',
+        registration.scope
+      );
+
+
+      /* --------------------------------------------------------
+         Check for updates
+         -------------------------------------------------------- */
+
+      registration.addEventListener(
+        'updatefound',
+        () => {
+
+          const newWorker =
+            registration.installing;
+
+          if (!newWorker) {
+            return;
+          }
+
+          console.log(
+            '[PWA] New Service Worker found.'
+          );
+
+
+          newWorker.addEventListener(
+            'statechange',
+            () => {
+
+              if (
+                newWorker.state === 'installed' &&
+                navigator.serviceWorker.controller
+              ) {
+
+                console.log(
+                  '[PWA] New version available. Activating...'
+                );
+
+                newWorker.postMessage({
+                  type: 'SKIP_WAITING'
+                });
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+    } catch (error) {
+
+      console.error(
+        '[PWA] Service Worker registration failed:',
+        error
+      );
+
+    }
+
+  });
+
+
+  /* ----------------------------------------------------------
+     Reload when the new Service Worker takes control
+     ---------------------------------------------------------- */
+
+  let refreshing = false;
+
+  navigator.serviceWorker.addEventListener(
+    'controllerchange',
+    () => {
+
+      if (refreshing) {
+        return;
+      }
+
+      refreshing = true;
+
+      console.log(
+        '[PWA] New Service Worker activated. Reloading...'
+      );
+
+      window.location.reload();
+
+    }
+  );
+
 }
 
 /* ============================================================
