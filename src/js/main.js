@@ -4076,6 +4076,39 @@ setTimeout(() => {
 }, 3000);
 
 /* ============================================================
+   BACK TO TOP
+   ============================================================ */
+
+function initBackToTop() {
+  const backToTop = document.getElementById('back-to-top');
+
+  if (!backToTop) {
+    console.warn('[Back To Top] Button not found.');
+    return;
+  }
+
+  const toggleBackToTop = () => {
+    const shouldShow = window.scrollY > 400;
+
+    backToTop.classList.toggle('show', shouldShow);
+  };
+
+  window.addEventListener('scroll', toggleBackToTop, {
+    passive: true
+  });
+
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // Set correct state immediately on page load
+  toggleBackToTop();
+}
+
+/* ============================================================
    DEVIL CURSOR
    ============================================================ */
 
@@ -5790,6 +5823,7 @@ function initAll() {
   initNav();
   initReveal();
   initDevilCursor();
+  initBackToTop();
 
   renderProjects();
   renderGithub();
