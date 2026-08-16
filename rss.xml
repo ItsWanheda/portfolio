@@ -7,13 +7,18 @@
 
   <channel>
 
+    <!-- =========================================================
+         FEED INFORMATION
+    ========================================================== -->
+
     <title>ItsWanheda — Blog</title>
 
     <link>https://itswanheda.vercel.app/</link>
 
     <description>
       ItsWanheda's blog covering web development, backend engineering,
-      APIs, cybersecurity, networking, authentication, and modern technology.
+      API security, cybersecurity, networking, authentication,
+      and modern technology.
     </description>
 
     <language>en-US</language>
@@ -26,13 +31,34 @@
 
     <ttl>60</ttl>
 
+    <!-- =========================================================
+         RSS SELF-REFERENCE
+    ========================================================== -->
+
     <atom:link
       href="https://itswanheda.vercel.app/rss.xml"
       rel="self"
       type="application/rss+xml"
     />
 
+    <!-- =========================================================
+         FEED IMAGE
+    ========================================================== -->
 
+    <image>
+
+      <url>
+        https://itswanheda.vercel.app/src/images/apple-touch-icon.png
+      </url>
+
+      <title>ItsWanheda</title>
+
+      <link>
+        https://itswanheda.vercel.app/
+      </link>
+
+    </image>
+    
     <!-- ========================================================
          BLOG 01
     ========================================================= -->
