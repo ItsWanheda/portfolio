@@ -631,26 +631,98 @@
   <!--Back-to-Top-->
   <button id="back-to-top" aria-label="Back to top">↑</button>
 
-  <!-- PRELOADER -->
-  <div id="preloader">
-    <div class="pre-shield">
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-        <path d="M28 4L8 14V28C8 39.05 16.6 49.37 28 52C39.4 49.37 48 39.05 48 28V14L28 4Z" stroke="#FF003C"
-          stroke-width="1.5" fill="none" />
-        <path d="M28 12L14 19V28C14 35.5 20.3 42.6 28 44.6C35.7 42.6 42 35.5 42 28V19L28 12Z" stroke="#FF003C"
-          stroke-width="1" stroke-dasharray="3 3" fill="none" opacity="0.4" />
-        <circle cx="28" cy="26" r="5" stroke="#FF003C" stroke-width="1.5" fill="none" />
-        <path d="M28 31V35" stroke="#FF003C" stroke-width="1.5" />
-      </svg>
-      <div class="pre-ring"></div>
-      <div class="pre-ring2"></div>
+<!-- ============================================================
+     WANHEDA // HACKER TERMINAL PRELOADER
+     ============================================================ -->
+
+<div id="preloader">
+
+  <!-- CRT effects -->
+  <div class="hacker-noise"></div>
+  <div class="hacker-scanlines"></div>
+  <div class="hacker-vignette"></div>
+
+  <!-- Terminal -->
+  <div class="hacker-terminal">
+
+    <!-- Terminal header -->
+    <div class="terminal-header">
+
+      <div class="terminal-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="terminal-title">
+        root@wanheda: ~
+      </div>
+
+      <div class="terminal-status">
+        SECURE
+      </div>
+
     </div>
-    <div class="pre-text" id="pre-text">INITIALIZING SECURITY MODULES...</div>
-    <div class="pre-bar-wrap">
-      <div class="pre-bar" id="pre-bar"></div>
+
+
+    <!-- Terminal body -->
+    <div class="terminal-body">
+
+      <div class="terminal-output" id="terminal-output"></div>
+
+      <div class="terminal-command">
+        <span class="terminal-prompt">root@wanheda:~$</span>
+        <span id="terminal-command-text"></span>
+        <span class="terminal-cursor"></span>
+      </div>
+
     </div>
-    <div class="pre-percent" id="pre-percent">0%</div>
+
   </div>
+
+
+  <!-- Binary rain -->
+  <div class="binary-rain" id="binary-rain"></div>
+
+
+  <!-- ASCII identity -->
+  <div class="hacker-identity" id="hacker-identity">
+
+    <div class="identity-glitch identity-glitch-red">
+      WANHEDA
+    </div>
+
+    <div class="identity-glitch identity-glitch-white">
+      WANHEDA
+    </div>
+
+    <pre class="ascii-logo">
+██     ██  █████  ███    ██ ██   ██ ███████ ██████   █████  
+██     ██ ██   ██ ████   ██ ██   ██ ██      ██   ██ ██   ██ 
+██  █  ██ ███████ ██ ██  ██ ███████ █████   ██   ██ ███████
+██ ███ ██ ██   ██ ██  ██ ██ ██   ██ ██      ██   ██ ██   ██
+ ███ ███  ██   ██ ██   ████ ██   ██ ███████ ██████  ██   ██
+    </pre>
+
+    <div class="identity-subtitle">
+      &lt; SYSTEM ACCESS GRANTED / &gt;
+    </div>
+
+  </div>
+
+
+  <!-- Final message -->
+  <div class="hacker-final" id="hacker-final">
+    <span>&gt;</span>
+    <span id="final-message">SYSTEM READY</span>
+    <span class="final-cursor">_</span>
+  </div>
+
+
+  <!-- Glitch overlay -->
+  <div class="hacker-glitch-overlay"></div>
+
+</div>
 
   <!-- NAV -->
   <nav id="navbar">
