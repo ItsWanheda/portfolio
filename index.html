@@ -3,364 +3,582 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+
+  <meta 
+    http-equiv="X-UA-Compatible" 
+    content="IE=edge">
+
+  <meta 
+    name="viewport" 
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta 
+    name="format-detection" 
+    content="telephone=no, date=no, address=no, email=no, url=no">
 
   <!-- =========================
      SECURITY HEADERS
      ========================= -->
-  <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
 
-        script-src
-            'self'
-            https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval';
-            
-        style-src
-            'self'
-            'unsafe-inline'
-            https://fonts.googleapis.com;
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
 
-        font-src
-            'self'
-            https://fonts.gstatic.com
-            data:;
+      script-src
+        'self'
+        https://cdn.jsdelivr.net
+        'unsafe-inline'
+        'unsafe-eval';
 
-        img-src
-            'self'
-            data:
-            https:
-            blob:;
+      style-src
+        'self'
+        'unsafe-inline'
+        https://fonts.googleapis.com;
 
-        connect-src
-            'self'
-            https://api.github.com
-            https://formspree.io;
+      font-src
+        'self'
+        https://fonts.gstatic.com
+        data:;
 
-        form-action
-            'self'
-            https://formspree.io;
+      img-src
+        'self'
+        data:
+        https:
+        blob:;
 
-        base-uri
-            'self';
+      connect-src
+        'self'
+        https://formspree.io;
 
-        object-src
-            'none';
+      form-action
+        'self'
+        https://formspree.io;
 
-        worker-src
-            'self'
-            blob:;
+      base-uri 'self';
 
-        child-src
-            'self'
-            blob:;
+      object-src 'none';
 
-        upgrade-insecure-requests;
-    ">
+      worker-src
+        'self'
+        blob:;
 
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+      child-src
+        'self'
+        blob:;
 
-  <meta http-equiv="Permissions-Policy" content="
-        camera=(),
-        microphone=(),
-        geolocation=(),
-        payment=(),
-        usb=()
-    ">
+      upgrade-insecure-requests;
+    "
+  >
 
-  <!-- =========================
-     PRIMARY META TAGS
-     ========================= -->
+  <meta
+    http-equiv="Referrer-Policy"
+    content="strict-origin-when-cross-origin"
+  >
 
-  <title>ItsWanheda — Cybersecurity Enthusiast & Backend Engineer</title>
+  <meta
+    http-equiv="Permissions-Policy"
+    content="
+      camera=(),
+      microphone=(),
+      geolocation=(),
+      payment=(),
+      usb=()
+    "
+  >
 
-  <meta name="title" content="ItsWanheda — Cybersecurity Enthusiast & Backend Engineer">
+  <!-- =========================================================
+       PRIMARY SEO
+       ========================================================= -->
 
-  <meta name="description"
-    content="Cybersecurity enthusiast, backend developer, and networking explorer building secure, resilient systems with TypeScript, Node.js, Go, authentication, API security, and network protocols.">
+  <title>
+    ItsWanheda — Cybersecurity Enthusiast & Backend Engineer
+  </title>
 
-  <meta name="author" content="ItsWanheda">
+  <meta
+    name="title"
+    content="ItsWanheda — Cybersecurity Enthusiast & Backend Engineer"
+  >
 
-  <meta name="keywords"
-    content="ItsWanheda, cybersecurity, cybersecurity enthusiast, backend engineer, backend developer, network security, ethical hacking, penetration testing, API security, authentication, authorization, JWT, OAuth, TypeScript, JavaScript, Node.js, Express.js, Go, Python, PostgreSQL, REST API, TCP/IP, TLS, DNS, networking, secure systems, application security, web security, software security, developer portfolio">
+  <meta
+    name="description"
+    content="Cybersecurity enthusiast, backend developer, and networking explorer building secure, resilient systems with TypeScript, Node.js, Go, authentication, API security, and network protocols."
+  >
 
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta
+    name="author"
+    content="ItsWanheda"
+  >
 
-  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta
+    name="keywords"
+    content="ItsWanheda, cybersecurity, cybersecurity enthusiast, backend engineer, backend developer, network security, ethical hacking, penetration testing, API security, authentication, authorization, JWT, OAuth, TypeScript, JavaScript, Node.js, Express.js, Go, Python, PostgreSQL, REST API, TCP/IP, TLS, DNS, networking, secure systems, application security, web security, software security, developer portfolio"
+  >
 
-  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta
+    name="robots"
+    content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+  >
 
-  <meta name="language" content="en">
+  <meta
+    name="googlebot"
+    content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+  >
 
-  <meta name="content-language" content="en">
+  <meta
+    name="bingbot"
+    content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+  >
 
-  <meta name="distribution" content="global">
+  <meta
+    name="language"
+    content="en"
+  >
 
-  <meta name="rating" content="general">
+  <meta
+    name="content-language"
+    content="en"
+  >
 
-  <meta name="copyright" content="© 2026 ItsWanheda. All rights reserved.">
+  <meta
+    name="distribution"
+    content="global"
+  >
 
-  <meta name="revisit-after" content="7 days">
+  <meta
+    name="rating"
+    content="general"
+  >
 
+  <meta
+    name="copyright"
+    content="© 2026 ItsWanheda. All rights reserved."
+  >
 
-  <!-- =========================
-       CANONICAL & ALTERNATE
-       ========================= -->
-  <link rel="canonical" href="https://itswanheda.vercel.app/">
+  <meta
+    name="revisit-after"
+    content="7 days"
+  >
 
-  <link rel="alternate" hreflang="en" href="https://itswanheda.vercel.app/">
+  <link
+    rel="author"
+    href="https://github.com/ItsWanheda"
+  >
 
-  <link rel="alternate" hreflang="x-default" href="https://itswanheda.vercel.app/">
+  <!-- =========================================================
+       CANONICAL
+       ========================================================= -->
+
+  <link
+    rel="canonical"
+    href="https://itswanheda.vercel.app/"
+  >
+
+  <link
+    rel="alternate"
+    hreflang="en"
+    href="https://itswanheda.vercel.app/"
+  >
+
+  <link
+    rel="alternate"
+    hreflang="x-default"
+    href="https://itswanheda.vercel.app/"
+  >
 
   <!-- =========================================================
      RSS / SITEMAP
      ========================================================= -->
 
-  <link rel="alternate" type="application/rss+xml" title="ItsWanheda Blog RSS Feed"
-    href="https://itswanheda.vercel.app/rss.xml">
+  <link
+    rel="alternate"
+    type="application/rss+xml"
+    title="ItsWanheda Blog RSS Feed"
+    href="https://itswanheda.vercel.app/rss.xml"
+  >
 
   <!-- =========================================================
      THEME & BROWSER COLORS
      ========================================================= -->
 
-  <meta name="color-scheme" content="dark light">
+  <meta
+    name="color-scheme"
+    content="dark light"
+  >
 
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A0A0A">
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: dark)"
+    content="#0A0A0A"
+  >
 
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
-
+  <meta
+    name="theme-color"
+    media="(prefers-color-scheme: light)"
+    content="#FFFFFF"
+  >
 
   <!-- =========================================================
      MOBILE / APP
      ========================================================= -->
 
-  <meta name="application-name" content="ItsWanheda">
+  <meta
+    name="application-name"
+    content="ItsWanheda"
+  >
 
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta
+    name="mobile-web-app-capable"
+    content="yes"
+  >
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
 
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  >
 
-  <meta name="apple-mobile-web-app-title" content="ItsWanheda">
+  <meta
+    name="apple-mobile-web-app-title"
+    content="ItsWanheda"
+  >
+
   <!-- =========================================================
      FAVICONS
      ========================================================= -->
 
-  <link rel="icon" type="image/svg+xml" href="/src/images/wanheda-32-px.svg">
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="./src/images/favicon.svg"
+  >
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/src/images/apple-touch-icon.png">
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="./src/images/apple-touch-icon.png"
+  >
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/src/images/apple-touch-icon.png">
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="./src/images/apple-touch-icon.png"
+  >
 
-  <link rel="shortcut icon" href="/src/images/favicon.ico">
+  <link
+    rel="shortcut icon"
+    href="./src/images/favicon.ico"
+  >
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/src/images/apple-touch-icon.png">
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="./src/images/apple-touch-icon.png"
+  >
 
   <!-- =========================================================
      WINDOWS
      ========================================================= -->
+  
+     <meta
+    name="msapplication-TileColor"
+    content="#0A0A0A"
+  >
 
-  <meta name="msapplication-TileColor" content="#0A0A0A">
-
-  <meta name="msapplication-TileImage" content="/src/images/apple-touch-icon.png">
+  <meta
+    name="msapplication-TileImage"
+    content="./src/images/apple-touch-icon.png"
+  >
 
   <!-- =========================================================
      PWA
      ========================================================= -->
 
-  <link rel="manifest" href="/manifest.webmanifest">
+  <link
+    rel="manifest"
+    href="./manifest.webmanifest"
+  >
+
   <!-- =========================================================
      PERFORMANCE HINTS
      ========================================================= -->
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
-  <link rel="dns-prefetch" href="https://api.github.com">
+  <link
+    rel="dns-prefetch"
+    href="https://cdn.jsdelivr.net"
+  >
 
-  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link
+    rel="preload"
+    as="image"
+    href="./src/images/Profile.jpg"
+    fetchpriority="high"
+  >
 
-  <link rel="preload" as="image" href="/src/images/Profile.jpg" fetchpriority="high">
   <!-- =========================================================
      OPEN GRAPH
      ========================================================= -->
 
-  <meta property="og:type" content="website">
+  <meta
+    property="og:type"
+    content="website"
+  >
 
-  <meta property="og:site_name" content="ItsWanheda">
+  <meta
+    property="og:site_name"
+    content="ItsWanheda"
+  >
 
-  <meta property="og:url" content="https://itswanheda.vercel.app/">
+  <meta
+    property="og:url"
+    content="https://itswanheda.vercel.app/"
+  >
 
-  <meta property="og:title" content="ItsWanheda — Cybersecurity & Backend Engineer">
+  <meta
+    property="og:title"
+    content="ItsWanheda — Cybersecurity & Backend Engineer"
+  >
 
-  <meta property="og:description"
-    content="Cybersecurity enthusiast, backend developer, and networking explorer building secure, resilient systems through authentication, API security, networking, and backend engineering.">
+  <meta
+    property="og:description"
+    content="Cybersecurity enthusiast, backend developer, and networking explorer building secure, resilient systems through authentication, API security, networking, and backend engineering."
+  >
 
-  <meta property="og:image" content="https://itswanheda.vercel.app/src/images/Profile.jpg">
+  <meta
+    property="og:image"
+    content="https://itswanheda.vercel.app/src/images/og-image.jpg"
+  >
 
-  <meta property="og:image:secure_url" content="https://itswanheda.vercel.app/src/images/Profile.jpg">
+  <meta
+    property="og:image:secure_url"
+    content="https://itswanheda.vercel.app/src/images/og-image.jpg"
+  >
 
-  <meta property="og:image:type" content="image/jpeg">
+  <meta
+    property="og:image:type"
+    content="image/jpeg"
+  >
 
-  <meta property="og:image:alt" content="ItsWanheda — Cybersecurity and Backend Engineering Portfolio">
+  <meta
+    property="og:image:alt"
+    content="ItsWanheda — Cybersecurity and Backend Engineering Portfolio"
+  >
 
-  <meta property="og:image:width" content="1200">
+  <meta
+    property="og:image:width"
+    content="1200"
+  >
 
-  <meta property="og:image:height" content="630">
+  <meta
+    property="og:image:height"
+    content="630"
+  >
 
-  <meta property="og:locale" content="en_US">
+  <meta
+    property="og:locale"
+    content="en_US"
+  >
+
+  <meta
+    property="og:updated_time"
+    content="2026-08-16T08:00:00-07:00"
+  >
 
   <!-- =========================================================
      X / TWITTER
      ========================================================= -->
 
-  <meta name="twitter:card" content="summary_large_image">
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
 
-  <meta name="twitter:title" content="ItsWanheda — Cybersecurity & Backend Engineer">
+  <meta
+    name="twitter:url"
+    content="https://itswanheda.vercel.app/"
+  >
 
-  <meta name="twitter:description"
-    content="Cybersecurity enthusiast and backend developer building secure systems, APIs, authentication systems, and network-focused software.">
+  <meta
+    name="twitter:title"
+    content="ItsWanheda — Cybersecurity & Backend Engineer"
+  >
 
-  <meta name="twitter:image" content="https://itswanheda.vercel.app/src/images/Profile.jpg">
+  <meta
+    name="twitter:description"
+    content="Cybersecurity enthusiast and backend developer building secure systems, APIs, authentication systems, and network-focused software."
+  >
 
-  <meta name="twitter:image:alt" content="ItsWanheda — Cybersecurity and Backend Engineering Portfolio">
+  <meta
+    name="twitter:image"
+    content="https://itswanheda.vercel.app/src/images/og-image.jpg"
+  >
 
-  <meta name="twitter:site" content="@ItsWanheda">
+  <meta
+    name="twitter:image:alt"
+    content="ItsWanheda — Cybersecurity and Backend Engineering Portfolio"
+  >
 
-  <meta name="twitter:creator" content="@ItsWanheda">
+  <meta
+    name="twitter:site"
+    content="@ItsWanheda"
+  >
+
+  <meta
+    name="twitter:creator"
+    content="@ItsWanheda"
+  >
+
   <!-- =========================================================
-     SEARCH ENGINE VERIFICATION
-     ========================================================= -->
+       SEARCH ENGINE VERIFICATION
+       ========================================================= -->
 
-  <meta name="google-site-verification" content="fPE4fDYumFkpoetTY3Cweod8xdN4jvjV2QD4zHHeE88">
+  <meta
+    name="google-site-verification"
+    content="fPE4fDYumFkpoetTY3Cweod8xdN4jvjV2QD4zHHeE88"
+  >
+
   <!-- =========================================================
      STRUCTURED DATA — JSON-LD
      ========================================================= -->
 
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
 
-    {
-      "@type": "Person",
-      "@id": "https://itswanheda.vercel.app/#person",
+      {
+        "@type": "Person",
+        "@id": "https://itswanheda.vercel.app/#person",
 
-      "name": "ItsWanheda",
+        "name": "ItsWanheda",
 
-      "alternateName": [
-        "Wanheda",
-        "ItsWanheda"
-      ],
+        "alternateName": [
+          "Wanheda",
+          "ItsWanheda"
+        ],
 
-      "url": "https://itswanheda.vercel.app/",
+        "url": "https://itswanheda.vercel.app/",
 
-      "image": {
-        "@type": "ImageObject",
-        "@id": "https://itswanheda.vercel.app/#person-image",
-        "url": "https://itswanheda.vercel.app/src/images/Profile.jpg",
-        "width": 800,
-        "height": 800
+        "image": {
+          "@type": "ImageObject",
+          "@id": "https://itswanheda.vercel.app/#person-image",
+          "url": "https://itswanheda.vercel.app/src/images/Profile.jpg",
+          "width": 800,
+          "height": 800
+        },
+
+        "jobTitle": "Cybersecurity Enthusiast & Backend Developer",
+
+        "description": "Cybersecurity enthusiast, backend developer, and networking explorer focused on building secure and resilient software systems.",
+
+        "email": "mailto:Wanheda.work@gmail.com",
+
+        "sameAs": [
+          "https://github.com/ItsWanheda"
+        ],
+
+        "knowsAbout": [
+          "Cybersecurity",
+          "Backend Development",
+          "Network Security",
+          "Web Security",
+          "Application Security",
+          "API Security",
+          "Authentication",
+          "Authorization",
+          "JWT",
+          "OAuth",
+          "RBAC",
+          "Penetration Testing",
+          "Ethical Hacking",
+          "Network Protocols",
+          "TCP/IP",
+          "TLS",
+          "DNS",
+          "TypeScript",
+          "JavaScript",
+          "Node.js",
+          "Express.js",
+          "Go",
+          "Python",
+          "PostgreSQL"
+        ],
+
+        "knowsLanguage": [
+          {
+            "@type": "Language",
+            "name": "English",
+            "alternateName": "en"
+          }
+        ]
       },
 
-      "jobTitle": "Cybersecurity Enthusiast & Backend Developer",
 
-      "description": "Cybersecurity enthusiast, backend developer, and networking explorer focused on building secure and resilient software systems.",
+      {
+        "@type": "WebSite",
+        "@id": "https://itswanheda.vercel.app/#website",
 
-      "email": "mailto:Wanheda.work@gmail.com",
+        "url": "https://itswanheda.vercel.app/",
 
-      "sameAs": [
-        "https://github.com/ItsWanheda"
-      ],
+        "name": "ItsWanheda",
 
-      "knowsAbout": [
-        "Cybersecurity",
-        "Backend Development",
-        "Network Security",
-        "Web Security",
-        "Application Security",
-        "API Security",
-        "Authentication",
-        "Authorization",
-        "JWT",
-        "OAuth",
-        "RBAC",
-        "Penetration Testing",
-        "Ethical Hacking",
-        "Network Protocols",
-        "TCP/IP",
-        "TLS",
-        "DNS",
-        "TypeScript",
-        "JavaScript",
-        "Node.js",
-        "Express.js",
-        "Go",
-        "Python",
-        "PostgreSQL"
-      ],
+        "alternateName": "ItsWanheda Portfolio",
 
-      "knowsLanguage": [
-        {
-          "@type": "Language",
-          "name": "English",
-          "alternateName": "en"
+        "description": "Personal portfolio of ItsWanheda, a cybersecurity enthusiast and backend developer.",
+
+        "inLanguage": "en-US",
+
+        "publisher": {
+          "@id": "https://itswanheda.vercel.app/#person"
         }
-      ]
-    },
+      },
 
 
-    {
-      "@type": "WebSite",
-      "@id": "https://itswanheda.vercel.app/#website",
+      {
+        "@type": "WebPage",
+        "@id": "https://itswanheda.vercel.app/#webpage",
 
-      "url": "https://itswanheda.vercel.app/",
+        "url": "https://itswanheda.vercel.app/",
 
-      "name": "ItsWanheda",
+        "name": "ItsWanheda — Cybersecurity & Backend Engineer",
 
-      "alternateName": "ItsWanheda Portfolio",
+        "description": "Explore ItsWanheda's cybersecurity projects, backend systems, networking work, skills, certifications, and technical experience.",
 
-      "description": "Personal portfolio of ItsWanheda, a cybersecurity enthusiast and backend developer.",
+        "isPartOf": {
+          "@id": "https://itswanheda.vercel.app/#website"
+        },
 
-      "inLanguage": "en-US",
+        "about": {
+          "@id": "https://itswanheda.vercel.app/#person"
+        },
 
-      "publisher": {
-        "@id": "https://itswanheda.vercel.app/#person"
+        "primaryImageOfPage": {
+          "@id": "https://itswanheda.vercel.app/#person-image"
+        },
+
+        "inLanguage": "en-US"
       }
-    },
 
-
-    {
-      "@type": "WebPage",
-      "@id": "https://itswanheda.vercel.app/#webpage",
-
-      "url": "https://itswanheda.vercel.app/",
-
-      "name": "ItsWanheda — Cybersecurity & Backend Engineer",
-
-      "description": "Explore ItsWanheda's cybersecurity projects, backend systems, networking work, skills, certifications, and technical experience.",
-
-      "isPartOf": {
-        "@id": "https://itswanheda.vercel.app/#website"
-      },
-
-      "about": {
-        "@id": "https://itswanheda.vercel.app/#person"
-      },
-
-      "primaryImageOfPage": {
-        "@id": "https://itswanheda.vercel.app/#person-image"
-      },
-
-      "inLanguage": "en-US"
-    }
-
-  ]
-}
-</script>
+    ]
+  }
+  </script>
 
   <!-- =========================================================
      THREE.JS IMPORT MAP
@@ -368,20 +586,22 @@
      ========================================================= -->
 
   <script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
   }
-}
-</script>
+  </script>
 
   <!-- =========================================================
      THREE.JS CANVAS
      ========================================================= -->
 
-  <script type="module" src="./src/js/canvas.js"></script>
-
+  <script
+    type="module"
+    src="./src/js/canvas.js"
+  ></script>
 
   <!-- =========================================================
      STYLESHEETS & FONTS
