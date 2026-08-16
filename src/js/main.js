@@ -3940,47 +3940,529 @@ const CONTACT_DATA = [
 ];
 
 /* ============================================================
-   PRELOADER
-============================================================ */
-const preTexts = [
-  'INITIALIZING SECURITY MODULES...',
-  'LOADING PORTFOLIO...',
-  'VERIFYING CREDENTIALS...',
-  'AUTHENTICATION SUCCESSFUL.',
+  HACKER TERMINAL BOOT
+   ============================================================ */
+
+const preloader =
+  document.getElementById('preloader');
+
+const terminalOutput =
+  document.getElementById('terminal-output');
+
+const commandText =
+  document.getElementById('terminal-command-text');
+
+const binaryRain =
+  document.getElementById('binary-rain');
+
+const hackerFinal =
+  document.getElementById('hacker-final');
+
+const finalMessage =
+  document.getElementById('final-message');
+
+
+/* ============================================================
+   CONFIG
+   ============================================================ */
+
+const COMMAND_DELAY = 180;
+
+const commands = [
+  './initialize',
+  './load_kernel',
+  './mount_secure_fs',
+  './initialize_crypto',
+  './establish_uplink',
+  './verify_identity'
 ];
-let preIdx = 0;
-const preTextEl = document.getElementById('pre-text');
-const preBar = document.getElementById('pre-bar');
-const prePercent = document.getElementById('pre-percent');
 
-function cyclePreText() {
-  preTextEl.style.opacity = 0;
-  setTimeout(() => {
-    preIdx = (preIdx + 1) % preTexts.length;
-    preTextEl.textContent = preTexts[preIdx];
-    preTextEl.style.opacity = 1;
-  }, 200);
+
+/* ============================================================
+   SYSTEM OUTPUT
+   ============================================================ */
+
+const bootLines = [
+
+  {
+    text: '[BOOT] Initializing WANHEDA kernel...',
+    type: 'dim'
+  },
+
+  {
+    text: '[ OK ] CPU virtualization detected',
+    type: 'success'
+  },
+
+  {
+    text: '[ OK ] Memory integrity check passed',
+    type: 'success'
+  },
+
+  {
+    text: '[ OK ] Loading cryptographic modules',
+    type: 'success'
+  },
+
+  {
+    text: '[ OK ] Mounting encrypted filesystem',
+    type: 'success'
+  },
+
+  {
+    text: '[ OK ] Secure socket initialized',
+    type: 'success'
+  },
+
+  {
+    text: '[ OK ] Firewall rules loaded',
+    type: 'success'
+  },
+
+  {
+    text: '[ OK ] Identity verification engine ready',
+    type: 'success'
+  },
+
+  {
+    text: '',
+    type: 'dim'
+  },
+
+  {
+    text: '0x7A91F2C4  0x0048A91F  0xCC91E72A',
+    type: 'dim'
+  },
+
+  {
+    text: '0x19F2A8BC  0x7F00D421  0x91AC7720',
+    type: 'dim'
+  },
+
+  {
+    text: '0xA821FF09  0x0019CA7F  0x7B2E91C4',
+    type: 'dim'
+  }
+
+];
+
+
+/* ============================================================
+   TYPE TEXT
+   ============================================================ */
+
+function typeText(
+  element,
+  text,
+  speed = 22
+) {
+
+  return new Promise(resolve => {
+
+    let index = 0;
+
+    const interval =
+      setInterval(() => {
+
+        element.textContent +=
+          text[index];
+
+        index++;
+
+        if (index >= text.length) {
+
+          clearInterval(interval);
+
+          resolve();
+
+        }
+
+      }, speed);
+
+  });
+
 }
-const preInterval = setInterval(cyclePreText, 700);
 
-setTimeout(() => { preBar.style.width = '100%'; }, 100);
 
-let pct = 0;
-const pctInterval = setInterval(() => {
-  pct = Math.min(pct + Math.random() * 4 + 1, 100);
-  prePercent.textContent = Math.floor(pct) + '%';
-  if (pct >= 100) clearInterval(pctInterval);
-}, 60);
+/* ============================================================
+   ADD TERMINAL LINE
+   ============================================================ */
 
-setTimeout(() => {
-  clearInterval(preInterval);
-  preTextEl.textContent = 'AUTHENTICATION SUCCESSFUL.';
-  setTimeout(() => {
-    document.getElementById('preloader').classList.add('fade-out');
-    document.body.classList.remove('loading');
+function addTerminalLine(
+  text,
+  type = ''
+) {
+
+  const line =
+    document.createElement('div');
+
+  line.className =
+    `terminal-line ${type}`;
+
+  line.textContent = text;
+
+  terminalOutput.appendChild(line);
+
+  return line;
+
+}
+
+
+/* ============================================================
+   COMMAND
+   ============================================================ */
+
+async function runCommand(command) {
+
+  commandText.textContent = '';
+
+  await typeText(
+    commandText,
+    command,
+    24
+  );
+
+  await wait(
+    COMMAND_DELAY
+  );
+
+  addTerminalLine(
+    `root@wanheda:~$ ${command}`,
+    'dim'
+  );
+
+  commandText.textContent = '';
+
+}
+
+
+/* ============================================================
+   WAIT
+   ============================================================ */
+
+function wait(ms) {
+
+  return new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+
+}
+
+
+/* ============================================================
+   HEX STREAM
+   ============================================================ */
+
+function generateHex() {
+
+  const chars =
+    '0123456789ABCDEF';
+
+  let result = '';
+
+  for (let i = 0; i < 8; i++) {
+
+    result +=
+      chars[
+        Math.floor(
+          Math.random() *
+          chars.length
+        )
+      ];
+
+  }
+
+  return `0x${result}`;
+
+}
+
+
+/* ============================================================
+   RANDOM TERMINAL DATA
+   ============================================================ */
+
+function generateRandomData() {
+
+  let output = '';
+
+  for (let i = 0; i < 3; i++) {
+
+    output +=
+      `${generateHex()}  `;
+
+  }
+
+  return output.trim();
+
+}
+
+
+/* ============================================================
+   BINARY RAIN
+   ============================================================ */
+
+function createBinaryRain() {
+
+  binaryRain.innerHTML = '';
+
+  const columns = 28;
+
+  for (let i = 0; i < columns; i++) {
+
+    const column =
+      document.createElement('div');
+
+    column.className =
+      'binary-column';
+
+    let data = '';
+
+    for (let j = 0; j < 45; j++) {
+
+      data +=
+        Math.random() > 0.5
+          ? '1'
+          : '0';
+
+    }
+
+    column.textContent = data;
+
+    column.style.left =
+      `${Math.random() * 100}%`;
+
+    column.style.animationDuration =
+      `${4 + Math.random() * 7}s`;
+
+    column.style.animationDelay =
+      `${Math.random() * -8}s`;
+
+    binaryRain.appendChild(column);
+
+  }
+
+}
+
+
+/* ============================================================
+   MAIN BOOT
+   ============================================================ */
+
+async function startHackerBoot() {
+
+  createBinaryRain();
+
+
+  /* ----------------------------------------------------------
+     COMMAND 1
+     ---------------------------------------------------------- */
+
+  await runCommand(
+    commands[0]
+  );
+
+  addTerminalLine(
+    '[ OK ] Boot sequence initialized',
+    'success'
+  );
+
+
+  /* ----------------------------------------------------------
+     COMMAND 2
+     ---------------------------------------------------------- */
+
+  await runCommand(
+    commands[1]
+  );
+
+  addTerminalLine(
+    '[ OK ] Kernel modules loaded',
+    'success'
+  );
+
+
+  /* ----------------------------------------------------------
+     COMMAND 3
+     ---------------------------------------------------------- */
+
+  await runCommand(
+    commands[2]
+  );
+
+  addTerminalLine(
+    '[ OK ] /secure mounted read-write',
+    'success'
+  );
+
+
+  /* ----------------------------------------------------------
+     COMMAND 4
+     ---------------------------------------------------------- */
+
+  await runCommand(
+    commands[3]
+  );
+
+  addTerminalLine(
+    '[ OK ] AES-256 encryption engine online',
+    'success'
+  );
+
+
+  /* ----------------------------------------------------------
+     HEX DATA
+     ---------------------------------------------------------- */
+
+  for (let i = 0; i < 4; i++) {
+
+    addTerminalLine(
+      generateRandomData(),
+      'dim'
+    );
+
+    await wait(70);
+
+  }
+
+
+  /* ----------------------------------------------------------
+     COMMAND 5
+     ---------------------------------------------------------- */
+
+  await runCommand(
+    commands[4]
+  );
+
+  addTerminalLine(
+    '[ OK ] Encrypted tunnel established',
+    'success'
+  );
+
+
+  /* ----------------------------------------------------------
+     BINARY RAIN
+     ---------------------------------------------------------- */
+
+  binaryRain.style.opacity = '1';
+
+
+  /* ----------------------------------------------------------
+     COMMAND 6
+     ---------------------------------------------------------- */
+
+  await runCommand(
+    commands[5]
+  );
+
+  addTerminalLine(
+    '[ OK ] Identity hash verified',
+    'success'
+  );
+
+
+  await wait(250);
+
+
+  /* ----------------------------------------------------------
+     ACCESS GRANTED
+     ---------------------------------------------------------- */
+
+  addTerminalLine(
+    '',
+    ''
+  );
+
+  addTerminalLine(
+    '>>> ACCESS GRANTED',
+    'success'
+  );
+
+  addTerminalLine(
+    '>>> USER: WANHEDA',
+    'success'
+  );
+
+  addTerminalLine(
+    '>>> SYSTEM READY',
+    'success'
+  );
+
+
+  await wait(500);
+
+
+  /* ----------------------------------------------------------
+     TERMINAL GLITCH
+     ---------------------------------------------------------- */
+
+  preloader.classList.add(
+    'glitch-active'
+  );
+
+
+  await wait(450);
+
+
+  /* ----------------------------------------------------------
+     IDENTITY REVEAL
+     ---------------------------------------------------------- */
+
+  preloader.classList.add(
+    'identity-active'
+  );
+
+
+  finalMessage.textContent =
+    'SYSTEM READY';
+
+
+  await wait(1000);
+
+
+  /* ----------------------------------------------------------
+     FINAL MESSAGE
+     ---------------------------------------------------------- */
+
+  finalMessage.textContent =
+    'WELCOME, WANHEDA';
+
+
+  await wait(900);
+
+
+  /* ----------------------------------------------------------
+     EXIT
+     ---------------------------------------------------------- */
+
+  preloader.classList.add(
+    'fade-out'
+  );
+
+  document.body.classList.remove(
+    'loading'
+  );
+
+
+  /*
+   * Start the rest of your portfolio.
+   */
+
+  if (
+    typeof initAll === 'function'
+  ) {
+
     initAll();
-  }, 600);
-}, 3000);
+
+  }
+
+}
+
+
+/* ============================================================
+   START
+   ============================================================ */
+
+startHackerBoot();
 
 /* ============================================================
    BACK TO TOP
@@ -6140,4 +6622,5 @@ function initAll() {
   initTheme();
   initContactForm();
   initClickParticles();
+  initPWA();
 }

@@ -12,10 +12,16 @@ import {
     UnrealBloomPass
 } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
+import {
+    OutputPass
+} from 'three/addons/postprocessing/OutputPass.js';
+
 
 /* ============================================================
    RED DEVIL EYE
-   BOUNDED CURSOR TRACKING / AMBIENT ENERGY / BLOOM
+   ------------------------------------------------------------
+   CENTER-ANCHORED / SENTIENT GAZE / BLINKING /
+   MICRO-SACCADES / TOUCH / CLICK REACTION / BLOOM
    ============================================================ */
 
 (() => {
@@ -44,6 +50,8 @@ import {
 
         color: 0xff003c,
 
+        brightColor: 0xff174f,
+
         darkColor: 0x020002,
 
         eye: {
@@ -56,36 +64,79 @@ import {
 
             pupil: 24,
 
-            follow: 38,
+            maxGaze: 34,
 
-            pupilFollow: 22
+            pupilMax: 21
         },
 
         bloom: {
 
-            strength: 1.65,
+            strength: 0.85,
 
-            radius: 0.72,
+            radius: 0.62,
 
-            threshold: 0.03
+            threshold: 0.08
         },
 
         particles: {
 
-            count: 65,
+            desktop: 70,
 
-            minRadius: 180,
+            mobile: 28,
 
-            maxRadius: 360
+            minRadius: 190,
+
+            maxRadius: 370
         },
 
         animation: {
 
-            rotation: 0.00035,
+            irisRotation: 0.00035,
 
             particles: 0.00008,
 
-            pulse: 0.002
+            breathing: 0.002,
+
+            irisPulse: 0.002,
+
+            glowPulse: 0.0015
+        },
+
+        gaze: {
+
+            smooth: 0.085,
+
+            pupilSmooth: 0.13,
+
+            anticipation: 0.075,
+
+            idleDelay: 4200,
+
+            idleMoveTime: 2200,
+
+            microSaccadeMin: 1800,
+
+            microSaccadeMax: 4200
+        },
+
+        blink: {
+
+            minDelay: 3200,
+
+            maxDelay: 7800,
+
+            duration: 145,
+
+            doubleChance: 0.16
+        },
+
+        click: {
+
+            duration: 420,
+
+            pupilContract: 0.42,
+
+            pulseStrength: 1
         }
     };
 
@@ -105,9 +156,15 @@ import {
        ======================================================== */
 
     const isMobile =
-        /Android|iPhone|iPad|iPod/i.test(
+        /Android|iPhone|iPad|iPod|Mobile/i.test(
             navigator.userAgent
         );
+
+
+    const isTouch =
+        window.matchMedia(
+            '(hover: none) and (pointer: coarse)'
+        ).matches;
 
 
     /* ========================================================
@@ -115,6 +172,68 @@ import {
        ======================================================== */
 
     const state = {
+
+        destroyed: false,
+
+        animationId: null,
+
+        lastFrame: 0,
+
+        lastInteraction: performance.now(),
+
+        lastMouseX: 0,
+
+        lastMouseY: 0,
+
+        mouseSpeed: 0,
+
+        pointerActive: false,
+
+        clickTime: 0,
+
+        clickPower: 0,
+
+        idleActive: false,
+
+        idleStarted: false,
+
+        idleTargetX: 0,
+
+        idleTargetY: 0,
+
+        idleStartX: 0,
+
+        idleStartY: 0,
+
+        idleStartTime: 0,
+
+        idleTargetTime: 0,
+
+        microSaccadeTargetX: 0,
+
+        microSaccadeTargetY: 0,
+
+        microSaccadeX: 0,
+
+        microSaccadeY: 0,
+
+        nextMicroSaccade:
+            performance.now() + 2500,
+
+        blink: {
+
+            active: false,
+
+            start: 0,
+
+            progress: 0,
+
+            next:
+                performance.now() +
+                4200,
+
+            doublePending: false
+        },
 
         mouse: {
 
@@ -125,11 +244,7 @@ import {
             targetX: 0,
 
             targetY: 0
-        },
-
-        animationId: null,
-
-        destroyed: false
+        }
     };
 
 
@@ -140,16 +255,7 @@ import {
     const scene =
         new THREE.Scene();
 
-    scene.background =
-        new THREE.Color(
-            CONFIG.darkColor
-        );
-
-    scene.fog =
-        new THREE.FogExp2(
-            CONFIG.darkColor,
-            0.0016
-        );
+    scene.background = null;
 
 
     /* ========================================================
@@ -169,7 +275,11 @@ import {
             3000
         );
 
-    camera.position.z = 650;
+    camera.position.set(
+        0,
+        0,
+        650
+    );
 
 
     /* ========================================================
@@ -187,10 +297,13 @@ import {
 
                 alpha: true,
 
-                antialias: !isMobile,
+                antialias:
+                    !isMobile,
 
                 powerPreference:
-                    'high-performance'
+                    isMobile
+                        ? 'default'
+                        : 'high-performance'
             });
 
     } catch (error) {
@@ -210,7 +323,9 @@ import {
 
             window.devicePixelRatio || 1,
 
-            isMobile ? 1.25 : 1.75
+            isMobile
+                ? 1.25
+                : 1.75
         );
     };
 
@@ -231,9 +346,7 @@ import {
 
 
     renderer.setClearColor(
-
-        CONFIG.darkColor,
-
+        0x000000,
         0
     );
 
@@ -247,7 +360,7 @@ import {
 
 
     renderer.toneMappingExposure =
-        1.15;
+        1.0;
 
 
     /* ========================================================
@@ -258,6 +371,11 @@ import {
         new EffectComposer(
             renderer
         );
+
+
+    composer.setPixelRatio(
+        getPixelRatio()
+    );
 
 
     const renderPass =
@@ -282,9 +400,13 @@ import {
                 window.innerHeight
             ),
 
-            CONFIG.bloom.strength,
+            isMobile
+                ? 0.72
+                : CONFIG.bloom.strength,
 
-            CONFIG.bloom.radius,
+            isMobile
+                ? 0.48
+                : CONFIG.bloom.radius,
 
             CONFIG.bloom.threshold
         );
@@ -295,12 +417,29 @@ import {
     );
 
 
+    const outputPass =
+        new OutputPass();
+
+
+    composer.addPass(
+        outputPass
+    );
+
+
     /* ========================================================
        MASTER EYE GROUP
        ======================================================== */
 
     const eyeGroup =
         new THREE.Group();
+
+
+    eyeGroup.position.set(
+        0,
+        0,
+        0
+    );
+
 
     scene.add(
         eyeGroup
@@ -351,32 +490,28 @@ import {
        DARK SOCKET
        ======================================================== */
 
-    const socketGeometry =
-        new THREE.ShapeGeometry(
-            eyeShape,
-            32
-        );
-
-
-    const socketMaterial =
-        new THREE.MeshBasicMaterial({
-
-            color: 0x050003,
-
-            transparent: true,
-
-            opacity: 0.98,
-
-            depthWrite: false
-        });
-
-
     const socket =
         new THREE.Mesh(
 
-            socketGeometry,
+            new THREE.ShapeGeometry(
+                eyeShape,
+                32
+            ),
 
-            socketMaterial
+            new THREE.MeshBasicMaterial({
+
+                color:
+                    0x050003,
+
+                transparent:
+                    true,
+
+                opacity:
+                    0.98,
+
+                depthWrite:
+                    false
+            })
         );
 
 
@@ -402,13 +537,17 @@ import {
 
             new THREE.MeshBasicMaterial({
 
-                color: 0x45000f,
+                color:
+                    0x45000f,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.5,
+                opacity:
+                    0.5,
 
-                depthWrite: false,
+                depthWrite:
+                    false,
 
                 blending:
                     THREE.AdditiveBlending
@@ -477,19 +616,19 @@ import {
                 color:
                     CONFIG.color,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.055,
+                opacity:
+                    0.055,
 
-                depthWrite: false,
+                depthWrite:
+                    false,
 
                 blending:
                     THREE.AdditiveBlending
             })
         );
-
-
-    glow.position.z = 0;
 
 
     eyeGroup.add(
@@ -505,7 +644,8 @@ import {
         new THREE.Group();
 
 
-    irisGroup.position.z = 10;
+    irisGroup.position.z =
+        10;
 
 
     eyeGroup.add(
@@ -530,11 +670,14 @@ import {
                 color:
                     CONFIG.color,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.82,
+                opacity:
+                    0.82,
 
-                depthWrite: false,
+                depthWrite:
+                    false,
 
                 blending:
                     THREE.AdditiveBlending
@@ -564,11 +707,14 @@ import {
                 color:
                     0x42000e,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.85,
+                opacity:
+                    0.86,
 
-                depthWrite: false
+                depthWrite:
+                    false
             })
         );
 
@@ -582,7 +728,7 @@ import {
 
 
     /* ========================================================
-       IRIS INNER RING
+       INNER IRIS RING
        ======================================================== */
 
     const irisRing =
@@ -597,16 +743,19 @@ import {
             new THREE.MeshBasicMaterial({
 
                 color:
-                    0xff174f,
+                    CONFIG.brightColor,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.7,
+                opacity:
+                    0.7,
 
                 side:
                     THREE.DoubleSide,
 
-                depthWrite: false,
+                depthWrite:
+                    false,
 
                 blending:
                     THREE.AdditiveBlending
@@ -623,6 +772,50 @@ import {
 
 
     /* ========================================================
+       INNER CORE RING
+       ======================================================== */
+
+    const irisCoreRing =
+        new THREE.Mesh(
+
+            new THREE.RingGeometry(
+                27,
+                29,
+                96
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:
+                    0xff174f,
+
+                transparent:
+                    true,
+
+                opacity:
+                    0.45,
+
+                side:
+                    THREE.DoubleSide,
+
+                depthWrite:
+                    false,
+
+                blending:
+                    THREE.AdditiveBlending
+            })
+        );
+
+
+    irisCoreRing.position.z = 3;
+
+
+    irisGroup.add(
+        irisCoreRing
+    );
+
+
+    /* ========================================================
        IRIS RADIAL VEINS
        ======================================================== */
 
@@ -630,7 +823,8 @@ import {
         new THREE.Group();
 
 
-    irisLines.position.z = 3;
+    irisLines.position.z =
+        4;
 
 
     irisGroup.add(
@@ -638,26 +832,32 @@ import {
     );
 
 
+    const irisLineCount =
+        isMobile
+            ? 30
+            : 52;
+
+
     for (
         let i = 0;
-        i < 48;
+        i < irisLineCount;
         i++
     ) {
 
         const angle =
-            (i / 48) *
+            (i / irisLineCount) *
             Math.PI *
             2;
 
 
         const innerRadius =
-            17 +
-            Math.random() * 7;
+            16 +
+            Math.random() * 8;
 
 
         const outerRadius =
-            45 +
-            Math.random() * 14;
+            44 +
+            Math.random() * 15;
 
 
         const geometry =
@@ -694,17 +894,16 @@ import {
             new THREE.LineBasicMaterial({
 
                 color:
-
                     i % 3 === 0
                         ? 0xff174f
                         : 0xff003c,
 
-                transparent: true,
+                transparent:
+                    true,
 
                 opacity:
-                    0.16 +
-                    Math.random() *
-                    0.35,
+                    0.14 +
+                    Math.random() * 0.34,
 
                 blending:
                     THREE.AdditiveBlending
@@ -738,11 +937,14 @@ import {
                 color:
                     0x000000,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 1,
+                opacity:
+                    1,
 
-                depthWrite: false
+                depthWrite:
+                    false
             })
         );
 
@@ -754,7 +956,8 @@ import {
     );
 
 
-    pupil.position.z = 8;
+    pupil.position.z =
+        8;
 
 
     irisGroup.add(
@@ -780,14 +983,17 @@ import {
                 color:
                     CONFIG.color,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.75,
+                opacity:
+                    0.72,
 
                 side:
                     THREE.DoubleSide,
 
-                depthWrite: false,
+                depthWrite:
+                    false,
 
                 blending:
                     THREE.AdditiveBlending
@@ -795,11 +1001,34 @@ import {
         );
 
 
-    pupilGlow.position.z = 9;
+    pupilGlow.position.z =
+        9;
 
 
     irisGroup.add(
         pupilGlow
+    );
+
+
+    /* ========================================================
+       EYELID GROUPS
+       ======================================================== */
+
+    const upperLidGroup =
+        new THREE.Group();
+
+
+    const lowerLidGroup =
+        new THREE.Group();
+
+
+    eyeGroup.add(
+        upperLidGroup
+    );
+
+
+    eyeGroup.add(
+        lowerLidGroup
     );
 
 
@@ -864,19 +1093,23 @@ import {
                 color:
                     0x010001,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.95,
+                opacity:
+                    0.95,
 
-                depthWrite: false
+                depthWrite:
+                    false
             })
         );
 
 
-    upperLid.position.z = 18;
+    upperLid.position.z =
+        18;
 
 
-    eyeGroup.add(
+    upperLidGroup.add(
         upperLid
     );
 
@@ -934,7 +1167,8 @@ import {
         new THREE.Mesh(
 
             new THREE.ShapeGeometry(
-                lowerLidShape
+                lowerLidShape,
+                32
             ),
 
             new THREE.MeshBasicMaterial({
@@ -942,19 +1176,23 @@ import {
                 color:
                     0x010001,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.88,
+                opacity:
+                    0.88,
 
-                depthWrite: false
+                depthWrite:
+                    false
             })
         );
 
 
-    lowerLid.position.z = 18;
+    lowerLid.position.z =
+        18;
 
 
-    eyeGroup.add(
+    lowerLidGroup.add(
         lowerLid
     );
 
@@ -967,7 +1205,8 @@ import {
         new THREE.Group();
 
 
-    lidGlow.position.z = 21;
+    lidGlow.position.z =
+        21;
 
 
     eyeGroup.add(
@@ -1028,9 +1267,11 @@ import {
                 color:
                     CONFIG.color,
 
-                transparent: true,
+                transparent:
+                    true,
 
-                opacity: 0.5,
+                opacity:
+                    0.5,
 
                 blending:
                     THREE.AdditiveBlending
@@ -1060,9 +1301,15 @@ import {
     );
 
 
+    const energyCount =
+        isMobile
+            ? 16
+            : 30;
+
+
     for (
         let i = 0;
-        i < 30;
+        i < energyCount;
         i++
     ) {
 
@@ -1122,7 +1369,8 @@ import {
                 color:
                     CONFIG.color,
 
-                transparent: true,
+                transparent:
+                    true,
 
                 opacity:
                     0.08 +
@@ -1149,8 +1397,8 @@ import {
 
     const particleCount =
         isMobile
-            ? 30
-            : CONFIG.particles.count;
+            ? CONFIG.particles.mobile
+            : CONFIG.particles.desktop;
 
 
     const particlePositions =
@@ -1219,14 +1467,17 @@ import {
 
             size:
                 isMobile
-                    ? 1.6
+                    ? 1.45
                     : 2.2,
 
-            transparent: true,
+            transparent:
+                true,
 
-            opacity: 0.5,
+            opacity:
+                0.48,
 
-            depthWrite: false,
+            depthWrite:
+                false,
 
             blending:
                 THREE.AdditiveBlending
@@ -1265,7 +1516,7 @@ import {
 
 
     const createArc =
-        () => {
+        (power = 1) => {
 
             const angle =
                 Math.random() *
@@ -1274,15 +1525,18 @@ import {
 
 
             const radius =
-                155 +
+                150 +
                 Math.random() *
-                80;
+                90;
 
 
             const points = [];
 
 
-            const segments = 7;
+            const segments =
+                isMobile
+                    ? 5
+                    : 7;
 
 
             for (
@@ -1342,11 +1596,13 @@ import {
                 new THREE.LineBasicMaterial({
 
                     color:
-                        0xff174f,
+                        CONFIG.brightColor,
 
-                    transparent: true,
+                    transparent:
+                        true,
 
-                    opacity: 0.7,
+                    opacity:
+                        0.7 * power,
 
                     blending:
                         THREE.AdditiveBlending
@@ -1361,11 +1617,12 @@ import {
 
 
             line.userData.life =
-                0.35 +
-                Math.random() * 0.35;
+                0.28 +
+                Math.random() * 0.32;
 
 
-            line.userData.age = 0;
+            line.userData.age =
+                0;
 
 
             arcs.add(
@@ -1375,35 +1632,300 @@ import {
 
 
     /* ========================================================
-       MOUSE
+       RESPONSIVE EYE SCALE
+       ======================================================== */
+
+    const updateEyeScale =
+        () => {
+
+            const width =
+                window.innerWidth;
+
+
+            let scale;
+
+
+            if (width <= 360) {
+
+                scale = 0.48;
+
+            } else if (width <= 480) {
+
+                scale = 0.56;
+
+            } else if (width <= 768) {
+
+                scale = 0.68;
+
+            } else if (width <= 1024) {
+
+                scale = 0.82;
+
+            } else {
+
+                scale = 1;
+            }
+
+
+            eyeGroup.scale.set(
+                scale,
+                scale,
+                1
+            );
+        };
+
+
+    /* ========================================================
+       POINTER INPUT
+       ======================================================== */
+
+    const setPointer =
+        (
+            clientX,
+            clientY
+        ) => {
+
+            const normalizedX =
+                (
+                    clientX /
+                    window.innerWidth
+                ) * 2 - 1;
+
+
+            const normalizedY =
+                -(
+                    clientY /
+                    window.innerHeight
+                ) * 2 + 1;
+
+
+            state.mouse.targetX =
+                THREE.MathUtils.clamp(
+                    normalizedX,
+                    -1,
+                    1
+                );
+
+
+            state.mouse.targetY =
+                THREE.MathUtils.clamp(
+                    normalizedY,
+                    -1,
+                    1
+                );
+
+
+            state.pointerActive =
+                true;
+
+
+            state.lastInteraction =
+                performance.now();
+
+
+            state.idleActive =
+                false;
+
+
+            state.idleStarted =
+                false;
+        };
+
+
+    /* ========================================================
+       MOUSE MOVE
        ======================================================== */
 
     const onMouseMove =
         event => {
 
-            state.mouse.targetX =
-
-                (
-                    event.clientX /
-                    window.innerWidth
-                ) * 2 - 1;
+            const now =
+                performance.now();
 
 
-            state.mouse.targetY =
+            const dx =
+                event.clientX -
+                state.lastMouseX;
 
-                -(
-                    event.clientY /
-                    window.innerHeight
-                ) * 2 + 1;
+
+            const dy =
+                event.clientY -
+                state.lastMouseY;
+
+
+            const distance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
+                );
+
+
+            state.mouseSpeed =
+                THREE.MathUtils.clamp(
+                    distance / 35,
+                    0,
+                    1
+                );
+
+
+            state.lastMouseX =
+                event.clientX;
+
+
+            state.lastMouseY =
+                event.clientY;
+
+
+            setPointer(
+                event.clientX,
+                event.clientY
+            );
+
+
+            state.lastInteraction =
+                now;
         };
 
+
+    /* ========================================================
+       MOUSE LEAVE
+       ======================================================== */
 
     const onMouseLeave =
         () => {
 
-            state.mouse.targetX = 0;
+            state.pointerActive =
+                false;
 
-            state.mouse.targetY = 0;
+            state.mouse.targetX =
+                0;
+
+            state.mouse.targetY =
+                0;
+
+            state.lastInteraction =
+                performance.now();
+        };
+
+
+    /* ========================================================
+       CLICK REACTION
+       ======================================================== */
+
+    const triggerReaction =
+        () => {
+
+            const now =
+                performance.now();
+
+
+            state.clickTime =
+                now;
+
+
+            state.clickPower =
+                CONFIG.click.pulseStrength;
+
+
+            if (!reducedMotion) {
+
+                createArc(
+                    1.25
+                );
+
+
+                if (
+                    Math.random() <
+                    0.7
+                ) {
+
+                    createArc(
+                        0.8
+                    );
+                }
+            }
+        };
+
+
+    const onPointerDown =
+        event => {
+
+            if (
+                event.pointerType ===
+                'mouse'
+            ) {
+
+                return;
+            }
+
+
+            setPointer(
+                event.clientX,
+                event.clientY
+            );
+
+
+            triggerReaction();
+        };
+
+
+    const onClick =
+        event => {
+
+            if (
+                event.pointerType &&
+                event.pointerType !==
+                'mouse'
+            ) {
+
+                return;
+            }
+
+
+            triggerReaction();
+        };
+
+
+    /* ========================================================
+       TOUCH
+       ======================================================== */
+
+    const onTouchMove =
+        event => {
+
+            if (
+                !event.touches.length
+            ) {
+
+                return;
+            }
+
+
+            const touch =
+                event.touches[0];
+
+
+            setPointer(
+                touch.clientX,
+                touch.clientY
+            );
+        };
+
+
+    const onTouchEnd =
+        () => {
+
+            state.pointerActive =
+                false;
+
+            state.mouse.targetX *=
+                0.35;
+
+            state.mouse.targetY *=
+                0.35;
+
+            state.lastInteraction =
+                performance.now();
         };
 
 
@@ -1422,248 +1944,515 @@ import {
     );
 
 
+    window.addEventListener(
+        'pointerdown',
+        onPointerDown,
+        {
+            passive: true
+        }
+    );
+
+
+    window.addEventListener(
+        'click',
+        onClick,
+        {
+            passive: true
+        }
+    );
+
+
+    window.addEventListener(
+        'touchmove',
+        onTouchMove,
+        {
+            passive: true
+        }
+    );
+
+
+    window.addEventListener(
+        'touchend',
+        onTouchEnd,
+        {
+            passive: true
+        }
+    );
+
+
     /* ========================================================
-       RESPONSIVE EYE SCALE
+       IDLE GAZE
        ======================================================== */
 
-    const updateEyeScale =
+    const chooseIdleTarget =
         () => {
 
-            const scale =
+            state.idleStartX =
+                state.mouse.x;
+
+
+            state.idleStartY =
+                state.mouse.y;
+
+
+            state.idleTargetX =
+                (
+                    Math.random() *
+                    1.3
+                ) - 0.65;
+
+
+            state.idleTargetY =
+                (
+                    Math.random() *
+                    0.8
+                ) - 0.4;
+
+
+            state.idleStartTime =
+                performance.now();
+
+
+            state.idleTargetTime =
+                state.idleStartTime +
+                CONFIG.gaze.idleMoveTime;
+        };
+
+
+    const updateIdle =
+        now => {
+
+            if (
+                reducedMotion
+            ) {
+
+                return;
+            }
+
+
+            const idleTime =
+                now -
+                state.lastInteraction;
+
+
+            if (
+                idleTime <
+                CONFIG.gaze.idleDelay
+            ) {
+
+                state.idleActive =
+                    false;
+
+                state.idleStarted =
+                    false;
+
+                return;
+            }
+
+
+            state.idleActive =
+                true;
+
+
+            if (
+                !state.idleStarted
+            ) {
+
+                state.idleStarted =
+                    true;
+
+                chooseIdleTarget();
+
+                return;
+            }
+
+
+            if (
+                now >=
+                state.idleTargetTime
+            ) {
+
+                chooseIdleTarget();
+
+                return;
+            }
+
+
+            const duration =
+                CONFIG.gaze.idleMoveTime;
+
+
+            const progress =
                 THREE.MathUtils.clamp(
 
-                    window.innerWidth / 1000,
+                    (
+                        now -
+                        state.idleStartTime
+                    ) /
+                    duration,
 
-                    0.62,
-
+                    0,
                     1
                 );
 
 
-            eyeGroup.scale.set(
-                scale,
-                scale,
-                1
+            const eased =
+                progress *
+                progress *
+                (
+                    3 -
+                    2 * progress
+                );
+
+
+            state.mouse.targetX =
+                THREE.MathUtils.lerp(
+
+                    state.idleStartX,
+
+                    state.idleTargetX,
+
+                    eased
+                );
+
+
+            state.mouse.targetY =
+                THREE.MathUtils.lerp(
+
+                    state.idleStartY,
+
+                    state.idleTargetY,
+
+                    eased
+                );
+        };
+
+
+    /* ========================================================
+       MICRO SACCADES
+       ======================================================== */
+
+    const scheduleMicroSaccade =
+        now => {
+
+            const delay =
+                CONFIG.gaze.microSaccadeMin +
+                Math.random() *
+                (
+                    CONFIG.gaze.microSaccadeMax -
+                    CONFIG.gaze.microSaccadeMin
+                );
+
+
+            state.nextMicroSaccade =
+                now +
+                delay;
+        };
+
+
+    const triggerMicroSaccade =
+        now => {
+
+            if (
+                reducedMotion ||
+                now <
+                state.nextMicroSaccade
+            ) {
+
+                return;
+            }
+
+
+            state.microSaccadeTargetX =
+                (
+                    Math.random() -
+                    0.5
+                ) * 0.18;
+
+
+            state.microSaccadeTargetY =
+                (
+                    Math.random() -
+                    0.5
+                ) * 0.12;
+
+
+            scheduleMicroSaccade(
+                now
             );
         };
 
 
     /* ========================================================
-       BOUNDED EYE MOVEMENT
+       BLINK
        ======================================================== */
 
-    const updateEyePosition =
-        () => {
+    const scheduleBlink =
+        now => {
 
-            const aspect =
-                window.innerWidth /
-                window.innerHeight;
-
-
-            const fov =
-                THREE.MathUtils.degToRad(
-                    55
+            const delay =
+                CONFIG.blink.minDelay +
+                Math.random() *
+                (
+                    CONFIG.blink.maxDelay -
+                    CONFIG.blink.minDelay
                 );
 
 
-            /*
-             * Visible world-space height.
-             */
-
-            const visibleHeight =
-                2 *
-                Math.tan(
-                    fov / 2
-                ) *
-                camera.position.z;
+            state.blink.next =
+                now +
+                delay;
+        };
 
 
-            const visibleWidth =
-                visibleHeight *
-                aspect;
+    const triggerBlink =
+        now => {
+
+            if (
+                reducedMotion ||
+                state.blink.active
+            ) {
+
+                return;
+            }
 
 
-            /*
-             * Account for responsive scale.
-             */
-
-            const currentScale =
-                eyeGroup.scale.x;
+            state.blink.active =
+                true;
 
 
-            const halfEyeWidth =
-                (
-                    CONFIG.eye.width *
-                    0.5
-                ) *
-                currentScale;
+            state.blink.start =
+                now;
 
 
-            const halfEyeHeight =
-                (
-                    CONFIG.eye.height *
-                    0.5
-                ) *
-                currentScale;
+            state.blink.doublePending =
+                Math.random() <
+                CONFIG.blink.doubleChance;
 
 
-            /*
-             * Extra safety padding.
-             */
-
-            const paddingX = 30;
-
-            const paddingY = 35;
+            scheduleBlink(
+                now
+            );
+        };
 
 
-            /*
-             * Maximum safe movement.
-             */
+    const updateBlink =
+        now => {
 
-            const maxX =
-                Math.max(
+            if (
+                reducedMotion
+            ) {
 
-                    0,
+                return;
+            }
+
+
+            if (
+                !state.blink.active &&
+                now >=
+                state.blink.next
+            ) {
+
+                triggerBlink(
+                    now
+                );
+            }
+
+
+            if (
+                !state.blink.active
+            ) {
+
+                return;
+            }
+
+
+            const progress =
+                THREE.MathUtils.clamp(
 
                     (
-                        visibleWidth * 0.5
-                    ) -
-                    halfEyeWidth -
-                    paddingX
-                );
-
-
-            const maxY =
-                Math.max(
+                        now -
+                        state.blink.start
+                    ) /
+                    CONFIG.blink.duration,
 
                     0,
-
-                    (
-                        visibleHeight * 0.5
-                    ) -
-                    halfEyeHeight -
-                    paddingY
+                    1
                 );
 
 
-            /*
-             * Cursor -> eye target.
-             *
-             * The eye intentionally moves less
-             * than the cursor.
-             */
-
-            const targetX =
-                THREE.MathUtils.clamp(
-
-                    state.mouse.x *
-                    maxX *
-                    0.72,
-
-                    -maxX,
-
-                    maxX
+            const closeCurve =
+                Math.sin(
+                    progress *
+                    Math.PI
                 );
 
 
-            const targetY =
-                THREE.MathUtils.clamp(
-
-                    state.mouse.y *
-                    maxY *
-                    0.72,
-
-                    -maxY,
-
-                    maxY
-                );
+            state.blink.progress =
+                closeCurve;
 
 
-            /*
-             * Smooth movement.
-             */
+            if (
+                progress >= 1
+            ) {
 
-            eyeGroup.position.x +=
-
-                (
-                    targetX -
-                    eyeGroup.position.x
-                ) * 0.055;
+                state.blink.active =
+                    false;
 
 
-            eyeGroup.position.y +=
-
-                (
-                    targetY -
-                    eyeGroup.position.y
-                ) * 0.055;
+                state.blink.progress =
+                    0;
 
 
-            /*
-             * Final hard safety clamp.
-             */
+                if (
+                    state.blink.doublePending
+                ) {
 
-            eyeGroup.position.x =
-                THREE.MathUtils.clamp(
-
-                    eyeGroup.position.x,
-
-                    -maxX,
-
-                    maxX
-                );
+                    state.blink.doublePending =
+                        false;
 
 
-            eyeGroup.position.y =
-                THREE.MathUtils.clamp(
+                    state.blink.start =
+                        now +
+                        95;
 
-                    eyeGroup.position.y,
 
-                    -maxY,
+                    state.blink.next =
+                        now +
+                        3000;
 
-                    maxY
-                );
+
+                    setTimeout(
+                        () => {
+
+                            if (
+                                !state.destroyed
+                            ) {
+
+                                triggerBlink(
+                                    performance.now()
+                                );
+                            }
+                        },
+                        95
+                    );
+                }
+            }
         };
 
 
     /* ========================================================
-       BOUNDED PUPIL
+       GAZE CALCULATION
        ======================================================== */
 
-    const updatePupil =
-        () => {
+    const updateGaze =
+        now => {
 
-            /*
-             * Keep the pupil comfortably
-             * inside the iris.
-             */
+            state.mouse.x +=
 
-            const pupilLimit =
-                CONFIG.eye.iris * 0.38;
+                (
+                    state.mouse.targetX -
+                    state.mouse.x
+                ) *
+                CONFIG.gaze.smooth;
+
+
+            state.mouse.y +=
+
+                (
+                    state.mouse.targetY -
+                    state.mouse.y
+                ) *
+                CONFIG.gaze.smooth;
+
+
+            updateIdle(
+                now
+            );
+
+
+            triggerMicroSaccade(
+                now
+            );
+
+
+            state.microSaccadeX +=
+
+                (
+                    state.microSaccadeTargetX -
+                    state.microSaccadeX
+                ) * 0.16;
+
+
+            state.microSaccadeY +=
+
+                (
+                    state.microSaccadeTargetY -
+                    state.microSaccadeY
+                ) * 0.16;
+
+
+            const anticipationX =
+                (
+                    state.mouse.targetX -
+                    state.mouse.x
+                ) *
+                CONFIG.gaze.anticipation *
+                state.mouseSpeed;
+
+
+            const anticipationY =
+                (
+                    state.mouse.targetY -
+                    state.mouse.y
+                ) *
+                CONFIG.gaze.anticipation *
+                state.mouseSpeed;
+
+
+            const gazeX =
+                Math.sign(
+                    state.mouse.x
+                ) *
+                Math.pow(
+                    Math.abs(
+                        state.mouse.x
+                    ),
+                    0.82
+                );
+
+
+            const gazeY =
+                Math.sign(
+                    state.mouse.y
+                ) *
+                Math.pow(
+                    Math.abs(
+                        state.mouse.y
+                    ),
+                    0.82
+                );
 
 
             const targetX =
-                THREE.MathUtils.clamp(
 
-                    state.mouse.x *
-                    pupilLimit,
-
-                    -pupilLimit,
-
-                    pupilLimit
-                );
+                (
+                    gazeX +
+                    anticipationX +
+                    state.microSaccadeX
+                ) *
+                CONFIG.eye.maxGaze;
 
 
             const targetY =
-                THREE.MathUtils.clamp(
 
-                    state.mouse.y *
-                    pupilLimit,
-
-                    -pupilLimit,
-
-                    pupilLimit
-                );
+                (
+                    gazeY +
+                    anticipationY +
+                    state.microSaccadeY
+                ) *
+                CONFIG.eye.maxGaze *
+                0.72;
 
 
             irisGroup.position.x +=
@@ -1671,7 +2460,8 @@ import {
                 (
                     targetX -
                     irisGroup.position.x
-                ) * 0.1;
+                ) *
+                CONFIG.gaze.pupilSmooth;
 
 
             irisGroup.position.y +=
@@ -1679,12 +2469,9 @@ import {
                 (
                     targetY -
                     irisGroup.position.y
-                ) * 0.1;
+                ) *
+                CONFIG.gaze.pupilSmooth;
 
-
-            /*
-             * Absolute safety boundary.
-             */
 
             const distance =
                 Math.sqrt(
@@ -1697,13 +2484,17 @@ import {
                 );
 
 
+            const limit =
+                CONFIG.eye.pupilMax;
+
+
             if (
                 distance >
-                pupilLimit
+                limit
             ) {
 
                 const factor =
-                    pupilLimit /
+                    limit /
                     distance;
 
 
@@ -1713,6 +2504,171 @@ import {
 
                 irisGroup.position.y *=
                     factor;
+            }
+        };
+
+
+    /* ========================================================
+       CLICK ANIMATION
+       ======================================================== */
+
+    const updateClick =
+        now => {
+
+            const elapsed =
+                now -
+                state.clickTime;
+
+
+            if (
+                elapsed >
+                CONFIG.click.duration
+            ) {
+
+                state.clickPower *=
+                    0.88;
+
+                return;
+            }
+
+
+            const progress =
+                THREE.MathUtils.clamp(
+
+                    elapsed /
+                    CONFIG.click.duration,
+
+                    0,
+                    1
+                );
+
+
+            const reaction =
+                Math.sin(
+                    progress *
+                    Math.PI
+                );
+
+
+            state.clickPower =
+                reaction;
+
+
+            const contraction =
+                THREE.MathUtils.lerp(
+
+                    1,
+
+                    CONFIG.click.pupilContract,
+
+                    reaction
+                );
+
+
+            pupil.scale.x =
+                0.38 *
+                contraction;
+
+
+            pupil.scale.y =
+                1.8 *
+                contraction;
+
+
+            const pulse =
+                1 +
+                reaction *
+                0.085;
+
+
+            iris.scale.set(
+                pulse,
+                pulse,
+                1
+            );
+        };
+
+
+    /* ========================================================
+       BLINK VISUAL
+       ======================================================== */
+
+    const updateBlinkVisual =
+        () => {
+
+            const amount =
+                state.blink.progress;
+
+
+            upperLidGroup.position.y =
+                -amount * 42;
+
+
+            lowerLidGroup.position.y =
+                amount * 35;
+
+
+            const blinkScale =
+                1 -
+                amount * 0.12;
+
+
+            irisGroup.scale.y =
+                blinkScale;
+        };
+
+
+    /* ========================================================
+       ARC UPDATE
+       ======================================================== */
+
+    const updateArcs =
+        delta => {
+
+            for (
+                let i =
+                    arcs.children.length - 1;
+
+                i >= 0;
+
+                i--
+            ) {
+
+                const arc =
+                    arcs.children[i];
+
+
+                arc.userData.age +=
+                    delta;
+
+
+                const progress =
+
+                    arc.userData.age /
+                    arc.userData.life;
+
+
+                arc.material.opacity =
+
+                    0.7 *
+                    (
+                        1 -
+                        progress
+                    );
+
+
+                if (
+                    progress >= 1
+                ) {
+
+                    arc.geometry.dispose();
+
+                    arc.material.dispose();
+
+                    arcs.remove(
+                        arc
+                    );
+                }
             }
         };
 
@@ -1733,8 +2689,12 @@ import {
             camera.updateProjectionMatrix();
 
 
+            const pixelRatio =
+                getPixelRatio();
+
+
             renderer.setPixelRatio(
-                getPixelRatio()
+                pixelRatio
             );
 
 
@@ -1748,6 +2708,11 @@ import {
             );
 
 
+            composer.setPixelRatio(
+                pixelRatio
+            );
+
+
             composer.setSize(
 
                 window.innerWidth,
@@ -1757,14 +2722,6 @@ import {
 
 
             updateEyeScale();
-
-
-            /*
-             * Immediately make sure the eye
-             * remains inside the new viewport.
-             */
-
-            updateEyePosition();
         };
 
 
@@ -1781,21 +2738,34 @@ import {
 
 
     /* ========================================================
-       INITIAL RESPONSIVE SETUP
+       INITIAL SETUP
        ======================================================== */
 
     updateEyeScale();
+
+
+    scheduleBlink(
+        performance.now()
+    );
+
+
+    scheduleMicroSaccade(
+        performance.now()
+    );
 
 
     /* ========================================================
        ANIMATION
        ======================================================== */
 
-    function animate(time) {
+    function animate(
+        time
+    ) {
 
         if (
             state.destroyed
         ) {
+
             return;
         }
 
@@ -1806,94 +2776,76 @@ import {
             );
 
 
-        /* ----------------------------------------------------
-           SMOOTH MOUSE
-           ---------------------------------------------------- */
-
-        state.mouse.x +=
-
-            (
-                state.mouse.targetX -
-                state.mouse.x
-            ) * 0.06;
-
-
-        state.mouse.y +=
-
-            (
-                state.mouse.targetY -
-                state.mouse.y
-            ) * 0.06;
+        const delta =
+            state.lastFrame
+                ? Math.min(
+                    (
+                        time -
+                        state.lastFrame
+                    ) / 1000,
+                    0.05
+                )
+                : 0.016;
 
 
-        /* ----------------------------------------------------
-           BOUNDED EYE
-           ---------------------------------------------------- */
-
-        updateEyePosition();
+        state.lastFrame =
+            time;
 
 
-        /* ----------------------------------------------------
-           BOUNDED PUPIL
-           ---------------------------------------------------- */
+        /* ====================================================
+           GAZE
+           ==================================================== */
 
-        updatePupil();
-
-
-        /* ----------------------------------------------------
-           CAMERA PARALLAX
-           ---------------------------------------------------- */
-
-        const cameraTargetX =
-            state.mouse.x * 18;
-
-
-        const cameraTargetY =
-            state.mouse.y * 13;
-
-
-        camera.position.x +=
-
-            (
-                cameraTargetX -
-                camera.position.x
-            ) * 0.025;
-
-
-        camera.position.y +=
-
-            (
-                cameraTargetY -
-                camera.position.y
-            ) * 0.025;
-
-
-        camera.lookAt(
-            0,
-            0,
-            0
+        updateGaze(
+            time
         );
 
 
-        /* ----------------------------------------------------
-           ANIMATION
-           ---------------------------------------------------- */
+        /* ====================================================
+           BLINK
+           ==================================================== */
+
+        updateBlink(
+            time
+        );
+
+
+        updateBlinkVisual();
+
+
+        /* ====================================================
+           CLICK
+           ==================================================== */
+
+        updateClick(
+            time
+        );
+
+
+        /* ====================================================
+           EYE ANIMATION
+           ==================================================== */
 
         if (
             !reducedMotion
         ) {
 
             irisLines.rotation.z +=
-                CONFIG.animation.rotation;
+                CONFIG.animation.irisRotation;
 
 
             irisRing.rotation.z -=
-                CONFIG.animation.rotation *
+                CONFIG.animation.irisRotation *
                 0.45;
 
 
+            irisCoreRing.rotation.z +=
+                CONFIG.animation.irisRotation *
+                0.8;
+
+
             energyGroup.rotation.z +=
-                CONFIG.animation.rotation *
+                CONFIG.animation.irisRotation *
                 0.25;
 
 
@@ -1901,152 +2853,179 @@ import {
                 CONFIG.animation.particles;
 
 
-            /*
-             * Subtle eye breathing.
-             */
-
             const breathe =
 
                 1 +
 
                 Math.sin(
                     time *
-                    CONFIG.animation.pulse
+                    CONFIG.animation.breathing
                 ) *
 
-                0.018;
+                0.014;
 
 
             const baseScale =
-                THREE.MathUtils.clamp(
 
-                    window.innerWidth / 1000,
-
-                    0.62,
-
-                    1
-                );
+                window.innerWidth <= 360
+                    ? 0.48
+                    : window.innerWidth <= 480
+                        ? 0.56
+                        : window.innerWidth <= 768
+                            ? 0.68
+                            : window.innerWidth <= 1024
+                                ? 0.82
+                                : 1;
 
 
             eyeGroup.scale.set(
 
-                baseScale * breathe,
+                baseScale *
+                breathe,
 
-                baseScale * breathe,
+                baseScale *
+                breathe,
 
                 1
             );
 
 
-            /*
-             * Ambient glow breathing.
-             */
+            const idleGlow =
+                state.idleActive
+                    ? 0.012
+                    : 0;
+
 
             glow.material.opacity =
 
                 0.055 +
 
                 Math.sin(
-                    time * 0.0015
-                ) * 0.018;
+                    time *
+                    CONFIG.animation.glowPulse
+                ) *
+                0.018 +
 
+                idleGlow;
 
-            /*
-             * Iris pulse.
-             */
 
             const irisPulse =
 
                 1 +
 
                 Math.sin(
-                    time * 0.002
-                ) * 0.025;
+                    time *
+                    CONFIG.animation.irisPulse
+                ) *
+
+                0.018;
 
 
-            iris.scale.set(
-                irisPulse,
-                irisPulse,
-                1
-            );
+            if (
+                time -
+                state.clickTime >
+                CONFIG.click.duration
+            ) {
 
+                iris.scale.set(
+                    irisPulse,
+                    irisPulse,
+                    1
+                );
+            }
 
-            /*
-             * Pupil glow pulse.
-             */
 
             pupilGlow.material.opacity =
 
                 0.62 +
 
                 Math.sin(
-                    time * 0.003
-                ) * 0.13;
-        }
-
-
-        /* ----------------------------------------------------
-           ELECTRIC ARCS
-           ---------------------------------------------------- */
-
-        if (
-            !reducedMotion &&
-            Math.random() < 0.025
-        ) {
-
-            createArc();
-        }
-
-
-        for (
-            let i = arcs.children.length - 1;
-            i >= 0;
-            i--
-        ) {
-
-            const arc =
-                arcs.children[i];
-
-
-            arc.userData.age +=
-                0.016;
-
-
-            const progress =
-
-                arc.userData.age /
-                arc.userData.life;
-
-
-            arc.material.opacity =
-
-                0.7 *
-                (
-                    1 -
-                    progress
-                );
+                    time *
+                    0.003
+                ) *
+                0.12;
 
 
             if (
-                progress >= 1
+                state.mouseSpeed >
+                0.55
             ) {
 
-                arc.geometry.dispose();
-
-                arc.material.dispose();
-
-                arcs.remove(
-                    arc
-                );
+                pupilGlow.material.opacity +=
+                    state.mouseSpeed *
+                    0.18;
             }
         }
 
 
-        /* ----------------------------------------------------
-           RENDER
-           ---------------------------------------------------- */
+        /* ====================================================
+           BLOOM SETTLING
+           ==================================================== */
 
-        composer.render();
+        if (
+            time -
+            state.clickTime >
+            CONFIG.click.duration
+        ) {
+
+            const targetBloom =
+                isMobile
+                    ? 0.72
+                    : CONFIG.bloom.strength;
+
+
+            bloomPass.strength +=
+
+                (
+                    targetBloom -
+                    bloomPass.strength
+                ) *
+                0.08;
+        }
+
+
+        /* ====================================================
+           RANDOM ELECTRIC ARCS
+           ==================================================== */
+
+        if (
+            !reducedMotion &&
+            Math.random() <
+                (
+                    isMobile
+                        ? 0.008
+                        : 0.018
+                )
+        ) {
+
+            createArc(
+                0.6 +
+                Math.random() *
+                0.4
+            );
+        }
+
+
+        /* ====================================================
+           UPDATE EFFECTS
+           ==================================================== */
+
+        updateArcs(
+            delta
+        );
+
+
+        /* ====================================================
+           RENDER
+           ==================================================== */
+
+        composer.render(
+            delta
+        );
+
+
+        state.mouseSpeed *=
+            0.94;
     }
 
 
@@ -2054,7 +3033,9 @@ import {
        START
        ======================================================== */
 
-    animate(0);
+    animate(
+        performance.now()
+    );
 
 
     /* ========================================================
@@ -2064,7 +3045,8 @@ import {
     const cleanup =
         () => {
 
-            state.destroyed = true;
+            state.destroyed =
+                true;
 
 
             cancelAnimationFrame(
@@ -2081,6 +3063,30 @@ import {
             window.removeEventListener(
                 'mouseleave',
                 onMouseLeave
+            );
+
+
+            window.removeEventListener(
+                'pointerdown',
+                onPointerDown
+            );
+
+
+            window.removeEventListener(
+                'click',
+                onClick
+            );
+
+
+            window.removeEventListener(
+                'touchmove',
+                onTouchMove
+            );
+
+
+            window.removeEventListener(
+                'touchend',
+                onTouchEnd
             );
 
 
@@ -2107,7 +3113,7 @@ import {
 
                         if (
                             Array.isArray(
-                                object.mateFrial
+                                object.material
                             )
                         ) {
 
@@ -2143,5 +3149,6 @@ import {
             once: true
         }
     );
+
 
 })();
