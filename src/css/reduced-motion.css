@@ -1,4 +1,40 @@
 /* ============================================================
+   TOUCH DEVICES
+   Prevent hover state from getting "stuck"
+   ============================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  #back-to-top:hover {
+    color: var(--red);
+
+    border-color: rgba(255, 0, 60, 0.3);
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255, 0, 60, 0.14),
+        rgba(255, 0, 60, 0.04)
+      ),
+      rgba(10, 10, 10, 0.88);
+
+    transform:
+      translateY(0) scale(1);
+
+    box-shadow:
+      0 8px 25px rgba(0, 0, 0, 0.35),
+      0 0 12px rgba(255, 0, 60, 0.08);
+  }
+
+  #back-to-top:hover::after {
+    transform: none;
+  }
+
+  #back-to-top:active {
+    transform: scale(0.94);
+  }
+}
+
+/* ============================================================
    REDUCED MOTION
    Accessibility: respect user's motion preferences
    ============================================================ */
