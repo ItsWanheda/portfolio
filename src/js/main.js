@@ -4831,40 +4831,48 @@ function openProjectModal(id) {
   openModal(p.name, body, p.emoji + ' Project');
 }
 
-/* 
-============================================================
+/* ============================================================
    GITHUB
 ============================================================ */
 
 const GITHUB_USERNAME = 'ItsWanheda';
-const GITHUB_API = 'https://api.github.com';
-
-const githubHeaders = {
-  Accept: 'application/vnd.github+json',
-  'X-GitHub-Api-Version': '2026-03-10'
-};
+const GITHUB_API = '/api/github';
 
 
 /* ============================================================
    GITHUB API REQUEST
 ============================================================ */
 
-async function githubRequest(endpoint) {
-  const response = await fetch(`${GITHUB_API}${endpoint}`, {
-    method: 'GET',
-    headers: githubHeaders,
-    cache: 'no-store'
-  });
+async function githubRequest() {
+
+  const response = await fetch(
+    GITHUB_API,
+    {
+      method: 'GET',
+
+      headers: {
+        Accept: 'application/json'
+      },
+
+      cache: 'no-store'
+    }
+  );
+
 
   if (!response.ok) {
-    const error = await response.text();
+
+    const error =
+      await response.text();
 
     throw new Error(
       `GitHub API ${response.status}: ${error}`
     );
+
   }
 
+
   return response.json();
+
 }
 
 
@@ -4873,19 +4881,32 @@ async function githubRequest(endpoint) {
 ============================================================ */
 
 function formatGithubNumber(value) {
+
   if (typeof value !== 'number') {
     return '0';
   }
 
+
   if (value >= 1000000) {
-    return `${(value / 1000000).toFixed(1)}M`;
+
+    return `${(
+      value / 1000000
+    ).toFixed(1)}M`;
+
   }
+
 
   if (value >= 1000) {
-    return `${(value / 1000).toFixed(1)}K`;
+
+    return `${(
+      value / 1000
+    ).toFixed(1)}K`;
+
   }
 
+
   return value.toString();
+
 }
 
 
@@ -4894,181 +4915,150 @@ function formatGithubNumber(value) {
 ============================================================ */
 
 function escapeGithubHTML(value = '') {
+
   return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+    .replace(
+      /</g,
+      '&lt;'
+    )
+    .replace(
+      />/g,
+      '&gt;'
+    )
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
 }
 
 
 /* ============================================================
-   LOAD PROFILE
+   RENDER PROFILE
 ============================================================ */
 
-async function loadGithubProfile() {
+function renderGithubProfile(profile) {
 
-  const profile = await githubRequest(
-    `/users/${GITHUB_USERNAME}`
-  );
+  const avatar =
+    document.getElementById(
+      'gh-avatar'
+    );
 
-  const avatar = document.getElementById('gh-avatar');
-  const username = document.getElementById('gh-username');
-  const bio = document.getElementById('gh-bio');
+  const username =
+    document.getElementById(
+      'gh-username'
+    );
+
+  const bio =
+    document.getElementById(
+      'gh-bio'
+    );
 
   const reposCount =
-    document.getElementById('gh-repos-count');
+    document.getElementById(
+      'gh-repos-count'
+    );
 
   const followersCount =
-    document.getElementById('gh-followers-count');
+    document.getElementById(
+      'gh-followers-count'
+    );
 
   const followingCount =
-    document.getElementById('gh-following-count');
+    document.getElementById(
+      'gh-following-count'
+    );
 
 
-  /* Avatar */
+  /* ==========================================================
+     AVATAR
+  ========================================================== */
 
   if (avatar) {
-    avatar.src = profile.avatar_url;
-    avatar.alt = `${profile.login} GitHub avatar`;
+
+    avatar.src =
+      profile.avatar_url;
+
+    avatar.alt =
+      `${profile.login} GitHub avatar`;
+
   }
 
 
-  /* Username */
+  /* ==========================================================
+     USERNAME
+  ========================================================== */
 
   if (username) {
-    username.textContent = `@${profile.login}`;
+
+    username.textContent =
+      `@${profile.login}`;
+
   }
 
 
-  /* Bio */
+  /* ==========================================================
+     BIO
+  ========================================================== */
 
   if (bio) {
+
     bio.textContent =
       profile.bio ||
       'Cybersecurity enthusiast & backend developer.';
+
   }
 
 
-  /* Repositories */
+  /* ==========================================================
+     REPOSITORIES
+  ========================================================== */
 
   if (reposCount) {
+
     reposCount.textContent =
-      formatGithubNumber(profile.public_repos);
+      formatGithubNumber(
+        profile.public_repos
+      );
+
   }
 
 
-  /* Followers */
+  /* ==========================================================
+     FOLLOWERS
+  ========================================================== */
 
   if (followersCount) {
+
     followersCount.textContent =
-      formatGithubNumber(profile.followers);
+      formatGithubNumber(
+        profile.followers
+      );
+
   }
 
 
-  /* Following */
+  /* ==========================================================
+     FOLLOWING
+  ========================================================== */
 
   if (followingCount) {
+
     followingCount.textContent =
-      formatGithubNumber(profile.following);
+      formatGithubNumber(
+        profile.following
+      );
+
   }
 
-
-  return profile;
-}
-
-
-/* ============================================================
-   LOAD REPOSITORIES
-============================================================ */
-
-async function loadGithubRepositories() {
-
-  const repos = await githubRequest(
-    `/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`
-  );
-
-  /*
-   * Don't show forked repositories.
-   * Remove this filter if you want to show forks too.
-   */
-
-  return repos.filter(repo => !repo.fork);
-}
-
-
-/* ============================================================
-   TOTAL STARS
-============================================================ */
-
-function getTotalStars(repos) {
-
-  return repos.reduce(
-    (total, repo) =>
-      total + Number(repo.stargazers_count || 0),
-    0
-  );
-}
-
-
-/* ============================================================
-   TOTAL FORKS
-============================================================ */
-
-function getTotalForks(repos) {
-
-  return repos.reduce(
-    (total, repo) =>
-      total + Number(repo.forks_count || 0),
-    0
-  );
-}
-
-
-/* ============================================================
-   TOTAL COMMITS
-============================================================ */
-
-async function getTotalCommits(repos) {
-
-  let total = 0;
-
-  const results = await Promise.all(
-    repos.map(async (repo) => {
-
-      try {
-
-        const contributors = await githubRequest(
-          `/repos/${GITHUB_USERNAME}/${repo.name}/contributors?per_page=100`
-        );
-
-        const me = contributors.find(
-          contributor =>
-            contributor.login?.toLowerCase() ===
-            GITHUB_USERNAME.toLowerCase()
-        );
-
-        return me?.contributions || 0;
-
-      } catch (error) {
-
-        console.warn(
-          `[GitHub] Could not get commits for ${repo.name}`,
-          error
-        );
-
-        return 0;
-      }
-    })
-  );
-
-  total = results.reduce(
-    (sum, commits) => sum + commits,
-    0
-  );
-
-  return total;
 }
 
 
@@ -5076,10 +5066,15 @@ async function getTotalCommits(repos) {
    RENDER REPOSITORIES
 ============================================================ */
 
-function renderGithubRepositories(repos) {
+function renderGithubRepositories(
+  repositories
+) {
 
   const reposGrid =
-    document.getElementById('repos-grid');
+    document.getElementById(
+      'repos-grid'
+    );
+
 
   if (!reposGrid) {
 
@@ -5088,10 +5083,11 @@ function renderGithubRepositories(repos) {
     );
 
     return;
+
   }
 
 
-  if (!repos.length) {
+  if (!repositories.length) {
 
     reposGrid.innerHTML = `
       <div class="github-empty">
@@ -5100,78 +5096,107 @@ function renderGithubRepositories(repos) {
     `;
 
     return;
+
   }
 
 
-  reposGrid.innerHTML = repos.map(repo => {
+  reposGrid.innerHTML =
+    repositories
+      .map(repo => {
 
-    const language =
-      repo.language || 'Other';
+        const language =
+          repo.language ||
+          'Other';
 
-    const description =
-      repo.description ||
-      'No description available.';
-
-
-    return `
-      <article class="repo-card">
-
-        <div class="repo-card-header">
-
-          <div class="repo-icon">
-            <i class="fa-brands fa-github"></i>
-          </div>
-
-          <div class="repo-title-wrapper">
-
-            <h3 class="repo-name">
-              ${escapeGithubHTML(repo.name)}
-            </h3>
-
-            <span class="repo-visibility">
-              ${repo.archived ? 'Archived' : 'Public'}
-            </span>
-
-          </div>
-
-        </div>
+        const description =
+          repo.description ||
+          'No description available.';
 
 
-        <p class="repo-description">
-          ${escapeGithubHTML(description)}
-        </p>
+        return `
+          <article class="repo-card">
+
+            <div class="repo-card-header">
+
+              <div class="repo-icon">
+                <i class="fa-brands fa-github"></i>
+              </div>
+
+              <div class="repo-title-wrapper">
+
+                <h3 class="repo-name">
+                  ${escapeGithubHTML(
+          repo.name
+        )}
+                </h3>
+
+                <span class="repo-visibility">
+                  ${repo.archived
+            ? 'Archived'
+            : 'Public'
+          }
+                </span>
+
+              </div>
+
+            </div>
 
 
-        <div class="repo-meta">
-
-          <span class="repo-language">
-            ${escapeGithubHTML(language)}
-          </span>
-
-          <span class="repo-stars">
-            ★ ${formatGithubNumber(repo.stargazers_count)}
-          </span>
-
-          <span class="repo-forks">
-            ⑂ ${formatGithubNumber(repo.forks_count)}
-          </span>
-
-        </div>
+            <p class="repo-description">
+              ${escapeGithubHTML(
+            description
+          )}
+            </p>
 
 
-        <a
-          href="${repo.html_url}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="repo-link"
-        >
-          View Repository →
-        </a>
+            <div class="repo-meta">
 
-      </article>
-    `;
+              <span class="repo-language">
+                ${escapeGithubHTML(
+            language
+          )}
+              </span>
 
-  }).join('');
+              <span class="repo-stars">
+                ★ ${formatGithubNumber(
+            Number(
+              repo.stargazers_count ||
+              0
+            )
+          )
+          }
+              </span>
+
+              <span class="repo-forks">
+                ⑂ ${formatGithubNumber(
+            Number(
+              repo.forks_count ||
+              0
+            )
+          )
+          }
+              </span>
+
+            </div>
+
+
+            <a
+              href="${escapeGithubHTML(
+            repo.html_url
+          )}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="repo-link"
+            >
+              View Repository →
+            </a>
+
+          </article>
+        `;
+
+      })
+      .join('');
+
 }
 
 
@@ -5182,7 +5207,9 @@ function renderGithubRepositories(repos) {
 export async function renderGithub() {
 
   const reposGrid =
-    document.getElementById('repos-grid');
+    document.getElementById(
+      'repos-grid'
+    );
 
 
   if (!reposGrid) {
@@ -5192,10 +5219,13 @@ export async function renderGithub() {
     );
 
     return;
+
   }
 
 
-  /* Loading state */
+  /* ==========================================================
+     LOADING
+  ========================================================== */
 
   reposGrid.innerHTML = `
     <div class="github-loading">
@@ -5211,64 +5241,89 @@ export async function renderGithub() {
     );
 
 
-    /*
-     * Load profile and repositories.
-     */
+    /* ========================================================
+       SINGLE REQUEST
+    ======================================================== */
 
-    const [
-      profile,
-      repos
-    ] = await Promise.all([
-      loadGithubProfile(),
-      loadGithubRepositories()
-    ]);
+    const data =
+      await githubRequest();
 
 
-    /*
-     * Render repositories.
-     */
+    const profile =
+      data.profile;
 
-    renderGithubRepositories(repos);
+    const repositories =
+      Array.isArray(
+        data.repositories
+      )
+        ? data.repositories
+        : [];
+
+    const stats =
+      data.stats || {};
 
 
-    /*
-     * Calculate stars and forks.
-     */
+    /* ========================================================
+       PROFILE
+    ======================================================== */
+
+    renderGithubProfile(
+      profile
+    );
+
+
+    /* ========================================================
+       REPOSITORIES
+    ======================================================== */
+
+    renderGithubRepositories(
+      repositories
+    );
+
+
+    /* ========================================================
+       STATS
+    ======================================================== */
 
     const totalStars =
-      getTotalStars(repos);
+      Number(
+        stats.totalStars || 0
+      );
 
     const totalForks =
-      getTotalForks(repos);
-
-
-    /*
-     * Calculate commits.
-     *
-     * This makes one contributor request
-     * for each public repository.
-     */
+      Number(
+        stats.totalForks || 0
+      );
 
     const totalCommits =
-      await getTotalCommits(repos);
+      Number(
+        stats.totalCommits || 0
+      );
 
 
-    /*
-     * Update commit counter.
-     */
+    /* ========================================================
+       COMMIT COUNTER
+    ======================================================== */
 
     const commitsCount =
-      document.getElementById('gh-commits-count');
+      document.getElementById(
+        'gh-commits-count'
+      );
+
 
     if (commitsCount) {
+
       commitsCount.textContent =
-        formatGithubNumber(totalCommits);
+        formatGithubNumber(
+          totalCommits
+        );
+
     }
 
 
-    /*
-     * Debug information.
-     */
+    /* ========================================================
+       DEBUG
+    ======================================================== */
 
     console.log(
       '[GitHub] Profile loaded:',
@@ -5277,7 +5332,7 @@ export async function renderGithub() {
 
     console.log(
       '[GitHub] Repositories:',
-      repos.length
+      repositories.length
     );
 
     console.log(
@@ -5325,7 +5380,9 @@ export async function renderGithub() {
 
       </div>
     `;
+
   }
+
 }
 
 /* ============================================================
