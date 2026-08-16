@@ -5509,7 +5509,7 @@ function renderBlog() {
 
 
 /* ============================================================
-   OPEN BLOG MODAL
+   BLOG MODAL
 ============================================================ */
 
 function openBlogModal(index, updateUrl = true) {
@@ -5520,25 +5520,29 @@ function openBlogModal(index, updateUrl = true) {
 
 
   /* ==========================================================
-     MODAL HEADER
+     MODAL ELEMENTS
   ========================================================== */
 
+  const modal = document.getElementById('blog-modal');
   const modalNumber = document.getElementById('modal-number');
   const modalTag = document.getElementById('modal-tag');
   const modalTitle = document.getElementById('modal-title');
   const body = document.getElementById('modal-body');
-  const modal = document.getElementById('blog-modal');
 
   if (
+    !modal ||
     !modalNumber ||
     !modalTag ||
     !modalTitle ||
-    !body ||
-    !modal
+    !body
   ) {
     return;
   }
 
+
+  /* ==========================================================
+     MODAL HEADER
+  ========================================================== */
 
   modalNumber.textContent = blog.num;
   modalTag.textContent = blog.tag;
@@ -5566,7 +5570,6 @@ function openBlogModal(index, updateUrl = true) {
   ========================================================== */
 
   modal.classList.add('active');
-
   document.body.style.overflow = 'hidden';
 
 
@@ -5593,14 +5596,14 @@ function openBlogModal(index, updateUrl = true) {
 
 
   /* ==========================================================
-     RESET SCROLL
+     RESET MODAL SCROLL
   ========================================================== */
 
   body.scrollTop = 0;
 
 
   /* ==========================================================
-     SCROLL PROGRESS
+     BLOG SCROLL PROGRESS
   ========================================================== */
 
   const progressBar =
@@ -5640,10 +5643,18 @@ function closeBlogModal(updateUrl = true) {
   if (!modal) return;
 
 
+  /* ==========================================================
+     CLOSE MODAL
+  ========================================================== */
+
   modal.classList.remove('active');
 
   document.body.style.overflow = '';
 
+
+  /* ==========================================================
+     REMOVE SCROLL HANDLER
+  ========================================================== */
 
   const body =
     document.getElementById('modal-body');
@@ -5678,14 +5689,13 @@ function closeBlogModal(updateUrl = true) {
 
 
 /* ============================================================
-   OPEN BLOG FROM URL
+   OPEN BLOG FROM URL HASH
 ============================================================ */
 
 function openBlogFromHash() {
 
   const hash =
     window.location.hash;
-
 
   if (!hash.startsWith('#blog-')) {
     return;
@@ -5724,9 +5734,7 @@ function openBlogFromHash() {
 window.addEventListener(
   'hashchange',
   () => {
-
     openBlogFromHash();
-
   }
 );
 
@@ -5767,8 +5775,12 @@ document.addEventListener(
        CLOSE BUTTON
     ======================================================== */
 
+    const modal =
+      document.getElementById('blog-modal');
+
     const closeBtn =
-      document.querySelector('.modal-close');
+      modal?.querySelector('.modal-close');
+
 
     if (closeBtn) {
 
@@ -5785,9 +5797,6 @@ document.addEventListener(
     /* ========================================================
        CLICK OUTSIDE MODAL
     ======================================================== */
-
-    const modal =
-      document.getElementById('blog-modal');
 
     if (modal) {
 
@@ -5829,6 +5838,7 @@ document.addEventListener(
 
   }
 );
+
 /* ============================================================
    CONTACT
 ============================================================ */
@@ -5976,27 +5986,6 @@ function initContactForm() {
     }
   });
 }
-
-/* ============================================================
-   MODAL
-============================================================ */
-function openModal(title, bodyHTML, label = '') {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-label').textContent = label;
-  document.getElementById('modal-body').innerHTML = bodyHTML;
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
 
 /* ============================================================
    COMMAND PALETTE (Ctrl+K)
