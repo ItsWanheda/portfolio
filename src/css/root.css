@@ -1,6 +1,13 @@
 /* ============================================================
    RESET & ROOT VARIABLES
+   WANHEDA // DESIGN SYSTEM
    ============================================================ */
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
 *,
 *::before,
 *::after {
@@ -11,134 +18,546 @@
 
 html {
   scroll-behavior: smooth;
+
   font-size: 16px;
+
   -webkit-text-size-adjust: 100%;
+
   scrollbar-gutter: stable;
+
   scrollbar-width: thin;
-  scrollbar-color: var(--red) var(--black);
+
+  scrollbar-color:
+    var(--red)
+    var(--black);
 }
 
 body {
-  background: var(--black);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: var(--lh-relaxed);
+  background:
+    var(--black);
+
+  color:
+    var(--white);
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    var(--text-base);
+
+  line-height:
+    var(--lh-relaxed);
+
   overflow-x: hidden;
+
   cursor: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+
+  text-rendering:
+    optimizeLegibility;
 }
+
+
+/* ============================================================
+   LOADING STATE
+   ============================================================ */
 
 body.loading {
   overflow: hidden;
 }
 
+
+/* ============================================================
+   ROOT VARIABLES
+   ============================================================ */
+
 :root {
-  /* -----------------------------
-     COLORS
-     ----------------------------- */
-  --nav-bg: rgba(10, 10, 10, 0.7);
-  --nav-mobile-bg: rgba(10, 10, 10, 0.97);
 
-  --black: #0A0A0A;
-  --dark: #121212;
-  --darker: #0D0D0D;
-  --card: #161616;
-  --card2: #1A1A1A;
+  /* ----------------------------------------------------------
+     CORE COLORS
+     ---------------------------------------------------------- */
 
-  --red: #FF003C;
-  --red2: #CC0030;
-  --red-glow: rgba(255, 0, 60, 0.18);
-  --red-faint: rgba(255, 0, 60, 0.07);
+  --black:
+    #000000;
 
-  --green: #00ff41;
-  --white: #F5F5F5;
-  --muted: #8a8a8a;
-  --muted-2: #5a5a5a;
+  --black-soft:
+    #050505;
 
-  --border: rgba(255, 255, 255, 0.07);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --border-red: rgba(255, 0, 60, 0.3);
-  --border-red-strong: rgba(255, 0, 60, 0.5);
+  --dark:
+    #0A0A0A;
 
-  /* -----------------------------
-     TYPOGRAPHY — fluid scale
-     ----------------------------- */
-  --font-mono: 'Share Tech Mono', monospace;
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --darker:
+    #0D0D0D;
 
-  /* Type scale (1.250 ratio) — fully fluid */
-  --text-xs: clamp(0.7rem, 0.68rem + 0.1vw, 0.75rem);
-  --text-sm: clamp(0.8rem, 0.77rem + 0.15vw, 0.875rem);
-  --text-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
-  --text-lg: clamp(1rem, 0.93rem + 0.35vw, 1.125rem);
-  --text-xl: clamp(1.125rem, 1rem + 0.6vw, 1.35rem);
-  --text-2xl: clamp(1.4rem, 1.2rem + 1vw, 1.75rem);
-  --text-3xl: clamp(1.8rem, 1.5rem + 1.5vw, 2.4rem);
-  --text-4xl: clamp(2.2rem, 1.8rem + 2vw, 3.2rem);
-  --text-5xl: clamp(2.8rem, 2.2rem + 3vw, 4.2rem);
-  --text-6xl: clamp(3.2rem, 2.4rem + 4vw, 5.2rem);
+  --darkest:
+    #121212;
 
-  /* Line heights */
-  --lh-tight: 1.05;
-  --lh-snug: 1.2;
-  --lh-normal: 1.5;
-  --lh-relaxed: 1.7;
-  --lh-loose: 1.85;
+  --card:
+    #161616;
 
-  /* Letter spacing */
-  --ls-tighter: -0.03em;
-  --ls-tight: -0.02em;
-  --ls-normal: 0;
-  --ls-wide: 0.05em;
-  --ls-wider: 0.1em;
-  --ls-widest: 0.25em;
+  --card2:
+    #1A1A1A;
 
-  /* -----------------------------
-     SPACING — 4px base scale
-     ----------------------------- */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-7: 28px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-14: 56px;
-  --space-16: 64px;
-  --space-20: 80px;
-  --space-24: 96px;
-  --space-28: 112px;
-  --space-32: 128px;
 
-  /* Section rhythm */
-  --section-pad: clamp(72px, 10vw, 120px);
-  --container-px: clamp(20px, 5vw, 60px);
-  --container-max: 1240px;
+  /* ----------------------------------------------------------
+     PRIMARY RED
+     ---------------------------------------------------------- */
 
-  /* Grid */
-  --grid-gap: clamp(16px, 2.5vw, 24px);
-  --grid-gap-lg: clamp(28px, 4vw, 48px);
-  --grid-line: rgba(255, 0, 60, 0.04);
-  --grid-line-strong: rgba(255, 0, 60, 0.08);
+  --red:
+    #FF003C;
 
-  /* Radii */
-  --r-sm: 4px;
-  --r-md: 6px;
-  --r-lg: 10px;
-  --r-xl: 16px;
-  --r-full: 9999px;
+  --red2:
+    #CC0030;
 
-  /* -----------------------------
+  --red-dark:
+    #8F0024;
+
+  --red-bright:
+    #FF174F;
+
+  --red-glow:
+    rgba(255, 0, 60, 0.18);
+
+  --red-glow-strong:
+    rgba(255, 0, 60, 0.35);
+
+  --red-faint:
+    rgba(255, 0, 60, 0.07);
+
+  --red-ultra-faint:
+    rgba(255, 0, 60, 0.035);
+
+
+  /* ----------------------------------------------------------
+     TERMINAL / HACKER COLORS
+     ---------------------------------------------------------- */
+
+  --terminal-green:
+    #00FF41;
+
+  --terminal-green-dim:
+    rgba(0, 255, 65, 0.45);
+
+  --terminal-green-faint:
+    rgba(0, 255, 65, 0.08);
+
+  --terminal-red:
+    #FF003C;
+
+  --terminal-white:
+    #EDEDED;
+
+  --terminal-dim:
+    rgba(255, 255, 255, 0.38);
+
+  --terminal-muted:
+    rgba(255, 255, 255, 0.18);
+
+
+  /* ----------------------------------------------------------
+     TEXT
+     ---------------------------------------------------------- */
+
+  --white:
+    #F5F5F5;
+
+  --white-soft:
+    #DADADA;
+
+  --muted:
+    #8A8A8A;
+
+  --muted-2:
+    #5A5A5A;
+
+  --muted-3:
+    #353535;
+
+
+  /* ----------------------------------------------------------
+     NAVIGATION
+     ---------------------------------------------------------- */
+
+  --nav-bg:
+    rgba(10, 10, 10, 0.7);
+
+  --nav-mobile-bg:
+    rgba(10, 10, 10, 0.97);
+
+
+  /* ----------------------------------------------------------
+     BORDERS
+     ---------------------------------------------------------- */
+
+  --border:
+    rgba(255, 255, 255, 0.07);
+
+  --border-soft:
+    rgba(255, 255, 255, 0.045);
+
+  --border-strong:
+    rgba(255, 255, 255, 0.12);
+
+  --border-red:
+    rgba(255, 0, 60, 0.3);
+
+  --border-red-strong:
+    rgba(255, 0, 60, 0.5);
+
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY
+     ---------------------------------------------------------- */
+
+  --font-mono:
+    "Share Tech Mono",
+    "Courier New",
+    Consolas,
+    Monaco,
+    monospace;
+
+  --font-display:
+    "Syne",
+    sans-serif;
+
+  --font-body:
+    "DM Sans",
+    sans-serif;
+
+
+  /* ----------------------------------------------------------
+     TYPE SCALE
+     1.250 RATIO / FLUID
+     ---------------------------------------------------------- */
+
+  --text-xs:
+    clamp(
+      0.7rem,
+      0.68rem + 0.1vw,
+      0.75rem
+    );
+
+  --text-sm:
+    clamp(
+      0.8rem,
+      0.77rem + 0.15vw,
+      0.875rem
+    );
+
+  --text-base:
+    clamp(
+      0.9rem,
+      0.85rem + 0.25vw,
+      1rem
+    );
+
+  --text-lg:
+    clamp(
+      1rem,
+      0.93rem + 0.35vw,
+      1.125rem
+    );
+
+  --text-xl:
+    clamp(
+      1.125rem,
+      1rem + 0.6vw,
+      1.35rem
+    );
+
+  --text-2xl:
+    clamp(
+      1.4rem,
+      1.2rem + 1vw,
+      1.75rem
+    );
+
+  --text-3xl:
+    clamp(
+      1.8rem,
+      1.5rem + 1.5vw,
+      2.4rem
+    );
+
+  --text-4xl:
+    clamp(
+      2.2rem,
+      1.8rem + 2vw,
+      3.2rem
+    );
+
+  --text-5xl:
+    clamp(
+      2.8rem,
+      2.2rem + 3vw,
+      4.2rem
+    );
+
+  --text-6xl:
+    clamp(
+      3.2rem,
+      2.4rem + 4vw,
+      5.2rem
+    );
+
+
+  /* ----------------------------------------------------------
+     LINE HEIGHTS
+     ---------------------------------------------------------- */
+
+  --lh-tight:
+    1.05;
+
+  --lh-snug:
+    1.2;
+
+  --lh-normal:
+    1.5;
+
+  --lh-relaxed:
+    1.7;
+
+  --lh-loose:
+    1.85;
+
+
+  /* ----------------------------------------------------------
+     LETTER SPACING
+     ---------------------------------------------------------- */
+
+  --ls-tighter:
+    -0.03em;
+
+  --ls-tight:
+    -0.02em;
+
+  --ls-normal:
+    0;
+
+  --ls-wide:
+    0.05em;
+
+  --ls-wider:
+    0.1em;
+
+  --ls-widest:
+    0.25em;
+
+  --ls-terminal:
+    0.12em;
+
+  --ls-terminal-wide:
+    0.2em;
+
+
+  /* ----------------------------------------------------------
+     SPACING
+     4PX BASE SCALE
+     ---------------------------------------------------------- */
+
+  --space-1:
+    4px;
+
+  --space-2:
+    8px;
+
+  --space-3:
+    12px;
+
+  --space-4:
+    16px;
+
+  --space-5:
+    20px;
+
+  --space-6:
+    24px;
+
+  --space-7:
+    28px;
+
+  --space-8:
+    32px;
+
+  --space-10:
+    40px;
+
+  --space-12:
+    48px;
+
+  --space-14:
+    56px;
+
+  --space-16:
+    64px;
+
+  --space-20:
+    80px;
+
+  --space-24:
+    96px;
+
+  --space-28:
+    112px;
+
+  --space-32:
+    128px;
+
+
+  /* ----------------------------------------------------------
+     SECTION RHYTHM
+     ---------------------------------------------------------- */
+
+  --section-pad:
+    clamp(
+      72px,
+      10vw,
+      120px
+    );
+
+  --container-px:
+    clamp(
+      20px,
+      5vw,
+      60px
+    );
+
+  --container-max:
+    1240px;
+
+
+  /* ----------------------------------------------------------
+     GRID
+     ---------------------------------------------------------- */
+
+  --grid-gap:
+    clamp(
+      16px,
+      2.5vw,
+      24px
+    );
+
+  --grid-gap-lg:
+    clamp(
+      28px,
+      4vw,
+      48px
+    );
+
+  --grid-line:
+    rgba(255, 0, 60, 0.04);
+
+  --grid-line-strong:
+    rgba(255, 0, 60, 0.08);
+
+
+  /* ----------------------------------------------------------
+     TERMINAL DIMENSIONS
+     ---------------------------------------------------------- */
+
+  --terminal-width:
+    min(850px, 88vw);
+
+  --terminal-height:
+    min(430px, 60vh);
+
+  --terminal-border:
+    rgba(255, 0, 60, 0.18);
+
+  --terminal-bg:
+    rgba(3, 3, 3, 0.96);
+
+  --terminal-shadow:
+    rgba(255, 0, 60, 0.04);
+
+
+  /* ----------------------------------------------------------
+     CRT
+     ---------------------------------------------------------- */
+
+  --crt-line:
+    rgba(255, 255, 255, 0.025);
+
+  --crt-noise-opacity:
+    0.035;
+
+  --crt-vignette:
+    rgba(0, 0, 0, 0.85);
+
+
+  /* ----------------------------------------------------------
+     RADII
+     ---------------------------------------------------------- */
+
+  --r-sm:
+    4px;
+
+  --r-md:
+    6px;
+
+  --r-lg:
+    10px;
+
+  --r-xl:
+    16px;
+
+  --r-full:
+    9999px;
+
+
+  /* ----------------------------------------------------------
      EASING
-     ----------------------------- */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+     ---------------------------------------------------------- */
+
+  --ease-out:
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+
+  --ease-in-out:
+    cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    );
+
+  --ease-spring:
+    cubic-bezier(
+      0.34,
+      1.56,
+      0.64,
+      1
+    );
+
+  --ease-terminal:
+    cubic-bezier(
+      0.77,
+      0,
+      0.18,
+      1
+    );
+
+
+  /* ----------------------------------------------------------
+     TRANSITIONS
+     ---------------------------------------------------------- */
+
+  --transition-fast:
+    150ms var(--ease-out);
+
+  --transition-base:
+    250ms var(--ease-out);
+
+  --transition-slow:
+    450ms var(--ease-out);
+
 }

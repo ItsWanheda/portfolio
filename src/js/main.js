@@ -6622,5 +6622,4 @@ function initAll() {
   initTheme();
   initContactForm();
   initClickParticles();
-  initPWA();
 }
