@@ -1,16 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "name": "itswanheda-portfolio",
+  "name": "itswanheda",
   "cleanUrls": true,
   "trailingSlash": false,
-  
+
   "buildCommand": null,
   "devCommand": null,
   "outputDirectory": ".",
-  
+
   "framework": null,
-  
+
   "rewrites": [
     {
       "source": "/src/(.*)",
@@ -21,7 +21,7 @@
       "destination": "/index.html"
     }
   ],
-  
+
   "headers": [
     {
       "source": "/(.*)",
@@ -36,7 +36,7 @@
         },
         {
           "key": "X-XSS-Protection",
-          "value": "1; mode=block"
+          "value": "0"
         },
         {
           "key": "Referrer-Policy",
@@ -49,22 +49,24 @@
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.github.com https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; worker-src 'self' blob:; child-src 'self' blob:; upgrade-insecure-requests"
         }
       ]
     },
+
     {
       "source": "/src/js/(.*)",
       "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'"
-        },
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
         }
       ]
     },
+
     {
       "source": "/src/css/(.*)",
       "headers": [
@@ -74,6 +76,7 @@
         }
       ]
     },
+
     {
       "source": "/src/images/(.*)",
       "headers": [
@@ -83,6 +86,7 @@
         }
       ]
     },
+
     {
       "source": "/(.*).html",
       "headers": [
@@ -92,6 +96,7 @@
         }
       ]
     },
+
     {
       "source": "/(.*).(png|jpg|jpeg|gif|svg|ico|webp|woff2)",
       "headers": [
@@ -102,7 +107,7 @@
       ]
     }
   ],
-  
+
   "github": {
     "silent": false,
     "autoAlias": true
