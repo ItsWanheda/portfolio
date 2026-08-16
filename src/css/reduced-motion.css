@@ -312,7 +312,6 @@
     transition: none;
   }
 
-
   /* ----------------------------------------------------------
      GITHUB
      ---------------------------------------------------------- */
@@ -320,10 +319,23 @@
   .github-profile-card,
   .github-avatar,
   .gh-stat,
+  .contrib-cell,
   .repo-card,
+  .repo-icon,
   .repo-link,
-  .contrib-cell {
-    transition: none;
+  .repo-card::before {
+    transition: none !important;
+  }
+
+  .github-profile-card:hover,
+  .gh-stat:hover,
+  .repo-card:hover,
+  .contrib-cell:hover {
+    transform: none !important;
+  }
+
+  .repo-card:hover::before {
+    width: 0;
   }
 
   /* ==========================================================
