@@ -250,105 +250,33 @@ body.light-theme::-webkit-scrollbar-track {
 }
 
 /* ============================================================
-   PRELOADER
+   WANHEDA // HACKER TERMINAL PRELOADER
    ============================================================ */
+
 #preloader {
   position: fixed;
   inset: 0;
 
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  gap: var(--space-6);
+  background: #000;
 
-  background:
-    radial-gradient(circle at center,
-      rgba(255, 0, 60, 0.045),
-      transparent 42%),
-    var(--black);
+  overflow: hidden;
 
   z-index: 99997;
 
-  overflow: hidden;
+  color: #ff003c;
+
+  font-family: var(--font-mono);
 
   opacity: 1;
   visibility: visible;
 
   transition:
-    opacity 0.6s var(--ease-out),
-    visibility 0.6s;
-}
-
-#preloader::before {
-  content: '';
-
-  position: absolute;
-  inset: 0;
-
-  background-image:
-    linear-gradient(rgba(255, 0, 60, 0.025) 1px,
-      transparent 1px),
-    linear-gradient(90deg,
-      rgba(255, 0, 60, 0.025) 1px,
-      transparent 1px);
-
-  background-size: 40px 40px;
-
-  mask-image:
-    radial-gradient(circle at center,
-      black,
-      transparent 75%);
-
-  pointer-events: none;
-}
-
-#preloader::after {
-  content: '';
-
-  position: absolute;
-
-  left: 0;
-  right: 0;
-
-  top: 0;
-
-  height: 1px;
-
-  background:
-    linear-gradient(90deg,
-      transparent,
-      var(--red),
-      transparent);
-
-  box-shadow:
-    0 0 12px var(--red);
-
-  animation:
-    preloaderScan 2.5s linear infinite;
-
-  pointer-events: none;
-}
-
-@keyframes preloaderScan {
-  0% {
-    top: 0;
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  90% {
-    opacity: 1;
-  }
-
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
+    opacity 0.45s ease,
+    visibility 0.45s ease;
 }
 
 #preloader.fade-out {
@@ -357,201 +285,807 @@ body.light-theme::-webkit-scrollbar-track {
   pointer-events: none;
 }
 
-.pre-shield {
+
+/* ============================================================
+   CRT NOISE
+   ============================================================ */
+
+.hacker-noise {
+  position: absolute;
+  inset: -100%;
+
+  z-index: 50;
+
+  pointer-events: none;
+
+  opacity: 0.035;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  animation:
+    hackerNoise 0.12s steps(2) infinite;
+}
+
+@keyframes hackerNoise {
+
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(2%, -1%);
+  }
+
+  50% {
+    transform: translate(-1%, 2%);
+  }
+
+  75% {
+    transform: translate(1%, 1%);
+  }
+
+  100% {
+    transform: translate(-2%, -1%);
+  }
+
+}
+
+
+/* ============================================================
+   CRT SCANLINES
+   ============================================================ */
+
+.hacker-scanlines {
+  position: absolute;
+  inset: 0;
+
+  z-index: 40;
+
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
+  mix-blend-mode: screen;
+}
+
+
+/* ============================================================
+   VIGNETTE
+   ============================================================ */
+
+.hacker-vignette {
+  position: absolute;
+  inset: 0;
+
+  z-index: 45;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 40%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+}
+
+
+/* ============================================================
+   TERMINAL
+   ============================================================ */
+
+.hacker-terminal {
   position: relative;
 
-  width: 72px;
-  height: 72px;
+  width: min(850px, 88vw);
+  height: min(430px, 60vh);
+
+  background:
+    rgba(3, 3, 3, 0.96);
+
+  border:
+    1px solid rgba(255, 0, 60, 0.18);
+
+  box-shadow:
+    0 0 40px rgba(255, 0, 60, 0.04),
+    inset 0 0 60px rgba(255, 0, 60, 0.025);
+
+  overflow: hidden;
+
+  z-index: 10;
+
+  animation:
+    terminalBoot 0.7s cubic-bezier(.16, 1, .3, 1);
+}
+
+@keyframes terminalBoot {
+
+  0% {
+    opacity: 0;
+    transform:
+      scaleY(0.02)
+      scaleX(0.7);
+  }
+
+  45% {
+    opacity: 1;
+    transform:
+      scaleY(0.02)
+      scaleX(1);
+  }
+
+  100% {
+    transform:
+      scaleY(1)
+      scaleX(1);
+  }
+
+}
+
+
+/* ============================================================
+   TERMINAL HEADER
+   ============================================================ */
+
+.terminal-header {
+  height: 32px;
 
   display: flex;
   align-items: center;
-  justify-content: center;
 
-  z-index: 1;
+  padding: 0 12px;
+
+  border-bottom:
+    1px solid rgba(255, 0, 60, 0.12);
+
+  background:
+    rgba(255, 255, 255, 0.015);
+
+  font-size: 9px;
+
+  user-select: none;
 }
 
-.pre-shield svg {
-  width: 100%;
-  height: 100%;
+.terminal-dots {
+  display: flex;
 
-  filter:
-    drop-shadow(0 0 8px var(--red)) drop-shadow(0 0 22px rgba(255, 0, 60, 0.35));
+  gap: 6px;
+
+  width: 80px;
+}
+
+.terminal-dots span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 0, 60, 0.4);
+}
+
+.terminal-dots span:nth-child(2) {
+  background:
+    rgba(255, 255, 255, 0.15);
+}
+
+.terminal-dots span:nth-child(3) {
+  background:
+    rgba(255, 255, 255, 0.15);
+}
+
+.terminal-title {
+  flex: 1;
+
+  text-align: center;
+
+  color:
+    rgba(255, 255, 255, 0.3);
+
+  letter-spacing: 0.12em;
+}
+
+.terminal-status {
+  width: 80px;
+
+  text-align: right;
+
+  color:
+    rgba(255, 0, 60, 0.55);
+
+  font-size: 7px;
+
+  letter-spacing: 0.2em;
+}
+
+
+/* ============================================================
+   TERMINAL BODY
+   ============================================================ */
+
+.terminal-body {
+  position: relative;
+
+  height: calc(100% - 32px);
+
+  padding: 22px 25px;
+
+  overflow: hidden;
+
+  font-size: 11px;
+
+  line-height: 1.9;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+}
+
+.terminal-output {
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+  min-height: 80%;
+}
+
+.terminal-line {
+  min-height: 18px;
 
   animation:
-    shieldPulse 1.8s ease-in-out infinite;
+    terminalLineAppear 0.12s ease;
 }
 
-@keyframes shieldPulse {
+@keyframes terminalLineAppear {
 
-  0%,
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+}
+
+.terminal-line.success {
+  color:
+    rgba(255, 0, 60, 0.85);
+}
+
+.terminal-line.dim {
+  color:
+    rgba(255, 255, 255, 0.22);
+}
+
+.terminal-line.warning {
+  color:
+    rgba(255, 0, 60, 0.55);
+}
+
+
+/* ============================================================
+   COMMAND LINE
+   ============================================================ */
+
+.terminal-command {
+  display: flex;
+
+  align-items: center;
+
+  min-height: 20px;
+
+  color:
+    rgba(255, 255, 255, 0.6);
+}
+
+.terminal-prompt {
+  color:
+    #ff003c;
+
+  margin-right: 8px;
+}
+
+#terminal-command-text {
+  color:
+    rgba(255, 255, 255, 0.75);
+}
+
+.terminal-cursor {
+  width: 7px;
+  height: 13px;
+
+  margin-left: 4px;
+
+  background:
+    #ff003c;
+
+  box-shadow:
+    0 0 8px rgba(255, 0, 60, 0.7);
+
+  animation:
+    terminalCursor 0.7s steps(1) infinite;
+}
+
+@keyframes terminalCursor {
+
+  50% {
+    opacity: 0;
+  }
+
+}
+
+
+/* ============================================================
+   BINARY RAIN
+   ============================================================ */
+
+.binary-rain {
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  transition: opacity 0.4s ease;
+}
+
+.binary-column {
+  position: absolute;
+
+  top: -100%;
+
+  writing-mode: vertical-rl;
+
+  color:
+    rgba(255, 0, 60, 0.12);
+
+  font-size: 9px;
+
+  line-height: 1.5;
+
+  animation:
+    binaryFall linear infinite;
+}
+
+@keyframes binaryFall {
+
+  to {
+    transform: translateY(220vh);
+  }
+
+}
+
+
+/* ============================================================
+   HACKER IDENTITY
+   ============================================================ */
+
+.hacker-identity {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.8);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  opacity: 0;
+
+  z-index: 60;
+
+  pointer-events: none;
+}
+
+.ascii-logo {
+  margin: 0;
+
+  font-family:
+    "Courier New",
+    monospace;
+
+  font-size:
+    clamp(7px, 1.05vw, 13px);
+
+  line-height: 1.1;
+
+  letter-spacing: 0;
+
+  color: #fff;
+
+  text-shadow:
+    0 0 7px rgba(255, 0, 60, 0.8),
+    0 0 20px rgba(255, 0, 60, 0.25);
+
+  white-space: pre;
+
+  user-select: none;
+}
+
+.identity-subtitle {
+  margin-top: 22px;
+
+  color:
+    #ff003c;
+
+  font-size: 9px;
+
+  letter-spacing: 0.28em;
+
+  text-shadow:
+    0 0 10px rgba(255, 0, 60, 0.5);
+}
+
+
+/* ============================================================
+   IDENTITY GLITCH
+   ============================================================ */
+
+.identity-glitch {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  font-family:
+    "Courier New",
+    monospace;
+
+  font-size:
+    clamp(7px, 1.05vw, 13px);
+
+  line-height: 1.1;
+
+  white-space: pre;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.identity-glitch-red {
+  color: #ff003c;
+
+  animation:
+    identityGlitchRed 0.35s steps(2) infinite;
+}
+
+.identity-glitch-white {
+  color: #fff;
+
+  animation:
+    identityGlitchWhite 0.25s steps(2) infinite;
+}
+
+@keyframes identityGlitchRed {
+
+  0% {
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 0.7;
+
+    transform: translate(-7px, 0);
+
+    clip-path:
+      inset(20% 0 60% 0);
+  }
+
+  60% {
+    opacity: 0;
+
+    transform: translate(5px, 0);
+  }
+
   100% {
-    opacity: 0.75;
-    transform: scale(0.94);
+    opacity: 0;
+  }
+
+}
+
+@keyframes identityGlitchWhite {
+
+  0% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.5;
+
+    transform: translate(6px, 0);
+
+    clip-path:
+      inset(60% 0 15% 0);
+  }
+
+  70% {
+    opacity: 0;
+
+    transform: translate(-4px, 0);
+  }
+
+  100% {
+    opacity: 0;
+  }
+
+}
+
+
+/* ============================================================
+   FINAL MESSAGE
+   ============================================================ */
+
+.hacker-final {
+  position: absolute;
+
+  left: 50%;
+  bottom: 9%;
+
+  transform:
+    translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  z-index: 70;
+
+  font-size: 10px;
+
+  letter-spacing: 0.22em;
+
+  color:
+    rgba(255, 0, 60, 0.8);
+
+  opacity: 0;
+
+  white-space: nowrap;
+}
+
+.hacker-final .final-cursor {
+  animation:
+    finalCursor 0.6s steps(1) infinite;
+}
+
+@keyframes finalCursor {
+
+  50% {
+    opacity: 0;
+  }
+
+}
+
+
+/* ============================================================
+   FULLSCREEN GLITCH
+   ============================================================ */
+
+.hacker-glitch-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 100;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 3px,
+      rgba(255, 0, 60, 0.18) 3px,
+      rgba(255, 0, 60, 0.18) 4px
+    );
+}
+
+#preloader.glitch-active {
+
+  animation:
+    screenGlitch 0.45s steps(2) both;
+}
+
+#preloader.glitch-active .hacker-glitch-overlay {
+  animation:
+    glitchOverlay 0.45s steps(3) both;
+}
+
+@keyframes screenGlitch {
+
+  0% {
+    transform: translate(0);
+  }
+
+  15% {
+    transform: translate(-5px, 1px);
+  }
+
+  30% {
+    transform: translate(4px, -2px);
+  }
+
+  45% {
+    transform: translate(-3px, 2px);
+  }
+
+  60% {
+    transform: translate(6px, 0);
+  }
+
+  75% {
+    transform: translate(-2px, -1px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+
+}
+
+@keyframes glitchOverlay {
+
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.8;
+
+    transform:
+      translateX(-10px);
+  }
+
+  35% {
+    opacity: 0;
+
+    transform:
+      translateX(10px);
+  }
+
+  50% {
+    opacity: 0.6;
+
+    transform:
+      translateX(-5px);
+  }
+
+  70% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0;
+  }
+
+}
+
+
+/* ============================================================
+   IDENTITY REVEAL
+   ============================================================ */
+
+#preloader.identity-active .hacker-terminal {
+  animation:
+    terminalDisappear 0.45s
+    cubic-bezier(.77, 0, .18, 1)
+    forwards;
+}
+
+#preloader.identity-active .hacker-identity {
+  animation:
+    identityReveal 0.65s
+    cubic-bezier(.16, 1, .3, 1)
+    forwards;
+}
+
+#preloader.identity-active .hacker-final {
+  animation:
+    finalMessageReveal 0.4s ease forwards;
+
+  animation-delay: 0.45s;
+}
+
+@keyframes terminalDisappear {
+
+  0% {
+    opacity: 1;
+
+    transform:
+      scale(1);
   }
 
   50% {
     opacity: 1;
-    transform: scale(1);
+
+    transform:
+      scaleX(1.02)
+      scaleY(0.02);
   }
-}
 
-.pre-ring,
-.pre-ring2 {
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-
-  border-radius: 50%;
-
-  pointer-events: none;
-
-  transform: translate(-50%, -50%);
-
-  box-sizing: border-box;
-}
-
-.pre-ring {
-  inset: -12px;
-  border: 1px solid rgba(255, 0, 60, 0.16);
-  border-top-color: var(--red);
-  border-right-color: rgba(255, 0, 60, 0.4);
-  animation: spin 1.2s linear infinite;
-  box-shadow:
-    0 0 12px rgba(255, 0, 60, 0.08);
-
-}
-
-.pre-ring2 {
-  inset: -22px;
-  border: 1px solid rgba(255, 0, 60, 0.1);
-  border-bottom-color: rgba(255, 0, 60, 0.5);
-  animation: spin 2.5s linear infinite reverse;
-}
-
-.pre-text {
-  position: relative;
-  z-index: 1;
-
-  min-height: 1.4em;
-
-  font-family: var(--font-mono);
-
-  font-size: var(--text-sm);
-  font-weight: 500;
-
-  color: var(--red);
-
-  text-align: center;
-
-  letter-spacing: var(--ls-widest);
-
-  text-transform: uppercase;
-
-  text-shadow:
-    0 0 10px rgba(255, 0, 60, 0.35);
-}
-
-.pre-text::after {
-  content: '_';
-
-  margin-left: 3px;
-
-  color: var(--red);
-
-  animation:
-    terminalBlink 0.8s steps(1) infinite;
-}
-
-@keyframes terminalBlink {
-  50% {
+  100% {
     opacity: 0;
+
+    transform:
+      scaleX(1.3)
+      scaleY(0.005);
   }
+
 }
 
-.pre-bar-wrap {
-  position: relative;
-  z-index: 1;
+@keyframes identityReveal {
 
-  width: min(300px, 75vw);
-  height: 2px;
+  0% {
+    opacity: 0;
 
-  overflow: hidden;
+    transform:
+      translate(-50%, -50%)
+      scale(1.4);
 
-  background:
-    rgba(255, 255, 255, 0.06);
+    filter:
+      blur(15px);
+  }
 
-  border-radius: var(--r-full);
+  40% {
+    opacity: 1;
 
-  box-shadow:
-    0 0 0 1px rgba(255, 0, 60, 0.03);
+    transform:
+      translate(-50%, -50%)
+      scale(0.97);
+
+    filter:
+      blur(0);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
 }
 
-.pre-bar {
-  position: relative;
+@keyframes finalMessageReveal {
 
-  width: 0;
-  height: 100%;
-
-  border-radius: inherit;
-
-  background:
-    linear-gradient(90deg,
-      var(--red),
-      #ff416c);
-
-  box-shadow:
-    0 0 8px var(--red),
-    0 0 18px rgba(255, 0, 60, 0.3);
-
-  transition:
-    width 2.5s var(--ease-out);
-}
-
-.pre-bar::after {
-  content: '';
-
-  position: absolute;
-
-  top: 0;
-  right: 0;
-
-  width: 35px;
-  height: 100%;
-
-  background:
-    linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, 0.7),
-      transparent);
-
-  animation:
-    progressGlow 1s linear infinite;
-}
-
-@keyframes progressGlow {
   from {
-    transform: translateX(-30px);
+    opacity: 0;
+
+    transform:
+      translate(-50%, 8px);
   }
 
   to {
-    transform: translateX(30px);
+    opacity: 1;
+
+    transform:
+      translate(-50%, 0);
   }
-}
 
-.pre-percent {
-  position: relative;
-  z-index: 1;
-
-  font-family: var(--font-mono);
-
-  font-size: var(--text-xs);
-
-  color: var(--muted);
-
-  letter-spacing: var(--ls-wide);
-
-  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================================

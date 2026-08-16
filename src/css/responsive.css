@@ -901,6 +901,50 @@
   }
 }
 
+@media (max-width: 600px) {
+
+  .hacker-terminal {
+    width: 92vw;
+    height: 58vh;
+  }
+
+  .terminal-body {
+    padding: 16px;
+
+    font-size: 9px;
+
+    line-height: 1.8;
+  }
+
+  .terminal-header {
+    font-size: 7px;
+  }
+
+  .terminal-status {
+    width: 50px;
+  }
+
+  .terminal-dots {
+    width: 50px;
+  }
+
+  .ascii-logo {
+    font-size: 5px;
+
+    transform:
+      scale(0.95);
+  }
+
+  .identity-subtitle {
+    font-size: 6px;
+
+    letter-spacing: 0.18em;
+  }
+
+  .hacker-final {
+    font-size: 7px;
+  }
+}
 
 /* ============================================================
    SMALL MOBILE — 540px
