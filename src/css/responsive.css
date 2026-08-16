@@ -31,14 +31,13 @@
      ---------------------------------------------------------- */
 
   .github-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+    gap: var(--space-5);
   }
 
   .repos-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
-
 
   /* ----------------------------------------------------------
      HERO
@@ -135,7 +134,7 @@
    TABLET — 900px
    ============================================================ */
 
-@media (max-width: 900px) {
+@media (max-width: 992px) {
 
   /* ----------------------------------------------------------
      GITHUB
@@ -143,53 +142,96 @@
 
   .github-layout {
     grid-template-columns: 1fr;
-    gap: var(--space-8);
+
+    gap: var(--space-6);
   }
 
+
+  /* ----------------------------------------------------------
+     PROFILE CARD
+     ---------------------------------------------------------- */
+
   .github-profile-card {
-    padding:
-      var(--space-7)
-      var(--space-6);
+    display: grid;
+
+    grid-template-columns: auto 1fr;
+
+    column-gap: var(--space-5);
+
+    align-items: center;
+
+    text-align: left;
+
+    padding: var(--space-5);
   }
 
   .github-avatar {
-    width: 82px;
-    height: 82px;
+    grid-row: span 3;
+
+    width: 76px;
+    height: 76px;
+
+    margin:
+      0
+      0
+      0
+      0;
+  }
+
+  .github-username {
+    margin-bottom: var(--space-1);
   }
 
   .github-bio {
-    max-width: 520px;
+    max-width: none;
+
+    margin:
+      0
+      0
+      var(--space-4);
   }
 
   .github-stats {
+    grid-column: 1 / -1;
+
     grid-template-columns:
       repeat(4, minmax(0, 1fr));
 
-    max-width: 600px;
+    margin-top: var(--space-3);
 
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 0;
   }
+
+
+  /* ----------------------------------------------------------
+     CONTRIBUTION GRAPH
+     ---------------------------------------------------------- */
 
   .contrib-graph {
     padding: var(--space-5);
-
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-
-    -webkit-overflow-scrolling: touch;
   }
 
   .contrib-cells {
-    width: max-content;
-    min-width: 700px;
+    grid-template-columns:
+      repeat(52, minmax(7px, 1fr));
+
+    grid-template-rows:
+      repeat(7, minmax(7px, 1fr));
+
+    gap: 3px;
+
+    min-width: 620px;
   }
+
+
+  /* ----------------------------------------------------------
+     REPOSITORIES
+     ---------------------------------------------------------- */
 
   .repos-grid {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
   }
-
 
   /* ----------------------------------------------------------
      HERO
@@ -534,6 +576,112 @@
     font-size: var(--text-xs);
   }
 
+ /* ----------------------------------------------------------
+     PRELOADER
+     ---------------------------------------------------------- */
+
+  .github-layout {
+    gap: var(--space-5);
+  }
+
+  /* ----------------------------------------------------------
+     PROFILE CARD
+     ---------------------------------------------------------- */
+
+  .github-profile-card {
+    display: block;
+
+    text-align: center;
+
+    padding:
+      var(--space-6)
+      var(--space-5);
+  }
+
+  .github-avatar {
+    width: 82px;
+    height: 82px;
+
+    margin:
+      0
+      auto
+      var(--space-4);
+  }
+
+  .github-bio {
+    max-width: 420px;
+
+    margin:
+      0
+      auto
+      var(--space-5);
+  }
+
+  .github-stats {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 6px;
+  }
+
+  .gh-stat {
+    padding:
+      var(--space-3)
+      var(--space-2);
+  }
+
+  .gh-stat-label {
+    font-size: 8px;
+
+    letter-spacing: 0.06em;
+  }
+
+
+  /* ----------------------------------------------------------
+     CONTRIBUTION GRAPH
+     ---------------------------------------------------------- */
+
+  .contrib-graph {
+    padding: var(--space-4);
+
+    margin-bottom: var(--space-5);
+  }
+
+  .contrib-title {
+    margin-bottom: var(--space-4);
+
+    font-size: 10px;
+  }
+
+  /*
+     Keep the GitHub graph horizontally scrollable.
+     This prevents the 52-week graph from becoming unusable.
+  */
+
+  .contrib-graph {
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+  }
+
+  .contrib-cells {
+    min-width: 600px;
+  }
+
+
+  /* ----------------------------------------------------------
+     REPOSITORIES
+     ---------------------------------------------------------- */
+
+  .repos-grid {
+    grid-template-columns: 1fr;
+
+    gap: var(--space-4);
+  }
+
+  .repo-card {
+    padding: var(--space-5);
+  }
 
   /* ----------------------------------------------------------
      CONTACT
@@ -859,6 +1007,70 @@
     font-size: 1rem;
   }
 
+  /* ----------------------------------------------------------
+    GITHUB
+     ---------------------------------------------------------- */
+
+  .github-layout {
+    gap: var(--space-4);
+  }
+
+  .github-profile-card {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .github-avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .github-bio {
+    max-width: 100%;
+  }
+
+  .github-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .gh-stat {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .contrib-graph {
+    padding: var(--space-4);
+    /* let the contribution graph scroll horizontally instead of squashing */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .contrib-title {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .contrib-cells {
+    min-width: 500px;
+  }
+
+  .repo-card {
+    padding: var(--space-4);
+  }
+
+  .repo-card-header {
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .repo-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .repo-meta {
+    gap: var(--space-3);
+  }
 
   /* ----------------------------------------------------------
      SCROLL PROGRESS
@@ -944,6 +1156,204 @@
   .hacker-final {
     font-size: 7px;
   }
+}
+
+/* ============================================================
+   MOBILE
+   576px AND BELOW
+   ============================================================ */
+
+@media (max-width: 576px) {
+
+  .github-layout {
+    gap: var(--space-4);
+  }
+
+
+  /* ----------------------------------------------------------
+     PROFILE CARD
+     ---------------------------------------------------------- */
+
+  .github-profile-card {
+    padding:
+      var(--space-5)
+      var(--space-4);
+
+    border-radius: var(--r-md);
+  }
+
+  .github-avatar {
+    width: 72px;
+    height: 72px;
+
+    margin-bottom: var(--space-3);
+  }
+
+  .github-username {
+    font-size: var(--text-sm);
+
+    margin-bottom: var(--space-2);
+  }
+
+  .github-bio {
+    font-size: var(--text-xs);
+
+    line-height: var(--lh-relaxed);
+
+    margin-bottom: var(--space-4);
+  }
+
+
+  /* ----------------------------------------------------------
+     STATS
+     ---------------------------------------------------------- */
+
+  .github-stats {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 7px;
+  }
+
+  .gh-stat {
+    padding:
+      var(--space-3)
+      var(--space-2);
+  }
+
+  .gh-stat-num {
+    font-size: var(--text-lg);
+  }
+
+  .gh-stat-label {
+    margin-top: 5px;
+
+    font-size: 8px;
+
+    letter-spacing: 0.05em;
+  }
+
+
+  /* ----------------------------------------------------------
+     CONTRIBUTION GRAPH
+     ---------------------------------------------------------- */
+
+  .contrib-graph {
+    padding: var(--space-4);
+
+    border-radius: var(--r-md);
+  }
+
+  .contrib-title {
+    gap: var(--space-2);
+
+    margin-bottom: var(--space-4);
+
+    font-size: 9px;
+  }
+
+  .contrib-cells {
+    min-width: 560px;
+
+    grid-template-columns:
+      repeat(52, minmax(7px, 1fr));
+
+    grid-template-rows:
+      repeat(7, minmax(7px, 1fr));
+
+    gap: 3px;
+  }
+
+  .contrib-cell {
+    min-width: 7px;
+  }
+
+
+  /* ----------------------------------------------------------
+     REPOSITORY CARD
+     ---------------------------------------------------------- */
+
+  .repo-card {
+    padding: var(--space-4);
+
+    border-radius: var(--r-md);
+  }
+
+  .repo-card-header {
+    gap: var(--space-3);
+
+    margin-bottom: var(--space-3);
+  }
+
+  .repo-icon {
+    width: 34px;
+    height: 34px;
+
+    font-size: 14px;
+  }
+
+  .repo-name {
+    font-size: var(--text-xs);
+
+    max-width: 100%;
+  }
+
+  .repo-description,
+  .repo-desc {
+    font-size: var(--text-xs);
+
+    min-height: auto;
+
+    margin-bottom: var(--space-4);
+
+    -webkit-line-clamp: 4;
+  }
+
+  .repo-meta {
+    gap: var(--space-3);
+
+    padding-top: var(--space-3);
+  }
+
+  .repo-language,
+  .repo-lang,
+  .repo-stars,
+  .repo-forks {
+    font-size: 10px;
+  }
+
+  .repo-link {
+    margin-top: var(--space-3);
+
+    padding-top: var(--space-3);
+
+    font-size: 10px;
+  }
+
+
+  /* ----------------------------------------------------------
+     STATES
+     ---------------------------------------------------------- */
+
+  .github-loading,
+  .github-error {
+    min-height: 150px;
+
+    padding: var(--space-5);
+
+    border-radius: var(--r-md);
+
+    font-size: 10px;
+  }
+
+  .github-empty {
+    padding: var(--space-6);
+
+    border-radius: var(--r-md);
+
+    font-size: var(--text-xs);
+  }
+
 }
 
 /* ============================================================
@@ -1809,6 +2219,88 @@
 
     font-size: var(--text-xs);
   }
+}
+
+/* ============================================================
+   VERY SMALL MOBILE
+   400px AND BELOW
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+  .github-profile-card {
+    padding:
+      var(--space-4)
+      var(--space-3);
+  }
+
+  .github-avatar {
+    width: 66px;
+    height: 66px;
+  }
+
+  .github-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gh-stat {
+    padding:
+      10px
+      6px;
+  }
+
+  .gh-stat-num {
+    font-size: var(--text-lg);
+  }
+
+  .gh-stat-label {
+    font-size: 7px;
+
+    letter-spacing: 0.04em;
+  }
+
+
+  /* ----------------------------------------------------------
+     CONTRIBUTION GRAPH
+     ---------------------------------------------------------- */
+
+  .contrib-graph {
+    padding:
+      var(--space-3);
+  }
+
+  .contrib-cells {
+    min-width: 520px;
+  }
+
+  /* ----------------------------------------------------------
+     REPOSITORIES
+     ---------------------------------------------------------- */
+
+  .repo-name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }   
+
+  .repo-card {
+    padding: var(--space-3);
+  }
+
+  .repo-card-header {
+    gap: var(--space-2);
+  }
+
+  .repo-icon {
+    width: 32px;
+    height: 32px;
+
+    font-size: 13px;
+  }
+  
+  .repo-visibility {
+    font-size: 7px;
+  }
+
 }
 
 
