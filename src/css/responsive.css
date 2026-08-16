@@ -5,17 +5,18 @@
 /*
    BREAKPOINTS
    ------------------------------------------------------------
-   1024px  → Tablet / layout transition
-    900px  → Tablet / hero + about
-    768px  → Mobile navigation + major layout changes
-    700px  → Small tablet
-    640px  → Mobile
-    540px  → Small mobile layout
-    480px  → Phone
-    430px  → Small phone
-    420px  → Very small phone
-    360px  → Compact phone
-    340px  → Ultra-small phone
+   1024px  → Tablet / major layout transition
+   900px   → Tablet / hero + about adjustments
+   768px   → Mobile navigation + major layout changes
+   700px   → Small tablet
+   640px   → Mobile
+   540px   → Small mobile layout
+   480px   → Phone
+   430px   → Small phone
+   420px   → Very small phone
+   360px   → Compact phone
+   340px   → Ultra-small phone
+   320px   → Extreme compact phone
 */
 
 
@@ -29,8 +30,7 @@
      GITHUB
      ---------------------------------------------------------- */
 
-  .github-layout,
-  .repos-grid {
+  .github-layout {
     grid-template-columns: 1fr;
   }
 
@@ -38,6 +38,7 @@
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
   }
+
 
   /* ----------------------------------------------------------
      HERO
@@ -88,10 +89,44 @@
     max-width: 720px;
   }
 
-  .contact-layout>.reveal:last-child {
+  .contact-layout > .reveal:last-child {
     width: 100%;
     max-width: 760px;
     margin-inline: auto;
+  }
+
+
+  /* ----------------------------------------------------------
+     BACK TO TOP
+     ---------------------------------------------------------- */
+
+  #back-to-top {
+    right: 20px;
+    bottom: 20px;
+
+    width: 44px;
+    height: 44px;
+
+    font-size: 1rem;
+
+    box-shadow:
+      0 7px 20px rgba(0, 0, 0, 0.32),
+      0 0 10px rgba(255, 0, 60, 0.07);
+  }
+
+  #back-to-top::before {
+    inset: 4px;
+  }
+
+  #back-to-top:hover {
+    transform:
+      translateY(-4px)
+      scale(1.03);
+
+    box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.38),
+      0 0 16px rgba(255, 0, 60, 0.2),
+      0 0 30px rgba(255, 0, 60, 0.06);
   }
 }
 
@@ -113,7 +148,8 @@
 
   .github-profile-card {
     padding:
-      var(--space-7) var(--space-6);
+      var(--space-7)
+      var(--space-6);
   }
 
   .github-avatar {
@@ -130,22 +166,17 @@
       repeat(4, minmax(0, 1fr));
 
     max-width: 600px;
+
     margin-left: auto;
     margin-right: auto;
   }
 
   .contrib-graph {
     padding: var(--space-5);
-  }
 
-  /*
-   * Keep the contribution graph's natural width.
-   * The graph can scroll horizontally instead of
-   * destroying the page layout.
-   */
-  .contrib-graph {
     overflow-x: auto;
     overscroll-behavior-x: contain;
+
     -webkit-overflow-scrolling: touch;
   }
 
@@ -159,13 +190,16 @@
       repeat(2, minmax(0, 1fr));
   }
 
+
   /* ----------------------------------------------------------
      HERO
      ---------------------------------------------------------- */
 
   .hero-wrap {
     gap: var(--space-10);
-    padding: var(--space-14) 0;
+    padding:
+      var(--space-14)
+      0;
   }
 
   .hero-right {
@@ -277,7 +311,8 @@
 
   .section-pad {
     padding:
-      calc(var(--section-pad) * 0.6) 0;
+      calc(var(--section-pad) * 0.6)
+      0;
   }
 
 
@@ -318,7 +353,10 @@
 
   .skills-grid {
     grid-template-columns:
-      repeat(auto-fill, minmax(110px, 1fr));
+      repeat(
+        auto-fill,
+        minmax(110px, 1fr)
+      );
 
     gap: var(--space-3);
   }
@@ -339,7 +377,8 @@
     min-height: 205px;
 
     padding:
-      var(--space-6) var(--space-5);
+      var(--space-6)
+      var(--space-5);
   }
 
 
@@ -349,8 +388,10 @@
 
   .projects-grid {
     grid-template-columns:
-      repeat(auto-fit,
-        minmax(min(100%, 280px), 1fr));
+      repeat(
+        auto-fit,
+        minmax(min(100%, 280px), 1fr)
+      );
   }
 
   .proj-img {
@@ -389,7 +430,7 @@
 
 
   /* ----------------------------------------------------------
-     CURSOR
+     CUSTOM CURSOR
      ---------------------------------------------------------- */
 
   #cursor,
@@ -417,12 +458,17 @@
     margin: 0;
 
     border-radius:
-      var(--r-xl) var(--r-xl) 0 0;
+      var(--r-xl)
+      var(--r-xl)
+      0
+      0;
   }
 
   .modal-header {
     padding:
-      var(--space-6) var(--space-5) var(--space-4);
+      var(--space-6)
+      var(--space-5)
+      var(--space-4);
   }
 
   .modal-number {
@@ -449,7 +495,10 @@
 
   .timeline-dot {
     left:
-      calc(-1 * var(--space-10) + var(--space-2));
+      calc(
+        -1 * var(--space-10)
+        + var(--space-2)
+      );
 
     width: 14px;
     height: 14px;
@@ -496,8 +545,10 @@
 
   .contact-info-text {
     max-width: 100%;
+
     font-size: var(--text-sm);
     line-height: var(--lh-relaxed);
+
     margin-bottom: var(--space-6);
   }
 
@@ -518,6 +569,7 @@
   .contact-icon {
     width: 44px;
     height: 44px;
+
     font-size: 1rem;
   }
 
@@ -532,10 +584,13 @@
   .contact-copy {
     min-width: 68px;
     min-height: 36px;
-    padding: var(--space-2) var(--space-3);
+
+    padding:
+      var(--space-2)
+      var(--space-3);
   }
 
-  .contact-layout>.reveal:last-child {
+  .contact-layout > .reveal:last-child {
     padding: var(--space-7);
   }
 
@@ -552,45 +607,13 @@
   }
 }
 
-/* ============================================================
-   BACK TO TOP — IPAD / TABLET
-   ============================================================ */
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  #back-to-top {
-    right: 20px;
-    bottom: 20px;
-
-    width: 44px;
-    height: 44px;
-
-    font-size: 1rem;
-
-    box-shadow:
-      0 7px 20px rgba(0, 0, 0, 0.32),
-      0 0 10px rgba(255, 0, 60, 0.07);
-  }
-
-  #back-to-top::before {
-    inset: 4px;
-  }
-
-  #back-to-top:hover {
-    transform: translateY(-4px) scale(1.03);
-
-    box-shadow:
-      0 10px 25px rgba(0, 0, 0, 0.38),
-      0 0 16px rgba(255, 0, 60, 0.2),
-      0 0 30px rgba(255, 0, 60, 0.06);
-  }
-}
-
 
 /* ============================================================
-   IPAD PORTRAIT
+   IPAD PORTRAIT — 768px → 834px
    ============================================================ */
 
 @media (min-width: 768px) and (max-width: 834px) {
+
   #back-to-top {
     right: 18px;
     bottom: 18px;
@@ -602,10 +625,11 @@
 
 
 /* ============================================================
-   IPAD LANDSCAPE
+   IPAD LANDSCAPE — 835px → 1024px
    ============================================================ */
 
 @media (min-width: 835px) and (max-width: 1024px) {
+
   #back-to-top {
     right: 22px;
     bottom: 22px;
@@ -615,21 +639,33 @@
   }
 }
 
+
 /* ============================================================
    SMALL TABLET — 700px
    ============================================================ */
 
 @media (max-width: 700px) {
 
+  /* ----------------------------------------------------------
+     SKILLS
+     ---------------------------------------------------------- */
+
   .skills-grid {
     grid-template-columns:
-      repeat(auto-fill,
-        minmax(135px, 1fr));
+      repeat(
+        auto-fill,
+        minmax(135px, 1fr)
+      );
   }
 
   .skill-card {
     min-height: 140px;
   }
+
+
+  /* ----------------------------------------------------------
+     GITHUB
+     ---------------------------------------------------------- */
 
   .github-layout {
     grid-template-columns: 1fr;
@@ -638,7 +674,8 @@
 
   .github-profile-card {
     padding:
-      var(--space-6) var(--space-5);
+      var(--space-6)
+      var(--space-5);
   }
 
   .github-avatar {
@@ -648,6 +685,7 @@
 
   .github-bio {
     max-width: 100%;
+
     font-size: var(--text-sm);
   }
 
@@ -656,12 +694,14 @@
       repeat(4, minmax(0, 1fr));
 
     gap: 6px;
+
     margin-bottom: var(--space-5);
   }
 
   .gh-stat {
     padding:
-      var(--space-3) var(--space-2);
+      var(--space-3)
+      var(--space-2);
   }
 
   .gh-stat-num {
@@ -683,10 +723,6 @@
     margin-bottom: var(--space-4);
   }
 
-  /*
-   * Prevent the 52-column contribution graph
-   * from forcing the entire page wider.
-   */
   .contrib-cells {
     min-width: 680px;
   }
@@ -703,7 +739,6 @@
   .repo-card:hover {
     transform: translateY(-3px);
   }
-
 }
 
 
@@ -728,20 +763,28 @@
     max-height: 92vh;
 
     border-radius:
-      var(--r-xl) var(--r-xl) var(--r-lg) var(--r-lg);
+      var(--r-xl)
+      var(--r-xl)
+      var(--r-lg)
+      var(--r-lg);
 
     transform:
-      translateY(35px) scale(0.98);
+      translateY(35px)
+      scale(0.98);
   }
 
   .modal-header {
     padding:
-      var(--space-8) var(--space-5) var(--space-6);
+      var(--space-8)
+      var(--space-5)
+      var(--space-6);
   }
 
   .modal-body {
     padding:
-      var(--space-6) var(--space-5) var(--space-7);
+      var(--space-6)
+      var(--space-5)
+      var(--space-7);
   }
 
   .modal-title {
@@ -784,12 +827,13 @@
     min-height: 155px;
 
     padding:
-      var(--space-7) var(--space-5) var(--space-5);
+      var(--space-7)
+      var(--space-5)
+      var(--space-5);
   }
 
   .blog-body {
-    padding:
-      var(--space-5);
+    padding: var(--space-5);
   }
 
   .blog-number {
@@ -802,7 +846,7 @@
 
 
   /* ----------------------------------------------------------
-     BACK TO TOP / SCROLL
+     BACK TO TOP
      ---------------------------------------------------------- */
 
   #back-to-top {
@@ -814,6 +858,11 @@
 
     font-size: 1rem;
   }
+
+
+  /* ----------------------------------------------------------
+     SCROLL PROGRESS
+     ---------------------------------------------------------- */
 
   #scroll-progress {
     height: 2px;
@@ -831,7 +880,9 @@
 
   footer {
     padding:
-      var(--space-12) 0 var(--space-7);
+      var(--space-12)
+      0
+      var(--space-7);
   }
 
   .footer-quote {
@@ -852,7 +903,7 @@
 
 
 /* ============================================================
-   MOBILE — 540px
+   SMALL MOBILE — 540px
    ============================================================ */
 
 @media (max-width: 540px) {
@@ -902,7 +953,9 @@
 
   .contact-item {
     padding: var(--space-4);
+
     border-radius: var(--r-md);
+
     gap: var(--space-3);
   }
 
@@ -914,7 +967,9 @@
   .contact-icon {
     width: 42px;
     height: 42px;
+
     border-radius: var(--r-sm);
+
     font-size: 0.95rem;
   }
 
@@ -931,11 +986,13 @@
   .contact-copy {
     min-width: 62px;
     min-height: 34px;
+
     padding: var(--space-2);
+
     font-size: 0.65rem;
   }
 
-  .contact-layout>.reveal:last-child {
+  .contact-layout > .reveal:last-child {
     padding: var(--space-6);
     border-radius: var(--r-lg);
   }
@@ -951,7 +1008,11 @@
 
   .form-input {
     min-height: 46px;
-    padding: var(--space-3) var(--space-4);
+
+    padding:
+      var(--space-3)
+      var(--space-4);
+
     font-size: var(--text-sm);
   }
 
@@ -966,12 +1027,11 @@
   .form-status {
     font-size: var(--text-xs);
   }
-
 }
 
 
 /* ============================================================
-   MOBILE — 480px
+   PHONE — 480px
    ============================================================ */
 
 @media (max-width: 480px) {
@@ -982,7 +1042,8 @@
 
   nav {
     padding:
-      0 var(--space-3);
+      0
+      var(--space-3);
   }
 
   .nav-logo {
@@ -1008,7 +1069,8 @@
 
   .nav-mobile {
     padding:
-      var(--space-8) var(--space-4);
+      var(--space-8)
+      var(--space-4);
   }
 
 
@@ -1039,7 +1101,8 @@
     justify-content: center;
 
     padding:
-      var(--space-4) var(--space-5);
+      var(--space-4)
+      var(--space-5);
   }
 
 
@@ -1049,7 +1112,9 @@
 
   .hero-wrap {
     padding:
-      var(--space-6) 0 var(--space-14);
+      var(--space-6)
+      0
+      var(--space-14);
 
     gap: var(--space-7);
   }
@@ -1124,7 +1189,8 @@
     justify-content: center;
 
     padding:
-      var(--space-4) var(--space-5);
+      var(--space-4)
+      var(--space-5);
   }
 
 
@@ -1141,7 +1207,8 @@
 
   .stat-card {
     padding:
-      var(--space-5) var(--space-4);
+      var(--space-5)
+      var(--space-4);
   }
 
   .stat-number {
@@ -1186,7 +1253,8 @@
     min-height: 135px;
 
     padding:
-      var(--space-5) var(--space-3);
+      var(--space-5)
+      var(--space-3);
   }
 
   .skill-icon {
@@ -1233,12 +1301,14 @@
 
   .github-profile-card {
     padding:
-      var(--space-6) var(--space-4);
+      var(--space-6)
+      var(--space-4);
   }
 
   .github-avatar {
     width: 72px;
     height: 72px;
+
     margin-bottom: var(--space-3);
   }
 
@@ -1248,6 +1318,7 @@
 
   .github-bio {
     margin-bottom: var(--space-5);
+
     font-size: var(--text-xs);
     line-height: var(--lh-relaxed);
   }
@@ -1261,7 +1332,8 @@
 
   .gh-stat {
     padding:
-      var(--space-4) var(--space-3);
+      var(--space-4)
+      var(--space-3);
   }
 
   .gh-stat-num {
@@ -1270,17 +1342,20 @@
 
   .gh-stat-label {
     margin-top: 5px;
+
     font-size: 8px;
     letter-spacing: 0.05em;
   }
 
   .contrib-graph {
-    padding:
-      var(--space-4);
+    padding: var(--space-4);
+
+    overflow-x: auto;
   }
 
   .contrib-title {
     flex-wrap: wrap;
+
     font-size: 10px;
     line-height: 1.5;
   }
@@ -1306,6 +1381,7 @@
   .repo-icon {
     width: 34px;
     height: 34px;
+
     font-size: 14px;
   }
 
@@ -1315,18 +1391,24 @@
 
   .repo-visibility {
     font-size: 7px;
-    padding: 2px 6px;
+
+    padding:
+      2px
+      6px;
   }
 
   .repo-description,
   .repo-desc {
     font-size: var(--text-xs);
+
     margin-bottom: var(--space-4);
+
     min-height: 0;
   }
 
   .repo-meta {
     gap: var(--space-3);
+
     padding-top: var(--space-3);
   }
 
@@ -1339,7 +1421,9 @@
 
   .repo-link {
     margin-top: var(--space-3);
+
     padding-top: var(--space-3);
+
     font-size: 10px;
   }
 
@@ -1350,10 +1434,12 @@
   }
 
   .github-empty {
-    padding: var(--space-6) var(--space-4);
+    padding:
+      var(--space-6)
+      var(--space-4);
+
     font-size: var(--text-xs);
   }
-
 
 
   /* ----------------------------------------------------------
@@ -1410,7 +1496,8 @@
     line-height: var(--lh-normal);
 
     padding:
-      0 var(--space-3);
+      0
+      var(--space-3);
   }
 
   .pre-percent {
@@ -1452,6 +1539,7 @@
 
   .timeline-card {
     padding: var(--space-5);
+
     border-radius:
       calc(var(--r-lg) - 2px);
   }
@@ -1515,7 +1603,7 @@
 
 
 /* ============================================================
-   SMALL MOBILE — 430px
+   SMALL PHONE — 430px
    ============================================================ */
 
 @media (max-width: 430px) {
@@ -1533,7 +1621,8 @@
 
   .gh-stat {
     padding:
-      var(--space-4) var(--space-3);
+      var(--space-4)
+      var(--space-3);
   }
 
   .gh-stat-num {
@@ -1589,7 +1678,7 @@
 
 
 /* ============================================================
-   VERY SMALL MOBILE — 420px
+   VERY SMALL PHONE — 420px
    ============================================================ */
 
 @media (max-width: 420px) {
@@ -1624,6 +1713,7 @@
   .contact-icon {
     width: 38px;
     height: 38px;
+
     font-size: 0.85rem;
   }
 
@@ -1638,24 +1728,31 @@
   .contact-copy {
     min-width: 56px;
     min-height: 32px;
-    padding: 6px 8px;
+
+    padding:
+      6px
+      8px;
+
     font-size: 0.58rem;
   }
 
-  .contact-layout>.reveal:last-child {
+  .contact-layout > .reveal:last-child {
     padding: var(--space-5);
     border-radius: var(--r-md);
   }
 
   .contact-form-title {
     gap: var(--space-2);
+
     font-size: var(--text-xs);
     letter-spacing: var(--ls-wide);
   }
 
   .form-input {
     min-height: 44px;
+
     padding: var(--space-3);
+
     font-size: var(--text-xs);
   }
 
@@ -1665,13 +1762,14 @@
 
   .form-submit {
     min-height: 44px;
+
     font-size: var(--text-xs);
   }
 }
 
 
 /* ============================================================
-   COMPACT MOBILE — 360px
+   COMPACT PHONE — 360px
    ============================================================ */
 
 @media (max-width: 360px) {
@@ -1706,7 +1804,7 @@
 
 
   /* ----------------------------------------------------------
-     NAV
+     NAVIGATION
      ---------------------------------------------------------- */
 
   .theme-toggle {
@@ -1723,7 +1821,8 @@
 
   .github-profile-card {
     padding:
-      var(--space-5) var(--space-3);
+      var(--space-5)
+      var(--space-3);
   }
 
   .github-avatar {
@@ -1745,7 +1844,8 @@
 
   .gh-stat {
     padding:
-      var(--space-3) var(--space-2);
+      var(--space-3)
+      var(--space-2);
   }
 
   .gh-stat-num {
@@ -1757,8 +1857,7 @@
   }
 
   .contrib-graph {
-    padding:
-      var(--space-3);
+    padding: var(--space-3);
   }
 
   .contrib-cells {
@@ -1783,6 +1882,7 @@
   .repo-desc {
     font-size: 11px;
   }
+
 
   /* ----------------------------------------------------------
      CONTACT
@@ -1813,7 +1913,7 @@
     min-width: 52px;
   }
 
-  .contact-layout>.reveal:last-child {
+  .contact-layout > .reveal:last-child {
     padding: var(--space-4);
   }
 }
@@ -1830,6 +1930,11 @@
   }
 }
 
+
+/* ============================================================
+   EXTREME COMPACT — 320px
+   ============================================================ */
+
 @media (max-width: 320px) {
 
   .github-stats {
@@ -1838,8 +1943,10 @@
 
   .gh-stat {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
+
     gap: var(--space-3);
 
     text-align: left;
@@ -1852,8 +1959,8 @@
   .contrib-cells {
     min-width: 600px;
   }
-
 }
+
 
 /* ============================================================
    TOUCH DEVICES
@@ -1881,4 +1988,19 @@
     transform: none;
   }
 
+  .proj-card:hover {
+    transform: none;
+  }
+
+  .cert-card:hover {
+    transform: none;
+  }
+
+  .blog-card:hover {
+    transform: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
 }
