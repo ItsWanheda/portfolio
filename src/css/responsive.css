@@ -88,7 +88,7 @@
     max-width: 720px;
   }
 
-  .contact-layout > .reveal:last-child {
+  .contact-layout>.reveal:last-child {
     width: 100%;
     max-width: 760px;
     margin-inline: auto;
@@ -119,8 +119,7 @@
 
   #back-to-top:hover {
     transform:
-      translateY(-4px)
-      scale(1.03);
+      translateY(-4px) scale(1.03);
 
     box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.38),
@@ -172,10 +171,7 @@
     height: 76px;
 
     margin:
-      0
-      0
-      0
-      0;
+      0 0 0 0;
   }
 
   .github-username {
@@ -186,9 +182,7 @@
     max-width: none;
 
     margin:
-      0
-      0
-      var(--space-4);
+      0 0 var(--space-4);
   }
 
   .github-stats {
@@ -240,8 +234,7 @@
   .hero-wrap {
     gap: var(--space-10);
     padding:
-      var(--space-14)
-      0;
+      var(--space-14) 0;
   }
 
   .hero-right {
@@ -307,6 +300,25 @@
   }
 }
 
+/* ============================================================
+   RESPONSIVE — TABLET (≤820px)
+   ============================================================ */
+
+@media (max-width: 820px) {
+  .hacker-terminal {
+    width: 92vw;
+    height: min(400px, 65vh);
+  }
+
+  .terminal-body {
+    padding: 18px 20px;
+    font-size: 10.5px;
+  }
+
+  .hacker-identity {
+    width: 94vw;
+  }
+}
 
 /* ============================================================
    TABLET / LARGE MOBILE — 768px
@@ -353,8 +365,7 @@
 
   .section-pad {
     padding:
-      calc(var(--section-pad) * 0.6)
-      0;
+      calc(var(--section-pad) * 0.6) 0;
   }
 
 
@@ -395,10 +406,8 @@
 
   .skills-grid {
     grid-template-columns:
-      repeat(
-        auto-fill,
-        minmax(110px, 1fr)
-      );
+      repeat(auto-fill,
+        minmax(110px, 1fr));
 
     gap: var(--space-3);
   }
@@ -419,8 +428,7 @@
     min-height: 205px;
 
     padding:
-      var(--space-6)
-      var(--space-5);
+      var(--space-6) var(--space-5);
   }
 
 
@@ -430,10 +438,8 @@
 
   .projects-grid {
     grid-template-columns:
-      repeat(
-        auto-fit,
-        minmax(min(100%, 280px), 1fr)
-      );
+      repeat(auto-fit,
+        minmax(min(100%, 280px), 1fr));
   }
 
   .proj-img {
@@ -500,17 +506,12 @@
     margin: 0;
 
     border-radius:
-      var(--r-xl)
-      var(--r-xl)
-      0
-      0;
+      var(--r-xl) var(--r-xl) 0 0;
   }
 
   .modal-header {
     padding:
-      var(--space-6)
-      var(--space-5)
-      var(--space-4);
+      var(--space-6) var(--space-5) var(--space-4);
   }
 
   .modal-number {
@@ -537,10 +538,7 @@
 
   .timeline-dot {
     left:
-      calc(
-        -1 * var(--space-10)
-        + var(--space-2)
-      );
+      calc(-1 * var(--space-10) + var(--space-2));
 
     width: 14px;
     height: 14px;
@@ -576,7 +574,7 @@
     font-size: var(--text-xs);
   }
 
- /* ----------------------------------------------------------
+  /* ----------------------------------------------------------
      PRELOADER
      ---------------------------------------------------------- */
 
@@ -594,8 +592,7 @@
     text-align: center;
 
     padding:
-      var(--space-6)
-      var(--space-5);
+      var(--space-6) var(--space-5);
   }
 
   .github-avatar {
@@ -603,18 +600,14 @@
     height: 82px;
 
     margin:
-      0
-      auto
-      var(--space-4);
+      0 auto var(--space-4);
   }
 
   .github-bio {
     max-width: 420px;
 
     margin:
-      0
-      auto
-      var(--space-5);
+      0 auto var(--space-5);
   }
 
   .github-stats {
@@ -626,8 +619,7 @@
 
   .gh-stat {
     padding:
-      var(--space-3)
-      var(--space-2);
+      var(--space-3) var(--space-2);
   }
 
   .gh-stat-label {
@@ -734,11 +726,10 @@
     min-height: 36px;
 
     padding:
-      var(--space-2)
-      var(--space-3);
+      var(--space-2) var(--space-3);
   }
 
-  .contact-layout > .reveal:last-child {
+  .contact-layout>.reveal:last-child {
     padding: var(--space-7);
   }
 
@@ -800,10 +791,8 @@
 
   .skills-grid {
     grid-template-columns:
-      repeat(
-        auto-fill,
-        minmax(135px, 1fr)
-      );
+      repeat(auto-fill,
+        minmax(135px, 1fr));
   }
 
   .skill-card {
@@ -822,8 +811,7 @@
 
   .github-profile-card {
     padding:
-      var(--space-6)
-      var(--space-5);
+      var(--space-6) var(--space-5);
   }
 
   .github-avatar {
@@ -848,8 +836,7 @@
 
   .gh-stat {
     padding:
-      var(--space-3)
-      var(--space-2);
+      var(--space-3) var(--space-2);
   }
 
   .gh-stat-num {
@@ -896,6 +883,52 @@
 
 @media (max-width: 640px) {
 
+  .hacker-terminal {
+    width: 94vw;
+    height: min(360px, 68vh);
+  }
+
+  .terminal-header {
+    height: 28px;
+    padding: 0 10px;
+  }
+
+  .terminal-dots,
+  .terminal-status {
+    width: 60px;
+  }
+
+  .terminal-title {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .terminal-body {
+    padding: 14px 16px;
+    font-size: 10px;
+    line-height: 1.7;
+  }
+
+  .terminal-command {
+    flex-wrap: wrap;
+  }
+
+  .identity-subtitle {
+    margin-top: 16px;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    padding: 0 12px;
+  }
+
+  .hacker-final {
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    white-space: normal;
+    text-align: center;
+    width: 90vw;
+    justify-content: center;
+  }
+
   /* ----------------------------------------------------------
      MODALS
      ---------------------------------------------------------- */
@@ -911,28 +944,20 @@
     max-height: 92vh;
 
     border-radius:
-      var(--r-xl)
-      var(--r-xl)
-      var(--r-lg)
-      var(--r-lg);
+      var(--r-xl) var(--r-xl) var(--r-lg) var(--r-lg);
 
     transform:
-      translateY(35px)
-      scale(0.98);
+      translateY(35px) scale(0.98);
   }
 
   .modal-header {
     padding:
-      var(--space-8)
-      var(--space-5)
-      var(--space-6);
+      var(--space-8) var(--space-5) var(--space-6);
   }
 
   .modal-body {
     padding:
-      var(--space-6)
-      var(--space-5)
-      var(--space-7);
+      var(--space-6) var(--space-5) var(--space-7);
   }
 
   .modal-title {
@@ -975,9 +1000,7 @@
     min-height: 155px;
 
     padding:
-      var(--space-7)
-      var(--space-5)
-      var(--space-5);
+      var(--space-7) var(--space-5) var(--space-5);
   }
 
   .blog-body {
@@ -1092,9 +1115,7 @@
 
   footer {
     padding:
-      var(--space-12)
-      0
-      var(--space-7);
+      var(--space-12) 0 var(--space-7);
   }
 
   .footer-quote {
@@ -1176,8 +1197,7 @@
 
   .github-profile-card {
     padding:
-      var(--space-5)
-      var(--space-4);
+      var(--space-5) var(--space-4);
 
     border-radius: var(--r-md);
   }
@@ -1217,8 +1237,7 @@
 
   .gh-stat {
     padding:
-      var(--space-3)
-      var(--space-2);
+      var(--space-3) var(--space-2);
   }
 
   .gh-stat-num {
@@ -1446,7 +1465,7 @@
     font-size: 0.65rem;
   }
 
-  .contact-layout > .reveal:last-child {
+  .contact-layout>.reveal:last-child {
     padding: var(--space-6);
     border-radius: var(--r-lg);
   }
@@ -1464,8 +1483,7 @@
     min-height: 46px;
 
     padding:
-      var(--space-3)
-      var(--space-4);
+      var(--space-3) var(--space-4);
 
     font-size: var(--text-sm);
   }
@@ -1496,8 +1514,7 @@
 
   nav {
     padding:
-      0
-      var(--space-3);
+      0 var(--space-3);
   }
 
   .nav-logo {
@@ -1523,8 +1540,7 @@
 
   .nav-mobile {
     padding:
-      var(--space-8)
-      var(--space-4);
+      var(--space-8) var(--space-4);
   }
 
 
@@ -1555,8 +1571,7 @@
     justify-content: center;
 
     padding:
-      var(--space-4)
-      var(--space-5);
+      var(--space-4) var(--space-5);
   }
 
 
@@ -1566,9 +1581,7 @@
 
   .hero-wrap {
     padding:
-      var(--space-6)
-      0
-      var(--space-14);
+      var(--space-6) 0 var(--space-14);
 
     gap: var(--space-7);
   }
@@ -1643,8 +1656,7 @@
     justify-content: center;
 
     padding:
-      var(--space-4)
-      var(--space-5);
+      var(--space-4) var(--space-5);
   }
 
 
@@ -1661,8 +1673,7 @@
 
   .stat-card {
     padding:
-      var(--space-5)
-      var(--space-4);
+      var(--space-5) var(--space-4);
   }
 
   .stat-number {
@@ -1707,8 +1718,7 @@
     min-height: 135px;
 
     padding:
-      var(--space-5)
-      var(--space-3);
+      var(--space-5) var(--space-3);
   }
 
   .skill-icon {
@@ -1755,8 +1765,7 @@
 
   .github-profile-card {
     padding:
-      var(--space-6)
-      var(--space-4);
+      var(--space-6) var(--space-4);
   }
 
   .github-avatar {
@@ -1786,8 +1795,7 @@
 
   .gh-stat {
     padding:
-      var(--space-4)
-      var(--space-3);
+      var(--space-4) var(--space-3);
   }
 
   .gh-stat-num {
@@ -1847,8 +1855,7 @@
     font-size: 7px;
 
     padding:
-      2px
-      6px;
+      2px 6px;
   }
 
   .repo-description,
@@ -1889,8 +1896,7 @@
 
   .github-empty {
     padding:
-      var(--space-6)
-      var(--space-4);
+      var(--space-6) var(--space-4);
 
     font-size: var(--text-xs);
   }
@@ -1950,8 +1956,7 @@
     line-height: var(--lh-normal);
 
     padding:
-      0
-      var(--space-3);
+      0 var(--space-3);
   }
 
   .pre-percent {
@@ -2075,8 +2080,7 @@
 
   .gh-stat {
     padding:
-      var(--space-4)
-      var(--space-3);
+      var(--space-4) var(--space-3);
   }
 
   .gh-stat-num {
@@ -2137,6 +2141,47 @@
 
 @media (max-width: 420px) {
 
+  .hacker-terminal {
+    width: 95vw;
+    height: min(320px, 70vh);
+  }
+
+  .terminal-header {
+    height: 26px;
+  }
+
+  .terminal-title {
+    display: none;
+  }
+
+  .terminal-dots {
+    width: auto;
+  }
+
+  .terminal-status {
+    width: auto;
+    font-size: 6.5px;
+  }
+
+  .terminal-body {
+    padding: 12px 14px;
+    font-size: 9px;
+    line-height: 1.6;
+  }
+
+  .ascii-logo {
+    font-size: clamp(5px, 2vw, 9px);
+  }
+
+  .identity-subtitle {
+    font-size: 7px;
+  }
+
+  .hacker-final {
+    font-size: 7.5px;
+    bottom: 6%;
+  }
+
   .blog-card {
     min-height: 340px;
   }
@@ -2184,13 +2229,12 @@
     min-height: 32px;
 
     padding:
-      6px
-      8px;
+      6px 8px;
 
     font-size: 0.58rem;
   }
 
-  .contact-layout > .reveal:last-child {
+  .contact-layout>.reveal:last-child {
     padding: var(--space-5);
     border-radius: var(--r-md);
   }
@@ -2230,8 +2274,7 @@
 
   .github-profile-card {
     padding:
-      var(--space-4)
-      var(--space-3);
+      var(--space-4) var(--space-3);
   }
 
   .github-avatar {
@@ -2245,8 +2288,7 @@
 
   .gh-stat {
     padding:
-      10px
-      6px;
+      10px 6px;
   }
 
   .gh-stat-num {
@@ -2280,7 +2322,7 @@
   .repo-name {
     white-space: normal;
     overflow-wrap: anywhere;
-  }   
+  }
 
   .repo-card {
     padding: var(--space-3);
@@ -2296,7 +2338,7 @@
 
     font-size: 13px;
   }
-  
+
   .repo-visibility {
     font-size: 7px;
   }
@@ -2357,8 +2399,7 @@
 
   .github-profile-card {
     padding:
-      var(--space-5)
-      var(--space-3);
+      var(--space-5) var(--space-3);
   }
 
   .github-avatar {
@@ -2380,8 +2421,7 @@
 
   .gh-stat {
     padding:
-      var(--space-3)
-      var(--space-2);
+      var(--space-3) var(--space-2);
   }
 
   .gh-stat-num {
@@ -2449,7 +2489,7 @@
     min-width: 52px;
   }
 
-  .contact-layout > .reveal:last-child {
+  .contact-layout>.reveal:last-child {
     padding: var(--space-4);
   }
 }

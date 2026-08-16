@@ -10,11 +10,9 @@
     border-color: rgba(255, 0, 60, 0.3);
 
     background:
-      linear-gradient(
-        145deg,
+      linear-gradient(145deg,
         rgba(255, 0, 60, 0.14),
-        rgba(255, 0, 60, 0.04)
-      ),
+        rgba(255, 0, 60, 0.04)),
       rgba(10, 10, 10, 0.88);
 
     transform:
@@ -291,25 +289,20 @@
      PRELOADER
      ========================================================== */
 
-  #preloader *,
-  #preloader::before,
-  #preloader::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-
-  #preloader::after,
-  .pre-shield svg,
-  .pre-ring,
-  .pre-ring2,
-  .pre-text::after,
-  .pre-bar::after {
-    animation: none;
-  }
-
-  #preloader,
-  .pre-bar {
-    transition: none;
+  .hacker-noise,
+  .hacker-terminal,
+  .terminal-line,
+  .terminal-cursor,
+  .binary-column,
+  .identity-glitch-red,
+  .identity-glitch-white,
+  .hacker-final .final-cursor,
+  #preloader.glitch-active,
+  #preloader.glitch-active .hacker-glitch-overlay,
+  #preloader.identity-active .hacker-terminal,
+  #preloader.identity-active .hacker-identity,
+  #preloader.identity-active .hacker-final {
+    animation: none !important;
   }
 
   /* ----------------------------------------------------------
