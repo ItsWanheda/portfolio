@@ -157,6 +157,7 @@ export const BLOG_DATA = [
   // =================================================================
   {
     num: '01',
+    slug: 'jwt-security-deep-dive',
     tag: 'Authentication & Identity',
     title: 'JWT Security Deep Dive: Exploiting Misconfigurations and Implementation Flaws',
     excerpt: 'Beyond the basics: A forensic analysis of JWT architecture, cryptographic pitfalls, advanced attack vectors like Algorithm Confusion and Key Injection, with battle-tested defensive patterns.',
@@ -349,6 +350,7 @@ app.get('/api/admin', authenticate, requireRole('admin'), async (req, res) => {
   // =================================================================
   {
     num: '02',
+    slug: 'rest-api-hardening',
     tag: 'API Security & Hardening',
     title: 'Hardening RESTful Architectures: Defense-in-Depth Against Automated Exploits',
     excerpt: 'A technical deep-dive into neutralizing API-centric attack vectors through strategic header implementation, sophisticated rate-limiting algorithms, and strict schema enforcement.',
@@ -602,6 +604,7 @@ db.query(query, [req.body.email]);</code></pre>
   // =================================================================
   {
     num: '03',
+    slug: 'tls-1-3',
     tag: 'Protocol Analysis & Networking',
     title: 'TLS 1.3 Deep Dive: The Cryptographic Handshake that Powers the Secure Web',
     excerpt: 'Deconstructing the mechanics of TLS 1.3: From Diffie-Hellman key exchanges to the elimination of legacy vulnerabilities and the transition to 1-RTT efficiency.',
@@ -775,6 +778,7 @@ add_header X-Frame-Options "DENY" always;</code></pre>
   // =================================================================
   {
     num: '04',
+    slug: 'dns-deep-dive',
     tag: 'Networking',
     title: 'DNS: The Internet\'s Phone Book (And Its Security Flaws)',
     excerpt: 'A deep dive into DNS resolution, DNSSEC, DNS over HTTPS/TLS, and common DNS-based attacks like cache poisoning and typosquatting — with mitigation strategies.',
@@ -903,6 +907,7 @@ dig -x 8.8.8.8</code></pre>
   // =================================================================
   {
     num: '05',
+    slug: 'owasp-top-10',
     tag: 'Cybersecurity',
     title: 'OWASP Top 10 for Backend Developers: Real Code, Real Fixes',
     excerpt: 'A practical walkthrough of each OWASP Top 10 (2021) vulnerability with real TypeScript/Node.js examples showing vulnerable vs secure implementations.',
@@ -1167,6 +1172,7 @@ function isPrivateIP(host) {
   // =================================================================
   {
     num: '06',
+    slug: 'go-port-scanner',
     tag: 'Go',
     title: 'Writing Network Tools in Go: A Port Scanner From Scratch',
     excerpt: 'Building a concurrent, production-grade TCP port scanner in Go — goroutines, channels, worker pools, rate limiting, and banner grabbing explained.',
@@ -1474,8 +1480,13 @@ func TestScanner_Localhost(t *testing.T) {
       <p>⚠️ <strong>Only scan systems you own or have explicit written permission to test.</strong> Unauthorized port scanning can violate laws like the <strong>Computer Fraud and Abuse Act (CFAA)</strong> in the US, the <strong>Computer Misuse Act</strong> in the UK, and similar laws worldwide. Use <code>scanme.nmap.org</code> for practice — it's provided by the Nmap project specifically for testing.</p>
     `
   },
+
+  // =================================================================
+  // BLOG 07 — API ATTACK SURFACE
+  // =================================================================
   {
     num: '07',
+    slug: 'api-attack-surface',
     tag: 'Internet & Networking',
     title: 'HTTP Under the Hood: What Really Happens When You Open a Website',
     excerpt: 'A deep technical journey through DNS, TCP, TLS, HTTP, headers, cookies, caching, and the complete lifecycle of a browser request — from typing a URL to rendering a webpage.',
@@ -2406,8 +2417,13 @@ strict-transport-security: ...</code></pre>
     <p>That invisible pipeline is the foundation of the modern Internet.</p>
   `
   },
+
+  // =================================================================
+  // BLOG 08 — WEAK BACKEND
+  // =================================================================
   {
     num: '08',
+    slug: 'weak-backend-risks',
     tag: 'API Security & Penetration Testing',
     title: 'API Attack Surface: How Pentesters Discover, Access, and Test APIs',
     excerpt: 'A practical deep dive into API reconnaissance, authentication, authorization, endpoint discovery, tokens, HTTP methods, common security weaknesses, and the defensive mindset behind modern API penetration testing.',
@@ -5357,113 +5373,462 @@ function renderCerts() {
 /* ============================================================
    BLOG
 ============================================================ */
+
 function renderBlog() {
   const grid = document.getElementById('blog-grid');
+
+  if (!grid) return;
+
   grid.innerHTML = BLOG_DATA.map((b, i) => `
-    <div class="blog-card reveal reveal-d${Math.min(i % 3 + 1, 5)}">
+    <div
+      class="blog-card reveal reveal-d${Math.min(i % 3 + 1, 5)}"
+      data-blog-slug="${b.slug}"
+    >
+
       <div class="blog-header">
-        <div class="blog-number">${b.num}</div>
-        <div class="blog-tag"><span class="tag">${b.tag}</span></div>
-        <div class="blog-title">${b.title}</div>
-      </div>
-      <div class="blog-body">
-        <div class="blog-excerpt">${b.excerpt}</div>
-        <div class="blog-meta">
-          <span class="blog-date">${b.date} · ${b.readTime}</span>
-          <span class="blog-read" data-index="${i}">Read more </span>
+
+        <div class="blog-number">
+          ${b.num}
         </div>
+
+        <div class="blog-tag">
+          <span class="tag">${b.tag}</span>
+        </div>
+
+        <div class="blog-title">
+          ${b.title}
+        </div>
+
       </div>
+
+      <div class="blog-body">
+
+        <div class="blog-excerpt">
+          ${b.excerpt}
+        </div>
+
+        <div class="blog-meta">
+
+          <span class="blog-date">
+            ${b.date} · ${b.readTime}
+          </span>
+
+          <a
+            href="#blog-${b.slug}"
+            class="blog-read"
+            data-index="${i}"
+            aria-label="Read ${b.title}"
+          >
+            Read more
+          </a>
+
+        </div>
+
+      </div>
+
     </div>
   `).join('');
 
-  // Add event listeners to "Read more" links
+
+  /* ==========================================================
+     READ MORE
+  ========================================================== */
+
   document.querySelectorAll('.blog-read').forEach(link => {
+
     link.addEventListener('click', (e) => {
+
       e.preventDefault();
       e.stopPropagation();
-      const index = parseInt(link.getAttribute('data-index'));
+
+      const index = Number(
+        link.getAttribute('data-index')
+      );
+
       openBlogModal(index);
+
     });
+
   });
 
-  // Also allow clicking the entire card to open the modal
+
+  /* ==========================================================
+     ENTIRE CARD
+  ========================================================== */
+
   document.querySelectorAll('.blog-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      // If the click was on the "Read more" link, let its handler take care of it
-      if (e.target.closest('.blog-read')) return;
 
-      const index = parseInt(card.querySelector('.blog-read').getAttribute('data-index'));
+    card.addEventListener('click', (e) => {
+
+      if (e.target.closest('.blog-read')) {
+        return;
+      }
+
+      const link = card.querySelector('.blog-read');
+
+      if (!link) return;
+
+      const index = Number(
+        link.getAttribute('data-index')
+      );
+
       openBlogModal(index);
+
     });
+
   });
 
-  // Intersection Observer for animations
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  grid.querySelectorAll('.blog-card').forEach(c => obs.observe(c));
+
+  /* ==========================================================
+     INTERSECTION OBSERVER
+  ========================================================== */
+
+  const obs = new IntersectionObserver(
+    entries => {
+
+      entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+
+      });
+
+    },
+    {
+      threshold: 0.1
+    }
+  );
+
+
+  grid
+    .querySelectorAll('.blog-card')
+    .forEach(card => obs.observe(card));
 }
 
-// Modal Functions
-function openBlogModal(index) {
+
+/* ============================================================
+   OPEN BLOG MODAL
+============================================================ */
+
+function openBlogModal(index, updateUrl = true) {
+
   const blog = BLOG_DATA[index];
+
   if (!blog) return;
 
-  document.getElementById('modal-number').textContent = blog.num;
-  document.getElementById('modal-tag').textContent = blog.tag;
-  document.getElementById('modal-title').textContent = blog.title;
 
+  /* ==========================================================
+     MODAL HEADER
+  ========================================================== */
+
+  const modalNumber = document.getElementById('modal-number');
+  const modalTag = document.getElementById('modal-tag');
+  const modalTitle = document.getElementById('modal-title');
   const body = document.getElementById('modal-body');
+  const modal = document.getElementById('blog-modal');
+
+  if (
+    !modalNumber ||
+    !modalTag ||
+    !modalTitle ||
+    !body ||
+    !modal
+  ) {
+    return;
+  }
+
+
+  modalNumber.textContent = blog.num;
+  modalTag.textContent = blog.tag;
+  modalTitle.textContent = blog.title;
+
+
+  /* ==========================================================
+     MODAL CONTENT
+  ========================================================== */
+
   body.innerHTML = `
     <div class="blog-progress-bar">
-      <div class="blog-progress-fill" id="blog-progress"></div>
+      <div
+        class="blog-progress-fill"
+        id="blog-progress"
+      ></div>
     </div>
+
     ${blog.content}
   `;
 
-  const modal = document.getElementById('blog-modal');
+
+  /* ==========================================================
+     OPEN MODAL
+  ========================================================== */
+
   modal.classList.add('active');
+
   document.body.style.overflow = 'hidden';
 
-  // Track scroll progress
-  const progressBar = document.getElementById('blog-progress');
-  body.onscroll = () => {
-    const pct = (body.scrollTop / (body.scrollHeight - body.clientHeight)) * 100;
-    progressBar.style.width = pct + '%';
-  };
+
+  /* ==========================================================
+     UPDATE URL
+  ========================================================== */
+
+  if (updateUrl) {
+
+    const newUrl =
+      `${window.location.pathname}` +
+      `${window.location.search}` +
+      `#blog-${blog.slug}`;
+
+    history.pushState(
+      {
+        blog: blog.slug
+      },
+      '',
+      newUrl
+    );
+
+  }
+
+
+  /* ==========================================================
+     RESET SCROLL
+  ========================================================== */
+
+  body.scrollTop = 0;
+
+
+  /* ==========================================================
+     SCROLL PROGRESS
+  ========================================================== */
+
+  const progressBar =
+    document.getElementById('blog-progress');
+
+  if (progressBar) {
+
+    body.onscroll = () => {
+
+      const maxScroll =
+        body.scrollHeight - body.clientHeight;
+
+      const percentage =
+        maxScroll > 0
+          ? (body.scrollTop / maxScroll) * 100
+          : 0;
+
+      progressBar.style.width =
+        `${Math.min(100, Math.max(0, percentage))}%`;
+
+    };
+
+  }
+
 }
 
-function closeBlogModal() {
-  const modal = document.getElementById('blog-modal');
+
+/* ============================================================
+   CLOSE BLOG MODAL
+============================================================ */
+
+function closeBlogModal(updateUrl = true) {
+
+  const modal =
+    document.getElementById('blog-modal');
+
+  if (!modal) return;
+
+
   modal.classList.remove('active');
-  document.body.style.overflow = ''; // Restore body scrolling
+
+  document.body.style.overflow = '';
+
+
+  const body =
+    document.getElementById('modal-body');
+
+  if (body) {
+    body.onscroll = null;
+  }
+
+
+  /* ==========================================================
+     REMOVE BLOG HASH
+  ========================================================== */
+
+  if (
+    updateUrl &&
+    window.location.hash.startsWith('#blog-')
+  ) {
+
+    const cleanUrl =
+      window.location.pathname +
+      window.location.search;
+
+    history.pushState(
+      {},
+      '',
+      cleanUrl
+    );
+
+  }
+
 }
 
-// Initialize Modal Listeners
-document.addEventListener('DOMContentLoaded', () => {
-  // Close modal when clicking close button
-  const closeBtn = document.querySelector('.modal-close');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeBlogModal);
+
+/* ============================================================
+   OPEN BLOG FROM URL
+============================================================ */
+
+function openBlogFromHash() {
+
+  const hash =
+    window.location.hash;
+
+
+  if (!hash.startsWith('#blog-')) {
+    return;
   }
 
-  // Close modal when clicking outside content
-  const modal = document.getElementById('blog-modal');
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeBlogModal();
-      }
-    });
+
+  const slug =
+    decodeURIComponent(
+      hash.substring('#blog-'.length)
+    );
+
+
+  const index =
+    BLOG_DATA.findIndex(
+      blog => blog.slug === slug
+    );
+
+
+  if (index === -1) {
+    return;
   }
 
-  // Close modal on Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeBlogModal();
+
+  openBlogModal(
+    index,
+    false
+  );
+
+}
+
+
+/* ============================================================
+   HASH CHANGE
+============================================================ */
+
+window.addEventListener(
+  'hashchange',
+  () => {
+
+    openBlogFromHash();
+
+  }
+);
+
+
+/* ============================================================
+   BROWSER BACK / FORWARD
+============================================================ */
+
+window.addEventListener(
+  'popstate',
+  () => {
+
+    if (
+      window.location.hash.startsWith('#blog-')
+    ) {
+
+      openBlogFromHash();
+
+    } else {
+
+      closeBlogModal(false);
+
     }
-  });
-});
+
+  }
+);
+
+
+/* ============================================================
+   INITIALIZE BLOG MODAL
+============================================================ */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    /* ========================================================
+       CLOSE BUTTON
+    ======================================================== */
+
+    const closeBtn =
+      document.querySelector('.modal-close');
+
+    if (closeBtn) {
+
+      closeBtn.addEventListener(
+        'click',
+        () => {
+          closeBlogModal();
+        }
+      );
+
+    }
+
+
+    /* ========================================================
+       CLICK OUTSIDE MODAL
+    ======================================================== */
+
+    const modal =
+      document.getElementById('blog-modal');
+
+    if (modal) {
+
+      modal.addEventListener(
+        'click',
+        (e) => {
+
+          if (e.target === modal) {
+            closeBlogModal();
+          }
+
+        }
+      );
+
+    }
+
+
+    /* ========================================================
+       ESCAPE KEY
+    ======================================================== */
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+
+        if (e.key === 'Escape') {
+          closeBlogModal();
+        }
+
+      }
+    );
+
+
+    /* ========================================================
+       OPEN BLOG FROM DIRECT URL
+    ======================================================== */
+
+    openBlogFromHash();
+
+  }
+);
 /* ============================================================
    CONTACT
 ============================================================ */

@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss
+  version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+>
+
+  <channel>
+
+    <title>ItsWanheda — Blog</title>
+
+    <link>https://itswanheda.vercel.app/</link>
+
+    <description>
+      ItsWanheda's blog covering web development, backend engineering,
+      APIs, cybersecurity, networking, authentication, and modern technology.
+    </description>
+
+    <language>en-US</language>
+
+    <copyright>© 2026 ItsWanheda</copyright>
+
+    <lastBuildDate>Sun, 16 Aug 2026 00:00:00 GMT</lastBuildDate>
+
+    <generator>ItsWanheda Portfolio</generator>
+
+    <ttl>60</ttl>
+
+    <atom:link
+      href="https://itswanheda.vercel.app/rss.xml"
+      rel="self"
+      type="application/rss+xml"
+    />
+
+
+    <!-- ========================================================
+         BLOG 01
+    ========================================================= -->
+
+    <item>
+
+      <title>
+        JWT Security Deep Dive: Exploiting Misconfigurations and Implementation Flaws
+      </title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-jwt-security-deep-dive
+      </link>
+
+      <description>
+        Beyond the basics: A forensic analysis of JWT architecture,
+        cryptographic pitfalls, advanced attack vectors like Algorithm
+        Confusion and Key Injection, with battle-tested defensive patterns.
+      </description>
+
+      <category>Authentication &amp; Identity</category>
+      <category>JWT</category>
+      <category>Cybersecurity</category>
+
+      <pubDate>Tue, 16 Jun 2026 02:45:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-jwt-security-deep-dive
+      </guid>
+
+    </item>
+
+
+    <!-- ========================================================
+         BLOG 02
+    ========================================================= -->
+
+    <item>
+
+      <title>
+        Hardening RESTful Architectures: Defense-in-Depth Against Automated Exploits
+      </title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-rest-api-hardening
+      </link>
+
+      <description>
+        A technical deep-dive into neutralizing API-centric attack vectors
+        through strategic header implementation, sophisticated rate-limiting
+        algorithms, and strict schema enforcement.
+      </description>
+
+      <category>API Security &amp; Hardening</category>
+      <category>REST API</category>
+      <category>Cybersecurity</category>
+
+      <pubDate>Fri, 15 May 2026 23:20:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-rest-api-hardening
+      </guid>
+
+    </item>
+
+
+    <!-- ========================================================
+         BLOG 03
+    ========================================================= -->
+
+    <item>
+
+      <title>TLS 1.3</title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-tls-1-3
+      </link>
+
+      <description>
+        Understanding the architecture, handshake process, cryptographic
+        improvements, and security benefits introduced by TLS 1.3.
+      </description>
+
+      <category>Network Security</category>
+      <category>TLS</category>
+      <category>Networking</category>
+
+      <pubDate>Thu, 16 Apr 2026 01:10:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-tls-1-3
+      </guid>
+
+    </item>
+
+
+    <!-- ========================================================
+         BLOG 04
+    ========================================================= -->
+
+    <item>
+
+      <title>DNS Deep Dive</title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-dns-deep-dive
+      </link>
+
+      <description>
+        A deep dive into how DNS translates domain names into network
+        destinations and the security mechanisms surrounding the system.
+      </description>
+
+      <category>Networking</category>
+      <category>DNS</category>
+      <category>Infrastructure</category>
+
+      <pubDate>Sun, 15 Mar 2026 22:40:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-dns-deep-dive
+      </guid>
+
+    </item>
+
+
+    <!-- ========================================================
+         BLOG 05
+    ========================================================= -->
+
+    <item>
+
+      <title>OWASP Top 10</title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-owasp-top-10
+      </link>
+
+      <description>
+        An overview of major web application security risks and practical
+        defensive principles developers can use to protect applications.
+      </description>
+
+      <category>Web Security</category>
+      <category>OWASP</category>
+      <category>Cybersecurity</category>
+
+      <pubDate>Mon, 16 Feb 2026 03:05:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-owasp-top-10
+      </guid>
+
+    </item>
+
+
+    <!-- ========================================================
+         BLOG 06
+    ========================================================= -->
+
+    <item>
+
+      <title>Go Port Scanner</title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-go-port-scanner
+      </link>
+
+      <description>
+        Building and understanding a network port scanner in Go while
+        exploring TCP connections, concurrency, timeouts, and responsible
+        security testing.
+      </description>
+
+      <category>Go</category>
+      <category>Networking</category>
+      <category>Security</category>
+
+      <pubDate>Fri, 16 Jan 2026 00:00:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-go-port-scanner
+      </guid>
+
+    </item>
+
+
+    <!-- ========================================================
+         BLOG 07
+    ========================================================= -->
+
+    <item>
+
+      <title>
+        API Attack Surface: How Pentesters Discover, Access, and Test APIs
+      </title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-api-attack-surface
+      </link>
+
+      <description>
+        A technical look at how security testers map API attack surfaces,
+        identify exposed functionality, analyze authentication, and safely
+        test API security controls.
+      </description>
+
+      <category>API Security</category>
+      <category>Penetration Testing</category>
+      <category>Cybersecurity</category>
+
+      <pubDate>Fri, 14 Aug 2026 00:30:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-api-attack-surface
+      </guid>
+
+    </item>
+
+
+    <!-- ========================================================
+         BLOG 08
+    ========================================================= -->
+
+    <item>
+
+      <title>The Hidden Risks of a Weak Backend</title>
+
+      <link>
+        https://itswanheda.vercel.app/#blog-weak-backend-risks
+      </link>
+
+      <description>
+        Understanding how weak authentication, authorization, validation,
+        secret management, and error handling can expose an entire application.
+      </description>
+
+      <category>Backend Security</category>
+      <category>Backend</category>
+      <category>Cybersecurity</category>
+
+      <pubDate>Sun, 16 Aug 2026 20:15:00 GMT</pubDate>
+
+      <guid isPermaLink="true">
+        https://itswanheda.vercel.app/#blog-weak-backend-risks
+      </guid>
+
+    </item>
+
+  </channel>
+
+</rss>
