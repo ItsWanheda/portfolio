@@ -1,30 +1,104 @@
-# OS files
-.DS_Store
-Thumbs.db
-desktop.ini
+# ============================================================
+# DEPENDENCIES
+# ============================================================
 
-# Editor
-.vscode/
+node_modules/
+bower_components/
+
+
+# ============================================================
+# ENVIRONMENT VARIABLES / SECRETS
+# ============================================================
+
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+
+# Environment files with secrets
+*.env
+*.env.local
+
+
+# ============================================================
+# VERCEL
+# ============================================================
+
+.vercel/
+
+
+# ============================================================
+# BUILD / OUTPUT
+# ============================================================
+
+dist/
+build/
+out/
+.next/
+
+
+# ============================================================
+# LOGS
+# ============================================================
+
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+*.log
+
+
+# ============================================================
+# OS FILES
+# ============================================================
+
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+
+# ============================================================
+# EDITOR
+# ============================================================
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
 .idea/
 *.swp
 *.swo
-*~
 
-# Node (if you add tooling later)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-yarn.lock
 
-# Environment
-.env
-.env.local
+# ============================================================
+# TEMPORARY FILES
+# ============================================================
 
-# Build output
-dist/
-build/
+tmp/
+temp/
+.cache/
 
-# Logs
-*.log
+*.tmp
+*.temp
+
+
+# ============================================================
+# SECURITY
+# ============================================================
+
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+credentials.json
+service-account.json
+secrets.json
