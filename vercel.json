@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "name": "itswanheda",
+  "name": "itswanheda-portfolio",
   "cleanUrls": true,
   "trailingSlash": false,
 
@@ -12,6 +12,10 @@
   "framework": null,
 
   "rewrites": [
+    {
+      "source": "/api/github",
+      "destination": "/api/github.js"
+    },
     {
       "source": "/src/(.*)",
       "destination": "/src/$1"
@@ -35,10 +39,6 @@
           "value": "DENY"
         },
         {
-          "key": "X-XSS-Protection",
-          "value": "0"
-        },
-        {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
         },
@@ -49,10 +49,16 @@
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
-        },
+        }
+      ]
+    },
+
+    {
+      "source": "/api/(.*)",
+      "headers": [
         {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.github.com https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; worker-src 'self' blob:; child-src 'self' blob:; upgrade-insecure-requests"
+          "key": "Cache-Control",
+          "value": "public, s-maxage=300, stale-while-revalidate=600"
         }
       ]
     },
@@ -60,6 +66,10 @@
     {
       "source": "/src/js/(.*)",
       "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; worker-src 'self' blob:; child-src 'self' blob:; upgrade-insecure-requests;"
+        },
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
