@@ -626,101 +626,301 @@
     <span class="cursor-dot"></span>
   </div>
   <!-- CANVAS BG -->
-  <canvas id="bg-canvas"></canvas>
+  <canvas
+    id="bg-canvas"
+    aria-hidden="true"
+></canvas>
   <a href="#home" class="skip-link">Skip to main content</a>
   <!--Back-to-Top-->
   <button id="back-to-top" aria-label="Back to top">↑</button>
 
 <!-- ============================================================
-     WANHEDA // HACKER TERMINAL PRELOADER
+     TERMINAL PRELOADER
+     v2.0
      ============================================================ -->
 
-<div id="preloader">
+<div
+  id="preloader"
+  class="wanheda-preloader"
+  role="dialog"
+  aria-modal="true"
+  aria-label="System initialization"
+>
 
-  <!-- CRT effects -->
-  <div class="hacker-noise"></div>
-  <div class="hacker-scanlines"></div>
-  <div class="hacker-vignette"></div>
+  <!-- ==========================================================
+       VISUAL FX
+       ========================================================== -->
 
-  <!-- Terminal -->
-  <div class="hacker-terminal">
+  <div class="hacker-noise" aria-hidden="true"></div>
+  <div class="hacker-scanlines" aria-hidden="true"></div>
+  <div class="hacker-vignette" aria-hidden="true"></div>
+
+  <div class="ambient-grid" aria-hidden="true"></div>
+
+  <!-- ==========================================================
+       TOP SYSTEM HUD
+       ========================================================== -->
+
+  <div class="boot-hud boot-hud-top">
+
+    <div class="hud-left">
+      <span class="hud-indicator"></span>
+      <span>WANHEDA // CORE</span>
+    </div>
+
+    <div class="hud-center">
+      <span id="boot-session">SESSION: ----</span>
+    </div>
+
+    <div class="hud-right">
+      <span id="boot-clock">00:00:00</span>
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       TERMINAL
+       ========================================================== -->
+
+  <section
+    class="hacker-terminal"
+    aria-label="Boot terminal"
+  >
 
     <!-- Terminal header -->
-    <div class="terminal-header">
+    <header class="terminal-header">
 
-      <div class="terminal-dots">
+      <div class="terminal-dots" aria-hidden="true">
         <span></span>
         <span></span>
         <span></span>
       </div>
 
       <div class="terminal-title">
-        root@wanheda: ~
+        root@wanheda:~ / SYSTEM BOOT
       </div>
 
-      <div class="terminal-status">
-        SECURE
+      <div
+        class="terminal-status"
+        id="terminal-status"
+        aria-live="polite"
+      >
+        INITIALIZING
       </div>
 
-    </div>
+    </header>
 
 
     <!-- Terminal body -->
     <div class="terminal-body">
 
-      <div class="terminal-output" id="terminal-output"></div>
+      <div
+        class="terminal-output"
+        id="terminal-output"
+        aria-live="polite"
+        aria-atomic="false"
+      ></div>
 
+
+      <!-- Current command -->
       <div class="terminal-command">
-        <span class="terminal-prompt">root@wanheda:~$</span>
-        <span id="terminal-command-text"></span>
-        <span class="terminal-cursor"></span>
+
+        <span class="terminal-prompt">
+          root@wanheda:~$
+        </span>
+
+        <span
+          id="terminal-command-text"
+          class="terminal-command-text"
+        ></span>
+
+        <span
+          class="terminal-cursor"
+          aria-hidden="true"
+        ></span>
+
+      </div>
+
+
+      <!-- Progress -->
+      <div class="boot-progress">
+
+        <div class="progress-meta">
+          <span>SYSTEM INITIALIZATION</span>
+
+          <span>
+            <span id="boot-percent">0</span>%
+          </span>
+        </div>
+
+        <div
+          class="progress-track"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-label="System initialization progress"
+        >
+          <div
+            class="progress-bar"
+            id="boot-progress-bar"
+          ></div>
+        </div>
+
       </div>
 
     </div>
 
+  </section>
+
+
+  <!-- ==========================================================
+       BINARY / CODE RAIN
+       ========================================================== -->
+
+  <div
+    class="binary-rain"
+    id="binary-rain"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- ==========================================================
+       FLOATING SYSTEM DATA
+       ========================================================== -->
+
+  <div
+    class="system-data system-data-left"
+    aria-hidden="true"
+  >
+    <span>SYS://WANHEDA</span>
+    <span>NODE://LOCAL</span>
+    <span>PROTO://SECURE</span>
+    <span>CORE://ONLINE</span>
+  </div>
+
+  <div
+    class="system-data system-data-right"
+    aria-hidden="true"
+  >
+    <span id="data-latency">LATENCY: --ms</span>
+    <span id="data-entropy">ENTROPY: --%</span>
+    <span id="data-nodes">NODES: --</span>
+    <span id="data-integrity">INTEGRITY: --</span>
   </div>
 
 
-  <!-- Binary rain -->
-  <div class="binary-rain" id="binary-rain"></div>
+  <!-- ==========================================================
+       IDENTITY REVEAL
+       ========================================================== -->
 
+  <div
+    class="hacker-identity"
+    id="hacker-identity"
+    aria-hidden="true"
+  >
 
-  <!-- ASCII identity -->
-  <div class="hacker-identity" id="hacker-identity">
-
-    <div class="identity-glitch identity-glitch-red">
-      WANHEDA
+    <div
+      class="identity-tag"
+      aria-hidden="true"
+    >
+      // AUTHORIZED ENTITY
     </div>
 
-    <div class="identity-glitch identity-glitch-white">
-      WANHEDA
-    </div>
+    <div class="identity-logo-wrap">
 
-    <pre class="ascii-logo">
-██     ██  █████  ███    ██ ██   ██ ███████ ██████   █████  
-██     ██ ██   ██ ████   ██ ██   ██ ██      ██   ██ ██   ██ 
+      <div
+        class="identity-glitch identity-glitch-red"
+        aria-hidden="true"
+      >
+        WANHEDA
+      </div>
+
+      <div
+        class="identity-glitch identity-glitch-white"
+        aria-hidden="true"
+      >
+        WANHEDA
+      </div>
+
+      <pre class="ascii-logo">██     ██  █████  ███    ██ ██   ██ ███████ ██████   █████
+██     ██ ██   ██ ████   ██ ██   ██ ██      ██   ██ ██   ██
 ██  █  ██ ███████ ██ ██  ██ ███████ █████   ██   ██ ███████
 ██ ███ ██ ██   ██ ██  ██ ██ ██   ██ ██      ██   ██ ██   ██
- ███ ███  ██   ██ ██   ████ ██   ██ ███████ ██████  ██   ██
-    </pre>
+ ███ ███  ██   ██ ██   ████ ██   ██ ███████ ██████  ██   ██</pre>
+
+    </div>
+
+    <div class="identity-name">
+      WANHEDA
+    </div>
 
     <div class="identity-subtitle">
       &lt; SYSTEM ACCESS GRANTED / &gt;
     </div>
 
+    <div class="identity-line"></div>
+
   </div>
 
 
-  <!-- Final message -->
-  <div class="hacker-final" id="hacker-final">
-    <span>&gt;</span>
-    <span id="final-message">SYSTEM READY</span>
-    <span class="final-cursor">_</span>
+  <!-- ==========================================================
+       FINAL STATUS
+       ========================================================== -->
+
+  <div
+    class="hacker-final"
+    id="hacker-final"
+    aria-live="polite"
+  >
+
+    <span class="final-symbol">&gt;</span>
+
+    <span id="final-message">
+      SYSTEM READY
+    </span>
+
+    <span
+      class="final-cursor"
+      aria-hidden="true"
+    >_</span>
+
   </div>
 
 
-  <!-- Glitch overlay -->
-  <div class="hacker-glitch-overlay"></div>
+  <!-- ==========================================================
+       GLITCH
+       ========================================================== -->
+
+  <div
+    class="hacker-glitch-overlay"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- ==========================================================
+       SKIP
+       ========================================================== -->
+
+  <button
+    type="button"
+    id="skip-boot"
+    class="skip-boot"
+    aria-label="Skip system boot animation"
+  >
+    SKIP BOOT <span>[ESC]</span>
+  </button>
+
+
+  <!-- ==========================================================
+       CORNER MARKERS
+       ========================================================== -->
+
+  <div class="corner-marker corner-tl"></div>
+  <div class="corner-marker corner-tr"></div>
+  <div class="corner-marker corner-bl"></div>
+  <div class="corner-marker corner-br"></div>
 
 </div>
 
