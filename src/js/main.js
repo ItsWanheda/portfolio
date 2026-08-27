@@ -3940,529 +3940,1336 @@ const CONTACT_DATA = [
 ];
 
 /* ============================================================
-  HACKER TERMINAL BOOT
+   TERMINAL BOOT ENGINE
+   v2.0
    ============================================================ */
 
-const preloader =
-  document.getElementById('preloader');
+(() => {
 
-const terminalOutput =
-  document.getElementById('terminal-output');
-
-const commandText =
-  document.getElementById('terminal-command-text');
-
-const binaryRain =
-  document.getElementById('binary-rain');
-
-const hackerFinal =
-  document.getElementById('hacker-final');
-
-const finalMessage =
-  document.getElementById('final-message');
+  'use strict';
 
 
-/* ============================================================
-   CONFIG
-   ============================================================ */
+  /* ==========================================================
+     CONFIG
+     ========================================================== */
 
-const COMMAND_DELAY = 180;
+  const CONFIG = {
 
-const commands = [
-  './initialize',
-  './load_kernel',
-  './mount_secure_fs',
-  './initialize_crypto',
-  './establish_uplink',
-  './verify_identity'
-];
+    typeSpeed: 18,
+
+    commandPause: 120,
+
+    linePause: 80,
+
+    identityDuration: 1100,
+
+    finalMessageDuration: 850,
+
+    fadeDuration: 700,
+
+    maxBootTime: 15000,
+
+    binaryColumns: 34,
+
+    reducedMotionSpeed: 5,
+
+    commands: [
+
+      {
+        command: './initialize',
+        message: '[ OK ] Boot sequence initialized',
+        type: 'success'
+      },
+
+      {
+        command: './load_kernel',
+        message: '[ OK ] Kernel modules loaded',
+        type: 'success'
+      },
+
+      {
+        command: './mount_secure_fs',
+        message: '[ OK ] /secure mounted read-write',
+        type: 'success'
+      },
+
+      {
+        command: './initialize_crypto',
+        message: '[ OK ] AES-256 encryption engine online',
+        type: 'success'
+      },
+
+      {
+        command: './establish_uplink',
+        message: '[ OK ] Encrypted tunnel established',
+        type: 'success'
+      },
+
+      {
+        command: './verify_identity',
+        message: '[ OK ] Identity hash verified',
+        type: 'success'
+      }
+
+    ]
+
+  };
 
 
-/* ============================================================
-   SYSTEM OUTPUT
-   ============================================================ */
+  /* ==========================================================
+     STATE
+     ========================================================== */
 
-const bootLines = [
+  const state = {
 
-  {
-    text: '[BOOT] Initializing WANHEDA kernel...',
-    type: 'dim'
-  },
+    started: false,
 
-  {
-    text: '[ OK ] CPU virtualization detected',
-    type: 'success'
-  },
+    finished: false,
 
-  {
-    text: '[ OK ] Memory integrity check passed',
-    type: 'success'
-  },
+    skipped: false,
 
-  {
-    text: '[ OK ] Loading cryptographic modules',
-    type: 'success'
-  },
+    initialized: false,
 
-  {
-    text: '[ OK ] Mounting encrypted filesystem',
-    type: 'success'
-  },
+    progress: 0,
 
-  {
-    text: '[ OK ] Secure socket initialized',
-    type: 'success'
-  },
+    startTime: 0,
 
-  {
-    text: '[ OK ] Firewall rules loaded',
-    type: 'success'
-  },
+    initCalled: false,
 
-  {
-    text: '[ OK ] Identity verification engine ready',
-    type: 'success'
-  },
+    reducedMotion:
+      window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches
 
-  {
-    text: '',
-    type: 'dim'
-  },
+  };
 
-  {
-    text: '0x7A91F2C4  0x0048A91F  0xCC91E72A',
-    type: 'dim'
-  },
 
-  {
-    text: '0x19F2A8BC  0x7F00D421  0x91AC7720',
-    type: 'dim'
-  },
+  /* ==========================================================
+     DOM
+     ========================================================== */
 
-  {
-    text: '0xA821FF09  0x0019CA7F  0x7B2E91C4',
-    type: 'dim'
+  const $ = selector =>
+    document.querySelector(selector);
+
+  const preloader =
+    $('#preloader');
+
+  if (!preloader) {
+    return;
   }
 
-];
+  const terminalOutput =
+    $('#terminal-output');
+
+  const commandText =
+    $('#terminal-command-text');
+
+  const binaryRain =
+    $('#binary-rain');
+
+  const hackerFinal =
+    $('#hacker-final');
+
+  const finalMessage =
+    $('#final-message');
+
+  const identity =
+    $('#hacker-identity');
+
+  const progressBar =
+    $('#boot-progress-bar');
+
+  const progressTrack =
+    $('.progress-track');
+
+  const progressText =
+    $('#boot-percent');
+
+  const terminalStatus =
+    $('#terminal-status');
+
+  const skipButton =
+    $('#skip-boot');
+
+  const bootClock =
+    $('#boot-clock');
+
+  const bootSession =
+    $('#boot-session');
+
+  const latency =
+    $('#data-latency');
+
+  const entropy =
+    $('#data-entropy');
+
+  const nodes =
+    $('#data-nodes');
+
+  const integrity =
+    $('#data-integrity');
 
 
-/* ============================================================
-   TYPE TEXT
-   ============================================================ */
+  /* ==========================================================
+     UTILITIES
+     ========================================================== */
 
-function typeText(
-  element,
-  text,
-  speed = 22
-) {
+  function wait(ms) {
 
-  return new Promise(resolve => {
+    if (state.skipped) {
+      return Promise.resolve();
+    }
 
-    let index = 0;
+    return new Promise(resolve => {
 
-    const interval =
-      setInterval(() => {
+      setTimeout(resolve, ms);
 
-        element.textContent +=
-          text[index];
-
-        index++;
-
-        if (index >= text.length) {
-
-          clearInterval(interval);
-
-          resolve();
-
-        }
-
-      }, speed);
-
-  });
-
-}
-
-
-/* ============================================================
-   ADD TERMINAL LINE
-   ============================================================ */
-
-function addTerminalLine(
-  text,
-  type = ''
-) {
-
-  const line =
-    document.createElement('div');
-
-  line.className =
-    `terminal-line ${type}`;
-
-  line.textContent = text;
-
-  terminalOutput.appendChild(line);
-
-  return line;
-
-}
-
-
-/* ============================================================
-   COMMAND
-   ============================================================ */
-
-async function runCommand(command) {
-
-  commandText.textContent = '';
-
-  await typeText(
-    commandText,
-    command,
-    24
-  );
-
-  await wait(
-    COMMAND_DELAY
-  );
-
-  addTerminalLine(
-    `root@wanheda:~$ ${command}`,
-    'dim'
-  );
-
-  commandText.textContent = '';
-
-}
-
-
-/* ============================================================
-   WAIT
-   ============================================================ */
-
-function wait(ms) {
-
-  return new Promise(
-    resolve => setTimeout(resolve, ms)
-  );
-
-}
-
-
-/* ============================================================
-   HEX STREAM
-   ============================================================ */
-
-function generateHex() {
-
-  const chars =
-    '0123456789ABCDEF';
-
-  let result = '';
-
-  for (let i = 0; i < 8; i++) {
-
-    result +=
-      chars[
-        Math.floor(
-          Math.random() *
-          chars.length
-        )
-      ];
+    });
 
   }
 
-  return `0x${result}`;
 
-}
+  function random(min, max) {
 
-
-/* ============================================================
-   RANDOM TERMINAL DATA
-   ============================================================ */
-
-function generateRandomData() {
-
-  let output = '';
-
-  for (let i = 0; i < 3; i++) {
-
-    output +=
-      `${generateHex()}  `;
+    return Math.floor(
+      Math.random() *
+      (max - min + 1)
+    ) + min;
 
   }
 
-  return output.trim();
 
-}
+  function generateHex(length = 8) {
 
+    const chars =
+      '0123456789ABCDEF';
 
-/* ============================================================
-   BINARY RAIN
-   ============================================================ */
+    let result = '';
 
-function createBinaryRain() {
+    for (let i = 0; i < length; i++) {
 
-  binaryRain.innerHTML = '';
-
-  const columns = 28;
-
-  for (let i = 0; i < columns; i++) {
-
-    const column =
-      document.createElement('div');
-
-    column.className =
-      'binary-column';
-
-    let data = '';
-
-    for (let j = 0; j < 45; j++) {
-
-      data +=
-        Math.random() > 0.5
-          ? '1'
-          : '0';
+      result +=
+        chars[
+          random(0, chars.length - 1)
+        ];
 
     }
 
-    column.textContent = data;
-
-    column.style.left =
-      `${Math.random() * 100}%`;
-
-    column.style.animationDuration =
-      `${4 + Math.random() * 7}s`;
-
-    column.style.animationDelay =
-      `${Math.random() * -8}s`;
-
-    binaryRain.appendChild(column);
+    return `0x${result}`;
 
   }
 
-}
+
+  function generateRandomData() {
+
+    return [
+
+      generateHex(8),
+
+      generateHex(8),
+
+      generateHex(8)
+
+    ].join('  ');
+
+  }
 
 
-/* ============================================================
-   MAIN BOOT
-   ============================================================ */
+  /* ==========================================================
+     TYPEWRITER
+     ========================================================== */
 
-async function startHackerBoot() {
+  async function typeText(
+    element,
+    text,
+    speed = CONFIG.typeSpeed
+  ) {
 
-  createBinaryRain();
+    if (!element) {
+      return;
+    }
 
+    element.textContent = '';
 
-  /* ----------------------------------------------------------
-     COMMAND 1
-     ---------------------------------------------------------- */
+    if (state.reducedMotion) {
+      element.textContent = text;
+      return;
+    }
 
-  await runCommand(
-    commands[0]
-  );
+    for (const character of text) {
 
-  addTerminalLine(
-    '[ OK ] Boot sequence initialized',
-    'success'
-  );
+      if (state.skipped) {
+        element.textContent = text;
+        return;
+      }
 
+      element.textContent += character;
 
-  /* ----------------------------------------------------------
-     COMMAND 2
-     ---------------------------------------------------------- */
+      await wait(speed);
 
-  await runCommand(
-    commands[1]
-  );
+    }
 
-  addTerminalLine(
-    '[ OK ] Kernel modules loaded',
-    'success'
-  );
-
-
-  /* ----------------------------------------------------------
-     COMMAND 3
-     ---------------------------------------------------------- */
-
-  await runCommand(
-    commands[2]
-  );
-
-  addTerminalLine(
-    '[ OK ] /secure mounted read-write',
-    'success'
-  );
+  }
 
 
-  /* ----------------------------------------------------------
-     COMMAND 4
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     TERMINAL LINE
+     ========================================================== */
 
-  await runCommand(
-    commands[3]
-  );
+  function addTerminalLine(
+    text,
+    type = ''
+  ) {
 
-  addTerminalLine(
-    '[ OK ] AES-256 encryption engine online',
-    'success'
-  );
+    if (!terminalOutput) {
+      return null;
+    }
+
+    const line =
+      document.createElement('div');
+
+    line.className =
+      `terminal-line ${type}`;
+
+    line.textContent = text;
+
+    terminalOutput.appendChild(line);
+
+    /*
+     * Prevent unlimited DOM growth.
+     */
+
+    while (
+      terminalOutput.children.length > 32
+    ) {
+
+      terminalOutput.removeChild(
+        terminalOutput.firstElementChild
+      );
+
+    }
+
+    return line;
+
+  }
 
 
-  /* ----------------------------------------------------------
-     HEX DATA
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     COMMAND
+     ========================================================== */
 
-  for (let i = 0; i < 4; i++) {
+  async function runCommand(command) {
+
+    if (!commandText) {
+      return;
+    }
+
+    await typeText(
+      commandText,
+      command,
+      CONFIG.typeSpeed
+    );
+
+    await wait(
+      CONFIG.commandPause
+    );
+
+    if (state.skipped) {
+      return;
+    }
 
     addTerminalLine(
-      generateRandomData(),
+      `root@wanheda:~$ ${command}`,
       'dim'
     );
 
-    await wait(70);
+    commandText.textContent = '';
 
   }
 
 
-  /* ----------------------------------------------------------
-     COMMAND 5
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     PROGRESS
+     ========================================================== */
 
-  await runCommand(
-    commands[4]
-  );
+  function setProgress(value) {
 
-  addTerminalLine(
-    '[ OK ] Encrypted tunnel established',
-    'success'
-  );
+    const percentage =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          Math.round(value)
+        )
+      );
+
+    state.progress = percentage;
+
+    if (progressBar) {
+
+      progressBar.style.width =
+        `${percentage}%`;
+
+    }
+
+    if (progressText) {
+
+      progressText.textContent =
+        percentage;
+
+    }
+
+    if (progressTrack) {
+
+      progressTrack.setAttribute(
+        'aria-valuenow',
+        percentage
+      );
+
+    }
+
+  }
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
+     CLOCK
+     ========================================================== */
+
+  function updateClock() {
+
+    if (!bootClock) {
+      return;
+    }
+
+    const elapsed =
+      Date.now() - state.startTime;
+
+    const seconds =
+      Math.floor(elapsed / 1000);
+
+    const minutes =
+      Math.floor(seconds / 60);
+
+    const hours =
+      Math.floor(minutes / 60);
+
+    const hh =
+      String(hours % 24).padStart(2, '0');
+
+    const mm =
+      String(minutes % 60).padStart(2, '0');
+
+    const ss =
+      String(seconds % 60).padStart(2, '0');
+
+    bootClock.textContent =
+      `${hh}:${mm}:${ss}`;
+
+  }
+
+
+  /* ==========================================================
+     SESSION
+     ========================================================== */
+
+  function generateSession() {
+
+    if (!bootSession) {
+      return;
+    }
+
+    const session =
+      `${generateHex(4)}-${generateHex(4)}`;
+
+    bootSession.textContent =
+      `SESSION: ${session}`;
+
+  }
+
+
+  /* ==========================================================
+     SYSTEM TELEMETRY
+     ========================================================== */
+
+  function updateTelemetry() {
+
+    if (latency) {
+
+      latency.textContent =
+        `LATENCY: ${random(4, 19)}ms`;
+
+    }
+
+    if (entropy) {
+
+      entropy.textContent =
+        `ENTROPY: ${random(91, 99)}%`;
+
+    }
+
+    if (nodes) {
+
+      nodes.textContent =
+        `NODES: ${random(4, 12)}`;
+
+    }
+
+    if (integrity) {
+
+      integrity.textContent =
+        `INTEGRITY: ${random(98, 100)}%`;
+
+    }
+
+  }
+
+
+  /* ==========================================================
+     TELEMETRY LOOP
+     ========================================================== */
+
+  let telemetryTimer = null;
+
+  function startTelemetry() {
+
+    updateTelemetry();
+
+    telemetryTimer =
+      setInterval(
+        updateTelemetry,
+        750
+      );
+
+  }
+
+
+  function stopTelemetry() {
+
+    if (telemetryTimer) {
+
+      clearInterval(
+        telemetryTimer
+      );
+
+      telemetryTimer = null;
+
+    }
+
+  }
+
+
+  /* ==========================================================
      BINARY RAIN
-     ---------------------------------------------------------- */
+     ========================================================== */
 
-  binaryRain.style.opacity = '1';
+  function createBinaryRain() {
 
+    if (!binaryRain) {
+      return;
+    }
 
-  /* ----------------------------------------------------------
-     COMMAND 6
-     ---------------------------------------------------------- */
+    binaryRain.innerHTML = '';
 
-  await runCommand(
-    commands[5]
-  );
+    const fragment =
+      document.createDocumentFragment();
 
-  addTerminalLine(
-    '[ OK ] Identity hash verified',
-    'success'
-  );
+    const columns =
+      window.innerWidth < 700
+        ? 18
+        : CONFIG.binaryColumns;
 
+    for (
+      let i = 0;
+      i < columns;
+      i++
+    ) {
 
-  await wait(250);
+      const column =
+        document.createElement('div');
 
+      column.className =
+        'binary-column';
 
-  /* ----------------------------------------------------------
-     ACCESS GRANTED
-     ---------------------------------------------------------- */
+      let data = '';
 
-  addTerminalLine(
-    '',
-    ''
-  );
+      for (
+        let j = 0;
+        j < random(35, 65);
+        j++
+      ) {
 
-  addTerminalLine(
-    '>>> ACCESS GRANTED',
-    'success'
-  );
+        /*
+         * Mix binary with hexadecimal
+         * for a more technical appearance.
+         */
 
-  addTerminalLine(
-    '>>> USER: WANHEDA',
-    'success'
-  );
+        const chars =
+          Math.random() > 0.75
+            ? '0123456789ABCDEF'
+            : '01';
 
-  addTerminalLine(
-    '>>> SYSTEM READY',
-    'success'
-  );
+        data +=
+          chars[
+            random(
+              0,
+              chars.length - 1
+            )
+          ];
 
+      }
 
-  await wait(500);
+      column.textContent = data;
 
+      column.style.left =
+        `${Math.random() * 100}%`;
 
-  /* ----------------------------------------------------------
-     TERMINAL GLITCH
-     ---------------------------------------------------------- */
+      column.style.animationDuration =
+        `${4 + Math.random() * 8}s`;
 
-  preloader.classList.add(
-    'glitch-active'
-  );
+      column.style.animationDelay =
+        `${Math.random() * -10}s`;
 
+      column.style.opacity =
+        `${0.25 + Math.random() * 0.75}`;
 
-  await wait(450);
+      fragment.appendChild(column);
 
+    }
 
-  /* ----------------------------------------------------------
-     IDENTITY REVEAL
-     ---------------------------------------------------------- */
+    binaryRain.appendChild(
+      fragment
+    );
 
-  preloader.classList.add(
-    'identity-active'
-  );
-
-
-  finalMessage.textContent =
-    'SYSTEM READY';
-
-
-  await wait(1000);
-
-
-  /* ----------------------------------------------------------
-     FINAL MESSAGE
-     ---------------------------------------------------------- */
-
-  finalMessage.textContent =
-    'WELCOME, WANHEDA';
+  }
 
 
-  await wait(900);
+  /* ==========================================================
+     HEX STREAM
+     ========================================================== */
+
+  async function createHexStream(count = 4) {
+
+    for (
+      let i = 0;
+      i < count;
+      i++
+    ) {
+
+      if (state.skipped) {
+        return;
+      }
+
+      addTerminalLine(
+        generateRandomData(),
+        'dim'
+      );
+
+      await wait(
+        CONFIG.linePause
+      );
+
+    }
+
+  }
 
 
-  /* ----------------------------------------------------------
-     EXIT
-     ---------------------------------------------------------- */
+  /* ==========================================================
+     INITIAL BOOT OUTPUT
+     ========================================================== */
 
-  preloader.classList.add(
-    'fade-out'
-  );
+  async function initialDiagnostics() {
 
-  document.body.classList.remove(
-    'loading'
-  );
+    const lines = [
+
+      [
+        '[BOOT] Initializing WANHEDA kernel...',
+        'dim'
+      ],
+
+      [
+        '[ OK ] CPU virtualization detected',
+        'success'
+      ],
+
+      [
+        '[ OK ] Memory integrity check passed',
+        'success'
+      ],
+
+      [
+        '[ OK ] Loading cryptographic modules',
+        'success'
+      ]
+
+    ];
+
+    for (const [text, type] of lines) {
+
+      if (state.skipped) {
+        return;
+      }
+
+      addTerminalLine(
+        text,
+        type
+      );
+
+      await wait(
+        CONFIG.linePause
+      );
+
+    }
+
+  }
 
 
-  /*
-   * Start the rest of your portfolio.
-   */
+  /* ==========================================================
+     BOOT STAGE
+     ========================================================== */
 
-  if (
-    typeof initAll === 'function'
+  async function executeStage(
+    stage,
+    index
   ) {
 
-    initAll();
+    if (state.skipped) {
+      return;
+    }
+
+    await runCommand(
+      stage.command
+    );
+
+    if (state.skipped) {
+      return;
+    }
+
+    addTerminalLine(
+      stage.message,
+      stage.type
+    );
+
+    const progress =
+      ((index + 1) /
+        CONFIG.commands.length) *
+      82;
+
+    setProgress(
+      Math.max(
+        state.progress,
+        progress
+      )
+    );
+
+    await wait(
+      CONFIG.linePause
+    );
 
   }
 
-}
+
+  /* ==========================================================
+     ACCESS GRANTED
+     ========================================================== */
+
+  function showAccessGranted() {
+
+    addTerminalLine(
+      '',
+      ''
+    );
+
+    addTerminalLine(
+      '>>> ACCESS GRANTED',
+      'highlight'
+    );
+
+    addTerminalLine(
+      '>>> USER: WANHEDA',
+      'success'
+    );
+
+    addTerminalLine(
+      '>>> PRIVILEGE: ROOT',
+      'success'
+    );
+
+    addTerminalLine(
+      '>>> SYSTEM READY',
+      'highlight'
+    );
+
+    if (terminalStatus) {
+
+      terminalStatus.textContent =
+        'READY';
+
+      terminalStatus.classList.add(
+        'ready'
+      );
+
+    }
+
+    setProgress(100);
+
+  }
 
 
-/* ============================================================
-   START
-   ============================================================ */
+  /* ==========================================================
+     IDENTITY REVEAL
+     ========================================================== */
 
-startHackerBoot();
+  async function revealIdentity() {
+
+    if (state.skipped) {
+      return;
+    }
+
+    preloader.classList.add(
+      'glitch-active'
+    );
+
+    await wait(450);
+
+    if (state.skipped) {
+      return;
+    }
+
+    preloader.classList.add(
+      'identity-active'
+    );
+
+    if (identity) {
+
+      identity.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+    }
+
+    if (finalMessage) {
+
+      finalMessage.textContent =
+        'SYSTEM READY';
+
+    }
+
+    await wait(
+      CONFIG.identityDuration
+    );
+
+  }
+
+
+  /* ==========================================================
+     FINAL MESSAGE
+     ========================================================== */
+
+  async function showFinalMessage() {
+
+    if (state.skipped) {
+      return;
+    }
+
+    if (finalMessage) {
+
+      finalMessage.textContent =
+        'WELCOME, WANHEDA';
+
+    }
+
+    await wait(
+      CONFIG.finalMessageDuration
+    );
+
+  }
+
+
+  /* ==========================================================
+     INIT APPLICATION
+     ========================================================== */
+
+  function initializeApplication() {
+
+    if (state.initCalled) {
+      return;
+    }
+
+    state.initCalled = true;
+
+    /*
+     * Remove loading state.
+     */
+
+    document.body.classList.remove(
+      'loading'
+    );
+
+    /*
+     * Start application.
+     */
+
+    if (
+      typeof window.initAll ===
+      'function'
+    ) {
+
+      try {
+
+        window.initAll();
+
+      } catch (error) {
+
+        console.error(
+          '[WANHEDA] initAll() failed:',
+          error
+        );
+
+      }
+
+    }
+
+  }
+
+
+  /* ==========================================================
+     FINISH
+     ========================================================== */
+
+  async function finishBoot() {
+
+    if (state.finished) {
+      return;
+    }
+
+    state.finished = true;
+
+    stopTelemetry();
+
+    /*
+     * Ensure 100%.
+     */
+
+    setProgress(100);
+
+    /*
+     * Fade out.
+     */
+
+    preloader.classList.add(
+      'fade-out'
+    );
+
+    /*
+     * Give the CSS transition
+     * time to complete.
+     */
+
+    await wait(
+      CONFIG.fadeDuration
+    );
+
+    /*
+     * Remove from interaction tree.
+     */
+
+    preloader.style.display =
+      'none';
+
+    initializeApplication();
+
+  }
+
+
+  /* ==========================================================
+     SKIP
+     ========================================================== */
+
+  function skipBoot() {
+
+    if (state.finished) {
+      return;
+    }
+
+    state.skipped = true;
+
+    /*
+     * Stop current command animation.
+     */
+
+    if (commandText) {
+
+      commandText.textContent =
+        './boot_complete';
+
+    }
+
+    /*
+     * Clear terminal and create
+     * compact completion state.
+     */
+
+    if (terminalOutput) {
+
+      terminalOutput.innerHTML = '';
+
+      addTerminalLine(
+        '[ SKIP ] Boot animation bypassed',
+        'warning'
+      );
+
+      addTerminalLine(
+        '[ OK ] Core initialized',
+        'success'
+      );
+
+      addTerminalLine(
+        '>>> ACCESS GRANTED',
+        'highlight'
+      );
+
+    }
+
+    setProgress(100);
+
+    if (terminalStatus) {
+
+      terminalStatus.textContent =
+        'READY';
+
+      terminalStatus.classList.add(
+        'ready'
+      );
+
+    }
+
+    /*
+     * Reveal identity immediately.
+     */
+
+    preloader.classList.remove(
+      'glitch-active'
+    );
+
+    preloader.classList.add(
+      'identity-active'
+    );
+
+    if (finalMessage) {
+
+      finalMessage.textContent =
+        'WELCOME, WANHEDA';
+
+    }
+
+    /*
+     * Give reveal a moment,
+     * then exit.
+     */
+
+    setTimeout(
+      finishBoot,
+      state.reducedMotion
+        ? 150
+        : 850
+    );
+
+  }
+
+
+  /* ==========================================================
+     KEYBOARD
+     ========================================================== */
+
+  function setupKeyboard() {
+
+    document.addEventListener(
+      'keydown',
+      event => {
+
+        if (
+          event.key === 'Escape' &&
+          !state.finished
+        ) {
+
+          event.preventDefault();
+
+          skipBoot();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     SKIP BUTTON
+     ========================================================== */
+
+  function setupSkipButton() {
+
+    if (!skipButton) {
+      return;
+    }
+
+    skipButton.addEventListener(
+      'click',
+      skipBoot
+    );
+
+  }
+
+
+  /* ==========================================================
+     REDUCED MOTION
+     ========================================================== */
+
+  function setupReducedMotion() {
+
+    if (state.reducedMotion) {
+
+      CONFIG.typeSpeed =
+        CONFIG.reducedMotionSpeed;
+
+      CONFIG.commandPause =
+        20;
+
+      CONFIG.linePause =
+        10;
+
+    }
+
+  }
+
+
+  /* ==========================================================
+     MAIN BOOT
+     ========================================================== */
+
+  async function startHackerBoot() {
+
+    if (state.started) {
+      return;
+    }
+
+    state.started = true;
+
+    state.startTime =
+      Date.now();
+
+    document.body.classList.add(
+      'loading'
+    );
+
+    generateSession();
+
+    createBinaryRain();
+
+    setupReducedMotion();
+
+    startTelemetry();
+
+    /*
+     * Show rain after initial
+     * terminal boot.
+     */
+
+    await wait(250);
+
+    if (state.skipped) {
+      return;
+    }
+
+    if (binaryRain) {
+
+      binaryRain.style.opacity =
+        '1';
+
+    }
+
+    /*
+     * Diagnostics
+     */
+
+    await initialDiagnostics();
+
+    if (state.skipped) {
+      return;
+    }
+
+    setProgress(8);
+
+
+    /*
+     * Execute boot stages
+     */
+
+    for (
+      let i = 0;
+      i < CONFIG.commands.length;
+      i++
+    ) {
+
+      await executeStage(
+        CONFIG.commands[i],
+        i
+      );
+
+      if (state.skipped) {
+        return;
+      }
+
+    }
+
+
+    /*
+     * Extra system data
+     */
+
+    await createHexStream(5);
+
+    if (state.skipped) {
+      return;
+    }
+
+    setProgress(90);
+
+
+    /*
+     * Final checks
+     */
+
+    addTerminalLine(
+      '[ OK ] Secure environment verified',
+      'success'
+    );
+
+    await wait(100);
+
+    addTerminalLine(
+      '[ OK ] Runtime dependencies available',
+      'success'
+    );
+
+    await wait(100);
+
+    addTerminalLine(
+      '[ OK ] Interface engine ready',
+      'success'
+    );
+
+    await wait(180);
+
+
+    /*
+     * Access granted
+     */
+
+    showAccessGranted();
+
+    await wait(400);
+
+    if (state.skipped) {
+      return;
+    }
+
+
+    /*
+     * Identity
+     */
+
+    await revealIdentity();
+
+    if (state.skipped) {
+      return;
+    }
+
+
+    /*
+     * Final message
+     */
+
+    await showFinalMessage();
+
+    if (state.skipped) {
+      return;
+    }
+
+
+    /*
+     * Exit
+     */
+
+    await finishBoot();
+
+  }
+
+
+  /* ==========================================================
+     SAFETY TIMEOUT
+     ========================================================== */
+
+  function setupSafetyTimeout() {
+
+    setTimeout(() => {
+
+      if (
+        !state.finished &&
+        state.started
+      ) {
+
+        console.warn(
+          '[WANHEDA] Boot safety timeout reached.'
+        );
+
+        skipBoot();
+
+      }
+
+    }, CONFIG.maxBootTime);
+
+  }
+
+
+  /* ==========================================================
+     START
+     ========================================================== */
+
+  function initialize() {
+
+    setupSkipButton();
+
+    setupKeyboard();
+
+    setupSafetyTimeout();
+
+    startHackerBoot();
+
+  }
+
+
+  if (
+    document.readyState ===
+    'loading'
+  ) {
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      initialize,
+      { once: true }
+    );
+
+  } else {
+
+    initialize();
+
+  }
+
+
+})();
 
 /* ============================================================
    BACK TO TOP
