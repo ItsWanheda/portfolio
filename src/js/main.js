@@ -4150,7 +4150,7 @@ const CONTACT_DATA = [
 
       result +=
         chars[
-          random(0, chars.length - 1)
+        random(0, chars.length - 1)
         ];
 
     }
@@ -4510,10 +4510,10 @@ const CONTACT_DATA = [
 
         data +=
           chars[
-            random(
-              0,
-              chars.length - 1
-            )
+          random(
+            0,
+            chars.length - 1
+          )
           ];
 
       }
@@ -4798,26 +4798,35 @@ const CONTACT_DATA = [
 
     state.initCalled = true;
 
-    /*
-     * Remove loading state.
-     */
+    console.log('[WANHEDA] Revealing main application...');
 
-    document.body.classList.remove(
-      'loading'
-    );
+    /* Remove all loading states */
+    document.body.classList.remove('loading');
+    document.documentElement.classList.remove('loading');
 
-    /*
-     * Start application.
-     */
+    /* Make sure scrolling is restored */
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 
-    if (
-      typeof window.initAll ===
-      'function'
-    ) {
+    /* Make sure main content is not hidden by inline styles */
+    const main = document.querySelector('main');
+
+    if (main) {
+      main.style.removeProperty('display');
+      main.style.removeProperty('visibility');
+      main.style.removeProperty('opacity');
+    }
+
+    /* Initialize website */
+    if (typeof window.initAll === 'function') {
 
       try {
 
         window.initAll();
+
+        console.log(
+          '[WANHEDA] Main application initialized successfully.'
+        );
 
       } catch (error) {
 
@@ -4828,8 +4837,13 @@ const CONTACT_DATA = [
 
       }
 
-    }
+    } else {
 
+      console.error(
+        '[WANHEDA] CRITICAL: window.initAll() is not available.'
+      );
+
+    }
   }
 
 
@@ -5238,7 +5252,7 @@ const CONTACT_DATA = [
      START
      ========================================================== */
 
-  function initialize() {
+  function initAll() {
 
     setupSkipButton();
 
@@ -5258,13 +5272,13 @@ const CONTACT_DATA = [
 
     document.addEventListener(
       'DOMContentLoaded',
-      initialize,
+      initAll,
       { once: true }
     );
 
   } else {
 
-    initialize();
+    initAll();
 
   }
 
@@ -7409,7 +7423,11 @@ function initPalette() {
 /* ============================================================
    INIT ALL
 ============================================================ */
-function initAll() {
+
+window.initAll = function initAll() {
+
+  console.log('[WANHEDA] Main application initializing...');
+
   typeLoop();
   initNav();
   initReveal();
@@ -7429,4 +7447,6 @@ function initAll() {
   initTheme();
   initContactForm();
   initClickParticles();
-}
+
+  console.log('[WANHEDA] Main application initialized successfully.');
+};
