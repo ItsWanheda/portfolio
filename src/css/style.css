@@ -598,6 +598,8 @@ body.light-theme::-webkit-scrollbar-track {
 
   align-items: center;
 
+  justify-content: space-between;
+
   padding:
     0 14px;
 
@@ -655,9 +657,13 @@ body.light-theme::-webkit-scrollbar-track {
 
   display: flex;
 
+  align-items: center;
+
   gap: 6px;
 
   width: 100px;
+
+  flex: 0 0 auto;
 }
 
 .terminal-dots span {
@@ -690,7 +696,9 @@ body.light-theme::-webkit-scrollbar-track {
 
 .terminal-title {
 
-  flex: 1;
+  flex: 1 1 auto;
+
+  min-width: 0;
 
   text-align: center;
 
@@ -711,6 +719,10 @@ body.light-theme::-webkit-scrollbar-track {
 .terminal-status {
 
   width: 100px;
+
+  flex: 0 0 auto;
+
+  margin-left: auto; 
 
   text-align: right;
 
