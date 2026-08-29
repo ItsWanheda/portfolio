@@ -30,6 +30,80 @@
   #back-to-top:active {
     transform: scale(0.94);
   }
+
+  .github-profile-card:hover {
+    transform: none;
+  }
+
+  .github-profile-card:hover .github-avatar {
+    transform: none;
+  }
+
+  .gh-stat:hover {
+    transform: none;
+  }
+
+  .repo-card:hover {
+    transform: none;
+  }
+
+  .contrib-cell:hover {
+    transform: none;
+  }
+
+  .proj-card:hover {
+    transform: none;
+  }
+
+  .cert-card:hover {
+    transform: none;
+  }
+
+  .blog-card:hover {
+    transform: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+
+  #preloader,
+  .wanheda-preloader {
+    padding:
+      max(16px, env(safe-area-inset-top))
+      max(16px, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom))
+      max(16px, env(safe-area-inset-left));
+
+    box-sizing: border-box;
+  }
+
+  .hacker-terminal {
+    width: min(900px, calc(100vw - 32px));
+    height: min(500px, calc(100dvh - 32px));
+    max-height: calc(100dvh - 32px);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .terminal-body {
+    min-width: 0;
+  }
+
+  .terminal-output {
+    overscroll-behavior: contain;
+  }
+
+  .terminal-output,
+  .terminal-line,
+  .terminal-command,
+  .terminal-command-text {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .terminal-line {
+    overflow-wrap: anywhere;
+}
 }
 
 /* ============================================================
@@ -289,20 +363,21 @@
      PRELOADER
      ========================================================== */
 
-  .hacker-noise,
+  #preloader,
+  .wanheda-preloader,
   .hacker-terminal,
-  .terminal-line,
-  .terminal-cursor,
-  .binary-column,
-  .identity-glitch-red,
-  .identity-glitch-white,
-  .hacker-final .final-cursor,
-  #preloader.glitch-active,
-  #preloader.glitch-active .hacker-glitch-overlay,
-  #preloader.identity-active .hacker-terminal,
-  #preloader.identity-active .hacker-identity,
-  #preloader.identity-active .hacker-final {
-    animation: none !important;
+  .hacker-noise,
+  .hacker-scanlines::after,
+  .ambient-grid,
+  .terminal-line {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  #preloader,
+  .wanheda-preloader {
+    transition: none;
   }
 
   /* ----------------------------------------------------------
