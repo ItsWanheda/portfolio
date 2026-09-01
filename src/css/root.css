@@ -430,6 +430,14 @@ body.loading {
   --container-max:
     1240px;
 
+  --nav-height: 
+    72px;
+  
+  --nav-radius: 
+    18px;
+  
+  --nav-side-gap: 
+    18px;
 
   /* ----------------------------------------------------------
      GRID
