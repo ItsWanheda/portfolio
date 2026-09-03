@@ -403,11 +403,11 @@
      ---------------------------------------------------------- */
 
   .skills-grid {
+
     grid-template-columns:
       repeat(auto-fill,
-        minmax(110px, 1fr));
+        minmax(140px, 1fr));
 
-    gap: var(--space-3);
   }
 
 
@@ -1250,6 +1250,66 @@
 
   .hacker-final {
     font-size: 7px;
+  }
+
+  .skills-categories {
+
+    gap:
+      6px;
+
+    padding:
+      10px;
+
+  }
+
+  .cat-btn {
+
+    min-height:
+      35px;
+
+    padding:
+      7px 11px;
+
+  }
+
+  .skills-grid {
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap:
+      10px;
+
+  }
+
+  .skill-card {
+
+    min-height:
+      165px;
+
+    padding:
+      var(--space-5)
+      var(--space-3);
+
+  }
+
+  .skill-icon {
+
+    width:
+      46px;
+
+    height:
+      46px;
+
+    margin-bottom:
+      var(--space-3);
+
+    font-size:
+      1.55rem;
+
   }
 }
 
@@ -2536,6 +2596,29 @@
   .repo-visibility {
     font-size: 7px;
   }
+
+  .skills-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+  .skill-card {
+
+    min-height:
+      150px;
+
+  }
+
+  .skill-modal {
+
+    padding:
+      var(--space-7)
+      var(--space-5);
+
+  }
+
 
 }
 
