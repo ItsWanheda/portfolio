@@ -375,19 +375,6 @@
     min-height: 44px;
   }
 
-
-  /* ----------------------------------------------------------
-     MAIN GRIDS
-     ---------------------------------------------------------- */
-
-  .projects-grid,
-  .certs-grid,
-  .blog-grid,
-  .repos-grid {
-    grid-template-columns: 1fr;
-  }
-
-
   /* ----------------------------------------------------------
      STATS
      ---------------------------------------------------------- */
@@ -428,26 +415,6 @@
     padding:
       var(--space-6) var(--space-5);
   }
-
-
-  /* ----------------------------------------------------------
-     PROJECTS
-     ---------------------------------------------------------- */
-
-  .projects-grid {
-    grid-template-columns:
-      repeat(auto-fit,
-        minmax(min(100%, 280px), 1fr));
-  }
-
-  .proj-img {
-    height: 170px;
-  }
-
-  .proj-card:hover {
-    transform: translateY(-5px);
-  }
-
 
   /* ----------------------------------------------------------
      HERO
@@ -1986,33 +1953,6 @@
 
     font-size: 1.6rem;
   }
-
-
-  /* ----------------------------------------------------------
-     PROJECTS
-     ---------------------------------------------------------- */
-
-  .projects-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-  }
-
-  .proj-img {
-    height: 160px;
-  }
-
-  .proj-body {
-    padding: var(--space-5);
-  }
-
-  .proj-actions {
-    align-items: stretch;
-  }
-
-  .proj-actions .btn {
-    flex: 1;
-  }
-
 
   /* ----------------------------------------------------------
      GITHUB
