@@ -1,22 +1,28 @@
 /* ============================================================
    TOUCH DEVICES
-   Prevent hover state from getting "stuck"
+   Prevent hover states from getting "stuck"
    ============================================================ */
 
 @media (hover: none) and (pointer: coarse) {
+
+  /* ----------------------------------------------------------
+     BACK TO TOP
+     ---------------------------------------------------------- */
+
   #back-to-top:hover {
     color: var(--red);
 
     border-color: rgba(255, 0, 60, 0.3);
 
     background:
-      linear-gradient(145deg,
+      linear-gradient(
+        145deg,
         rgba(255, 0, 60, 0.14),
-        rgba(255, 0, 60, 0.04)),
+        rgba(255, 0, 60, 0.04)
+      ),
       rgba(10, 10, 10, 0.88);
 
-    transform:
-      translateY(0) scale(1);
+    transform: translateY(0) scale(1);
 
     box-shadow:
       0 8px 25px rgba(0, 0, 0, 0.35),
@@ -31,7 +37,18 @@
     transform: scale(0.94);
   }
 
-  .github-profile-card:hover {
+
+  /* ----------------------------------------------------------
+     HOVER RESET
+     ---------------------------------------------------------- */
+
+  .github-profile-card:hover,
+  .gh-stat:hover,
+  .repo-card:hover,
+  .contrib-cell:hover,
+  .cert-card:hover,
+  .blog-card:hover,
+  .btn:hover {
     transform: none;
   }
 
@@ -39,42 +56,62 @@
     transform: none;
   }
 
-  .gh-stat:hover {
+  .theme-toggle:hover {
+    border-color: var(--border);
+    color: var(--muted);
+    box-shadow: none;
     transform: none;
   }
 
-  .repo-card:hover {
-    transform: none;
-  }
 
-  .contrib-cell:hover {
-    transform: none;
-  }
-
-  .cert-card:hover {
-    transform: none;
-  }
-
-  .blog-card:hover {
-    transform: none;
-  }
-
-  .btn:hover {
-    transform: none;
-  }
+  /* ----------------------------------------------------------
+     PRELOADER SAFE AREA
+     ---------------------------------------------------------- */
 
   #preloader,
   .wanheda-preloader {
-    padding:
-      max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-
     box-sizing: border-box;
+
+    padding:
+      max(16px, env(safe-area-inset-top))
+      max(16px, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom))
+      max(16px, env(safe-area-inset-left));
   }
+
+
+  /* ----------------------------------------------------------
+     DECORATIVE ANIMATIONS
+     ---------------------------------------------------------- */
+
+  .hacker-noise,
+  .hacker-scanlines::after,
+  .ambient-grid,
+  .binary-column,
+  .terminal-cursor,
+  .final-cursor,
+  .hud-indicator,
+  .identity-glitch-red,
+  .identity-glitch-white {
+    animation: none !important;
+  }
+
+  .hacker-terminal,
+  .hacker-identity,
+  .hacker-final {
+    transition: none !important;
+  }
+
+
+  /* ----------------------------------------------------------
+     TOUCH TERMINAL
+     ---------------------------------------------------------- */
 
   .hacker-terminal {
     width: min(900px, calc(100vw - 32px));
     height: min(500px, calc(100dvh - 32px));
     max-height: calc(100dvh - 32px);
+
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -99,6 +136,7 @@
   }
 }
 
+
 /* ============================================================
    REDUCED MOTION
    Accessibility: respect user's motion preferences
@@ -106,9 +144,10 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      GLOBAL
-     ========================================================== */
+     ---------------------------------------------------------- */
+
   html {
     scroll-behavior: auto;
   }
@@ -128,26 +167,45 @@
     animation: none !important;
   }
 
-  /* ==========================================================
+
+  /* ----------------------------------------------------------
      NAVBAR
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .nav-logo-dot,
   .nav-logo-dot::after {
-    animation: none;
+    animation: none !important;
   }
 
   .nav-links a,
   .nav-mobile a,
   .nav-hamburger span,
   .nav-mobile {
-    transition: none;
+    transition: none !important;
+  }
+
+  .navbar,
+  .navbar::after,
+  .nav-link,
+  .nav-brand,
+  .brand-mark,
+  .nav-cta,
+  .nav-mobile,
+  .mobile-nav-link,
+  .theme-icon {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .site-header.nav-hidden,
+  .site-header.nav-visible {
+    transition: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      HERO
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .hero-greeting,
   .hero-name,
@@ -157,7 +215,7 @@
   .hero-right,
   .hero-scroll {
     opacity: 1;
-    animation: none;
+    animation: none !important;
   }
 
   .hero-ring1,
@@ -166,20 +224,20 @@
   .hero-glow,
   .hero-scroll-line,
   .hero-cursor {
-    animation: none;
+    animation: none !important;
   }
 
   .hero-profile-img {
-    transition: none;
+    transition: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      SCROLL / NAVIGATION UTILITIES
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   #scroll-progress {
-    transition: none;
+    transition: none !important;
   }
 
   #back-to-top {
@@ -193,28 +251,28 @@
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      ABOUT
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .about-highlight::before {
-    animation: none;
+    animation: none !important;
   }
 
   .stat-card,
   .stat-card::before,
   .stat-card::after {
-    transition: none;
+    transition: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      EXPERIENCE / TIMELINE
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .timeline::after,
   .timeline-date::before {
-    animation: none;
+    animation: none !important;
   }
 
   .timeline-dot,
@@ -222,41 +280,35 @@
   .timeline-card::before,
   .timeline-dot::before,
   .timeline-dot::after {
-    transition: none;
+    transition: none !important;
   }
 
-  .timeline-card:hover {
-    transform: none;
-  }
-
+  .timeline-card:hover,
   .timeline-item:hover .timeline-dot {
-    transform: none;
+    transform: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      SCROLL REVEALS
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .reveal {
     opacity: 1;
     transform: none;
-    transition: none;
+    transition: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      SKILLS
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   #skills::after,
   .skills-categories::after,
   .skill-icon::before,
   .skill-modal-icon {
-
-    animation:
-      none !important;
-
+    animation: none !important;
   }
 
   .skill-card,
@@ -264,16 +316,13 @@
   .skill-icon,
   .skill-modal,
   .skill-modal-overlay {
-
-    transition:
-      none !important;
-
+    transition: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      CERTIFICATIONS
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .cert-card,
   .cert-card::before,
@@ -281,33 +330,34 @@
   .cert-icon,
   .cert-name,
   .cert-corner {
-    transition: none;
+    transition: none !important;
   }
 
   .cert-card:hover {
-    transform: none;
+    transform: none !important;
   }
 
   .cert-card:hover::after {
-    animation: none;
+    animation: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      BUTTONS / TAGS
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .btn,
   .btn::before,
   .btn svg,
   .btn i,
   .tag {
-    transition: none;
+    transition: none !important;
   }
 
-  /* ==========================================================
+
+  /* ----------------------------------------------------------
      BLOG
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .blog-card,
   .blog-card::before,
@@ -316,36 +366,41 @@
   .blog-number,
   .blog-read,
   .blog-read::after {
-    transition: none;
+    transition: none !important;
   }
 
   .blog-card:hover {
-    transform: none;
+    transform: none !important;
   }
 
   .blog-card:hover::after {
-    animation: none;
+    animation: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      THEME TOGGLE
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .theme-toggle,
   .theme-toggle .icon-sun,
   .theme-toggle .icon-moon {
-    transition: none;
+    transition: none !important;
   }
 
   .theme-toggle:active {
-    transform: none;
+    transform: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      PRELOADER
-     ========================================================== */
+     ---------------------------------------------------------- */
+
+  #preloader,
+  .wanheda-preloader {
+    transition: none !important;
+  }
 
   #preloader,
   .wanheda-preloader,
@@ -356,13 +411,8 @@
   .terminal-line {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
   }
 
-  #preloader,
-  .wanheda-preloader {
-    transition: none;
-  }
 
   /* ----------------------------------------------------------
      GITHUB
@@ -390,29 +440,30 @@
     width: 0;
   }
 
-  /* ==========================================================
+
+  /* ----------------------------------------------------------
      FOOTER
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .footer-name,
   .footer-social,
   .footer-social::before {
-    transition: none;
+    transition: none !important;
   }
 
   .footer-status::before {
-    animation: none;
+    animation: none !important;
   }
 
   .footer-social:hover,
   .footer-name:hover {
-    transform: none;
+    transform: none !important;
   }
 
 
-  /* ==========================================================
+  /* ----------------------------------------------------------
      INTERACTION EFFECTS
-     ========================================================== */
+     ---------------------------------------------------------- */
 
   .click-particle,
   .click-ripple {
@@ -420,16 +471,13 @@
   }
 }
 
-@media (hover: none) {
-  .theme-toggle:hover {
-    border-color: var(--border);
-    color: var(--muted);
-    box-shadow: none;
-    transform: none;
-  }
-}
+
+/* ============================================================
+   HIGH CONTRAST
+   ============================================================ */
 
 @media (prefers-contrast: more) {
+
   .theme-toggle {
     border-width: 2px;
   }
