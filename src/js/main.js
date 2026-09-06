@@ -2,29 +2,18 @@
    DATA
 ============================================================ */
 const SKILLS_DATA = [
-  { name: 'HTML5', icon: '🌐', cat: 'frontend', level: 85, desc: 'Semantic markup and modern web standards for accessible, structured content.' },
-  { name: 'CSS3', icon: '🎨', cat: 'frontend', level: 80, desc: 'Responsive layouts, animations, and custom properties for dark, cyberpunk-styled UIs.' },
   { name: 'JavaScript', icon: '⚡', cat: 'frontend', level: 75, desc: 'DOM manipulation, event-driven interactivity, and vanilla scripting.' },
-  { name: 'HTTP/S', icon: '🌐', cat: 'networking', level: 80, desc: 'Request/response cycles, headers, status codes, and secure transport.' },
-  { name: 'TLS/SSL', icon: '🔏', cat: 'networking', level: 72, desc: 'Handshake mechanics, certificate validation, and cipher suite hardening.' },
-  { name: 'API Security', icon: '🔒', cat: 'security', level: 75, desc: 'Rate limiting, input validation, and defense-in-depth for REST APIs.' },
-  { name: 'JWT', icon: '🔑', cat: 'security', level: 80, desc: 'Stateless auth tokens, claim validation, and attack-vector hardening.' },
-  { name: 'RBAC', icon: '🛡️', cat: 'security', level: 72, desc: 'Role-based access control patterns for enforcing authorization.' },
-  { name: 'OAuth', icon: '🔐', cat: 'security', level: 65, desc: 'Delegated authorization flows, grant types, and PKCE.' },
-  { name: 'Bash', icon: '💻', cat: 'languages', level: 60, desc: 'Shell scripting for automation, tooling, and system tasks.' },
   { name: 'C++', icon: '⚙️', cat: 'languages', level: 75, desc: 'Low-level systems programming and performance-critical logic.' },
   { name: 'Python', icon: '🐍', cat: 'languages', level: 85, desc: 'CLI tools, network scanners, and security scripting.' },
   { name: 'Go', icon: '🐹', cat: 'languages', level: 70, desc: 'High-concurrency backend services and network utilities.' },
   { name: 'TypeScript', icon: '🟦', cat: 'languages', level: 75, desc: 'Strongly typed JS for safer, more maintainable backend code.' },
   { name: 'React', icon: '⚛️', cat: 'frontend', level: 82, desc: 'Component-based UIs with hooks and shared state.' },
   { name: 'Next.js', icon: '▲', cat: 'frontend', level: 78, desc: 'React framework for routing, SSR, and production builds.' },
-  { name: 'Tailwind CSS', icon: '🌊', cat: 'frontend', level: 85, desc: 'Utility-first styling for fast, consistent UI development.' },
   { name: 'Node.js', icon: '🟢', cat: 'backend', level: 75, desc: 'Server-side JavaScript runtime for APIs and tooling.' },
   { name: 'Express.js', icon: '🚀', cat: 'backend', level: 72, desc: 'Minimal routing and middleware framework for Node APIs.' },
   { name: 'Git', icon: '🌲', cat: 'tools', level: 88, desc: 'Version control, branching strategies, and collaborative workflows.' },
   { name: 'GitHub', icon: '🐙', cat: 'tools', level: 85, desc: 'Repository hosting, issue tracking, and CI/CD workflows.' },
   { name: 'Void Linux', icon: '🐧', cat: 'tools', level: 70, desc: 'Lightweight, independent Linux distro for daily driving.' },
-  { name: 'TCP/IP', icon: '📡', cat: 'networking', level: 70, desc: 'Packet-level networking, sockets, and protocol fundamentals.' },
   { name: 'BlackArch', icon: '🐉', cat: 'tools', level: 50, desc: 'Arch-based penetration testing distro with security tooling.' },
   { name: 'Kali Linux', icon: '🐉', cat: 'tools', level: 80, desc: 'Security-focused distro for testing and network analysis.' },
   { name: 'VS Code', icon: '💙', cat: 'tools', level: 90, desc: 'Primary editor — extensions, debugging, and workflow tuning.' },
@@ -4154,10 +4143,6 @@ window.initNav = function initNav() {
 
   }
 
-
-
-
-
   /* ==========================================================
      ACTIVE SLIDER
      ========================================================== */
@@ -6846,62 +6831,6 @@ function updateLearningDaysStat() {
 
   setTimeout(updateLearningDaysStat, 60 * 60 * 1000);
 }
-/* ============================================================
-   PROJECTS
-============================================================ */
-function renderProjects() {
-  const grid = document.getElementById('projects-grid');
-  grid.innerHTML = PROJECTS_DATA.map(p => `
-    <div class="proj-card reveal" onclick="openProjectModal('${p.id}')">
-      <div class="proj-img">
-        <div class="proj-img-grid"></div>
-        <div style="font-size:4rem;position:relative;z-index:1">${p.emoji}</div>
-        <div class="proj-img-overlay"></div>
-      </div>
-      <div class="proj-body">
-        <div class="proj-name">${p.name}</div>
-        <div class="proj-desc">${p.desc}</div>
-        <div class="proj-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-        <div class="proj-actions">
-          <a href="${p.github}" target="_blank" class="btn btn-ghost" onclick="event.stopPropagation()">GitHub ↗</a>
-          ${p.live ? `<a href="${p.live}" target="_blank" class="btn btn-ghost" onclick="event.stopPropagation()">Live ↗</a>` : ''}
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  grid.querySelectorAll('.proj-card').forEach(c => obs.observe(c));
-}
-
-function openProjectModal(id) {
-  const p = PROJECTS_DATA.find(x => x.id === id);
-  const body = `
-    <div class="modal-section">
-      <div class="modal-section-title">Overview</div>
-      <div class="modal-section-content">${p.desc}</div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">Key Features</div>
-      <ul class="modal-features">${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">Architecture</div>
-      <div class="modal-section-content">${p.arch}</div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">Technologies</div>
-      <div class="modal-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-    </div>
-    <div class="modal-actions">
-      <a href="${p.github}" target="_blank" class="btn btn-primary">View Repository →</a>
-      ${p.live ? `<a href="${p.live}" target="_blank" class="btn btn-outline">Live Demo →</a>` : ''}
-    </div>
-  `;
-  openModal(p.name, body, p.emoji + ' Project');
-}
 
 /* ============================================================
    GITHUB
@@ -8312,7 +8241,6 @@ window.initAll = function initAll() {
   initDevilCursor();
   initBackToTop();
 
-  renderProjects();
   renderGithub();
   renderTimeline();
   renderCerts();
