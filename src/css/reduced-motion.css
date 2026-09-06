@@ -51,10 +51,6 @@
     transform: none;
   }
 
-  .proj-card:hover {
-    transform: none;
-  }
-
   .cert-card:hover {
     transform: none;
   }
@@ -308,27 +304,6 @@
   .tag {
     transition: none;
   }
-
-
-  /* ==========================================================
-     PROJECTS
-     ========================================================== */
-
-  .proj-card,
-  .proj-card::before,
-  .proj-card::after,
-  .proj-img img,
-  .proj-img-grid,
-  .proj-icon,
-  .proj-name,
-  .proj-link {
-    transition: none;
-  }
-
-  .proj-status::before {
-    animation: none;
-  }
-
 
   /* ==========================================================
      BLOG
