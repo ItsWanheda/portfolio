@@ -183,9 +183,13 @@
      PERFORMANCE HINTS
      ========================================================= -->
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+  rel="stylesheet"
+>
 
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
@@ -820,8 +824,6 @@
 
   </div>
 
-  <main id="main">
-
     <!-- HERO -->
     <section id="home">
       <div class="container">
@@ -1045,75 +1047,149 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="section-pad">
-      <div class="container">
-        <div class="section-label reveal">Get In Touch</div>
-        <h2 class="section-title reveal reveal-d1">Let's <span class="text-red">Connect</span></h2>
-        <div class="contact-layout">
-          <div class="reveal reveal-d2">
-            <p class="contact-info-text">I'm open to collaboration, security research discussions, backend engineering
-              projects, and networking conversations. Feel free to reach out through any channel below.</p>
-            <div class="contact-links" id="contact-links">
-              <!-- This will be populated by JS, but here is the expected structure -->
-              <!-- 
-            <div class="contact-item">
-            <a href="..." class="contact-link-info">
-            <div class="contact-icon">...</div>
-            <div class="contact-info">...</div>
-            </a>
-            <button class="contact-copy" data-copy="...">COPY</button>
-            </div> 
-             -->
-            </div>
-          </div>
-          <div class="reveal reveal-d3">
-            <div class="contact-form-title">Send a Message</div>
-            <form id="contact-form" class="contact-form" action="https://formspree.io/f/mgawkqgn" method="POST"
-              target="_top">
-              <div class="form-field">
-                <label class="form-label" for="name">Your Name</label>
-                <input class="form-input" type="text" id="name" name="name" placeholder="Your Name" autocomplete="name"
-                  required />
-              </div>
+<!-- CONTACT -->
+<section id="contact" class="section-pad">
+  <div class="container">
 
-              <div class="form-field">
-                <label class="form-label" for="email">Email</label>
-                <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com"
-                  autocomplete="email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com" required />
-                <p class="form-description">
-                  This will help me respond to your query via email.
-                </p>
-              </div>
+    <div class="section-label reveal">
+      Get In Touch
+    </div>
 
-              <div class="form-field">
-                <label class="form-label" for="subject">Subject</label>
-                <input class="form-input" type="text" id="subject" name="subject" placeholder="Subject" required />
-              </div>
+    <h2 class="section-title reveal reveal-d1">
+      Let's <span class="text-red">Connect</span>
+    </h2>
 
-              <div class="form-field">
-                <label class="form-label" for="message">Message</label>
-                <textarea class="form-input" id="message" name="message" placeholder="Your message..." rows="5"
-                  required></textarea>
-                <p class="form-description">
-                  What would you like to discuss?
-                </p>
-              </div>
+    <div class="contact-layout">
 
-              <div class="form-button-group">
-                <button type="submit" class="btn btn-primary form-submit">
-                  <span class="btn-text">Send Message</span>
-                </button>
-              </div>
+      <div class="reveal reveal-d2">
 
-              <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
-            </form>
-          </div>
-        </div>
+        <p class="contact-info-text">
+          I'm open to collaboration, security research discussions,
+          backend engineering projects, and networking conversations.
+          Feel free to reach out through any channel below.
+        </p>
+
+        <div class="contact-links" id="contact-links"></div>
+
       </div>
-    </section>
 
-  </main>
+
+      <div class="reveal reveal-d3">
+
+        <div class="contact-form-title">
+          Send a Message
+        </div>
+
+        <form
+          id="contact-form"
+          class="contact-form"
+          action="https://formspree.io/f/mgawkqgn"
+          method="POST"
+          target="_top"
+        >
+
+          <div class="form-field">
+            <label class="form-label" for="name">
+              Your Name
+            </label>
+
+            <input
+              class="form-input"
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Your Name"
+              autocomplete="name"
+              required
+            />
+          </div>
+
+
+          <div class="form-field">
+            <label class="form-label" for="email">
+              Email
+            </label>
+
+            <input
+              class="form-input"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+              pattern="[a-zA-Z0-9._%+-]+@gmail\.com"
+              required
+            />
+
+            <p class="form-description">
+              This will help me respond to your query via email.
+            </p>
+          </div>
+
+
+          <div class="form-field">
+            <label class="form-label" for="subject">
+              Subject
+            </label>
+
+            <input
+              class="form-input"
+              type="text"
+              id="subject"
+              name="subject"
+              placeholder="Subject"
+              required
+            />
+          </div>
+
+
+          <div class="form-field">
+            <label class="form-label" for="message">
+              Message
+            </label>
+
+            <textarea
+              class="form-input"
+              id="message"
+              name="message"
+              placeholder="Your message..."
+              rows="5"
+              required
+            ></textarea>
+
+            <p class="form-description">
+              What would you like to discuss?
+            </p>
+          </div>
+
+
+          <div class="form-button-group">
+            <button
+              type="submit"
+              class="btn btn-primary form-submit"
+            >
+              <span class="btn-text">
+                Send Message
+              </span>
+            </button>
+          </div>
+
+
+          <div
+            class="form-status"
+            id="form-status"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
   <!-- FOOTER -->
   <footer>
     <div class="container">
