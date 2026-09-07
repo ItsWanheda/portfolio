@@ -91,30 +91,25 @@
 
 .github-avatar {
   position: relative;
-  z-index: 1;
-
+  z-index: 3;
   width: 86px;
   height: 86px;
-
   object-fit: cover;
-
   border-radius: var(--r-full);
-
   display: block;
-
   margin: 0 auto var(--space-4);
-
   background: var(--card2);
-
   border: 2px solid var(--border-red);
 
   box-shadow:
-    0 0 0 5px rgba(255, 0, 60, 0.04),
-    0 0 30px rgba(255, 0, 60, 0.12);
+    0 0 0 5px rgba(255, 0, 60, 0.035),
+    0 0 30px rgba(255, 0, 60, 0.13),
+    0 0 65px rgba(255, 0, 60, 0.035);
 
   transition:
-    transform 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
+    transform 0.45s cubic-bezier(.22, 1, .36, 1),
+    box-shadow 0.45s ease,
+    border-color 0.3s ease;
 }
 
 .github-profile-card:hover .github-avatar {
@@ -1107,21 +1102,6 @@
 .github-profile-card {
   --avatar-angle: 0deg;
 }
-
-.github-avatar {
-  z-index: 3;
-
-  transition:
-    transform 0.45s cubic-bezier(.22,1,.36,1),
-    box-shadow 0.45s ease,
-    border-color 0.3s ease;
-
-  box-shadow:
-    0 0 0 5px rgba(255, 0, 60, 0.035),
-    0 0 30px rgba(255, 0, 60, 0.13),
-    0 0 65px rgba(255, 0, 60, 0.035);
-}
-
 
 /* Avatar orbital ring */
 
