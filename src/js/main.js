@@ -2,124 +2,23 @@
    DATA
 ============================================================ */
 const SKILLS_DATA = [
-  { name: 'JavaScript', icon: '⚡', cat: 'frontend', level: 75, desc: 'DOM manipulation, event-driven interactivity, and vanilla scripting.' },
-  { name: 'C++', icon: '⚙️', cat: 'languages', level: 75, desc: 'Low-level systems programming and performance-critical logic.' },
+  { name: 'JavaScript', icon: '⚡', cat: 'frontend', level: 90, desc: 'DOM manipulation, event-driven interactivity, and vanilla scripting.' },
+  { name: 'C++', icon: '⚙️', cat: 'languages', level: 55, desc: 'Low-level systems programming and performance-critical logic.' },
   { name: 'Python', icon: '🐍', cat: 'languages', level: 85, desc: 'CLI tools, network scanners, and security scripting.' },
-  { name: 'Go', icon: '🐹', cat: 'languages', level: 70, desc: 'High-concurrency backend services and network utilities.' },
-  { name: 'TypeScript', icon: '🟦', cat: 'languages', level: 75, desc: 'Strongly typed JS for safer, more maintainable backend code.' },
-  { name: 'React', icon: '⚛️', cat: 'frontend', level: 82, desc: 'Component-based UIs with hooks and shared state.' },
-  { name: 'Next.js', icon: '▲', cat: 'frontend', level: 78, desc: 'React framework for routing, SSR, and production builds.' },
-  { name: 'Node.js', icon: '🟢', cat: 'backend', level: 75, desc: 'Server-side JavaScript runtime for APIs and tooling.' },
-  { name: 'Express.js', icon: '🚀', cat: 'backend', level: 72, desc: 'Minimal routing and middleware framework for Node APIs.' },
-  { name: 'Git', icon: '🌲', cat: 'tools', level: 88, desc: 'Version control, branching strategies, and collaborative workflows.' },
-  { name: 'GitHub', icon: '🐙', cat: 'tools', level: 85, desc: 'Repository hosting, issue tracking, and CI/CD workflows.' },
-  { name: 'Void Linux', icon: '🐧', cat: 'tools', level: 70, desc: 'Lightweight, independent Linux distro for daily driving.' },
+  { name: 'Go', icon: '🐹', cat: 'languages', level: 50, desc: 'High-concurrency backend services and network utilities.' },
+  { name: 'TypeScript', icon: '🟦', cat: 'languages', level: 60, desc: 'Strongly typed JS for safer, more maintainable backend code.' },
+  { name: 'React', icon: '⚛️', cat: 'frontend', level: 85, desc: 'Component-based UIs with hooks and shared state.' },
+  { name: 'Next.js', icon: '▲', cat: 'frontend', level: 70, desc: 'React framework for routing, SSR, and production builds.' },
+  { name: 'Node.js', icon: '🟢', cat: 'backend', level: 90, desc: 'Server-side JavaScript runtime for APIs and tooling.' },
+  { name: 'Express.js', icon: '🚀', cat: 'backend', level: 75, desc: 'Minimal routing and middleware framework for Node APIs.' },
+  { name: 'Git', icon: '🌲', cat: 'tools', level: 100, desc: 'Version control, branching strategies, and collaborative workflows.' },
+  { name: 'GitHub', icon: '🐙', cat: 'tools', level: 100, desc: 'Repository hosting, issue tracking, and CI/CD workflows.' },
+  { name: 'Void Linux', icon: '🐧', cat: 'tools', level: 65, desc: 'Lightweight, independent Linux distro for daily driving.' },
   { name: 'BlackArch', icon: '🐉', cat: 'tools', level: 50, desc: 'Arch-based penetration testing distro with security tooling.' },
   { name: 'Kali Linux', icon: '🐉', cat: 'tools', level: 80, desc: 'Security-focused distro for testing and network analysis.' },
-  { name: 'VS Code', icon: '💙', cat: 'tools', level: 90, desc: 'Primary editor — extensions, debugging, and workflow tuning.' },
-  { name: 'Docker', icon: '🐳', cat: 'tools', level: 74, desc: 'Containerization for consistent, portable dev environments.' },
-  { name: 'Windows', icon: '🖥', cat: 'tools', level: 95, desc: 'Primary desktop OS for development and daily workflows.' },
-];
-
-const SKILL_DETAILS = {
-  'TypeScript': { desc: 'Strongly typed superset of JavaScript. My primary language for building backend APIs and type-safe applications.', exp: '6 months of active use in backend projects.', projects: ['Auth Service', 'API Security Analyzer'] },
-  'Go': { desc: 'Fast, compiled language built for backend services and system-level programming.', exp: 'Currently learning — building CLI tools and microservices.', projects: ['Network Scanner'] },
-  'JWT': { desc: 'JSON Web Tokens for stateless authentication between client and server.', exp: 'Implemented in multiple auth systems with refresh token rotation.', projects: ['Enterprise Auth Service'] },
-  'TLS/SSL': { desc: 'Transport Layer Security — the backbone of secure web communication.', exp: 'Deep study of TLS handshake, certificate validation, and cipher suites.', projects: ['HTTP Security Analyzer'] },
-  'TCP/IP': { desc: 'The fundamental protocol stack governing internet communication.', exp: 'Studied OSI model, packet analysis with Wireshark, and raw socket programming.', projects: ['Network Scanner'] },
-};
-
-const PROJECTS_DATA = [
-  {
-    id: 'sni-spoofing',
-    name: 'SNI-Spoofing Tool',
-    emoji: '🎭',
-    desc: 'A highperformance Python tool for bypassing DPI via IP/TCP-Header manipulation and SNI spoofing, designed for network analysis and privacy testing.',
-    tags: ['Python', 'Networking', 'DPI-Bypass', 'TCP/IP', 'Security-Testing'],
-    features: [
-      'Advanced IP/TCP-Header manipulation',
-      'Dynamic spoofI (Server Name Indication) spoofing',
-      'DPI (Deep Packet Inspection) evasion techniques',
-      'Configurable packet crafting for network analysis',
-      'High-performance packet processing'
-    ],
-    arch: 'Python-based network utility utilizing low-level socket manipulation and packet crafting for protocol-level bypass.',
-    github: 'https://github.com/ItsWanheda/SNI-SPOOFING',
-    license: 'MIT',
-    platform: 'Windows',
-    status: 'Active'
-  }, {
-    id: 'http-header-analyzer',
-    name: 'HTTP Header Analyzer',
-    emoji: '🛡️',
-    desc: 'A high-performance Go-based security tool that inspects HTTP headers, TLS configurations, and redirect chains with a focus on deep vulnerability detection.',
-    tags: ['Go', 'Golang', 'CyberSecurity', 'TLS/SSL', 'SSRF-Protection', 'Web-Security'],
-    features: [
-      'Deep Security Header & Cookie Audit (CSP, HSTS, SameSite)',
-      'Advanced TLS/SSL Inspection (Cipher Suites & Metadata)',
-      'Full Redirect Chain Tracking & Visualization',
-      'Hardened SSRF Protection (Internal Network Blocking)',
-      'Automated Security Scoring (A+ to F) & Remediation Engine',
-      'Cyberpunk-themed Responsive UI with Dark/Light modes'
-    ],
-    arch: 'High-concurrency Go backend with a REST API. Secure TLS inspection engine with built-in SSRF mitigation and modular security parsers.',
-    github: 'https://github.com/ItsWanheda/http-header-analyzer',
-    live: null,
-    license: 'Go-based (Specify your license, e.g., MIT)',
-    status: 'Active'
-  }, {
-    id: 'scanner', name: 'SpectraScan', emoji: '📡',
-    desc: 'A lightweight network reconnaissance tool written in Go. Discovers hosts, open ports, and service banners on local networks.',
-    tags: ['Go', 'Networking', 'TCP/IP', 'CLI'],
-    features: ['CIDR range host discovery via ICMP', 'Multi-threaded TCP port scanning', 'Service banner grabbing', 'OS fingerprinting hints', 'JSON/CSV output formats'],
-    arch: 'Go CLI with goroutine pool for concurrent scanning. Raw sockets for ICMP, standard net for TCP.',
-    github: 'https://github.com/ItsWanheda/SpectraScan', live: null
-  },
-  {
-    id: 'SystemBreach-Preloader',
-    name: 'Hacker-ish Preloader',
-    emoji: '📟',
-    desc: 'A high-en, cyberpunk-style preloader animation featuring glitch aesthetics, CRT effects, and realistic terminal-style loading logic.',
-    tags: ['Vanilla JS', 'CSS3', 'Cyberpunk-UI', 'Glitch-Effects', 'UX-Design'],
-    features: [
-      'Advanced CSS Glitch & Chromatic Aberration',
-      'Gritty CRT Scanline & Digital Noise Simulation',
-      'Variable Loading Logic (Latency & Burst Simulation)',
-      'Dynamic Threat Level Status Indicators',
-      'Interactive Keyboard Shortcuts (Enter/Esc) & Skip Function',
-      'Responsive, Mobile-First Cyber-Aesthetic Design'
-    ],
-    arch: 'Pure Vanilla JavaScript & CSS-heavy implementation. Optimized for high-performance rendering with zero external dependencies.',
-    github: 'https://github.com/ItsWanheda/SystemBreach-Preloader',
-    live: null,
-    license: 'MIT',
-    status: 'Active'
-  },
-  {
-    id: 'expense-tracker',
-    name: 'Expense Tracker',
-    emoji: '💰', desc: 'A versatile personal finance management tool with dual interfaces (CLI & Web) for tracking expenses, managing budgets, and visualizing spending habits.',
-    tags: ['Python', 'Flask', 'SQLite', 'Data Visualization'],
-    features: [
-      'Dual-mode interface: Rich-powered CLI and responsive Flask Web UI',
-      'Comprehensive CRUD operations for expenses and custom categories',
-      'Budget management: Set monthly or per-category spending limits',
-      'Data visualization: Interactive Chart.js web charts & Matplotlib CLI bar charts',
-      'Data portability: Exportable CSV reports and local SQLite storage'
-    ],
-    arch: 'Python backend using Flask for web and Click for CLI. SQLite for local data persistence. Integrated with Rich for terminal styling and Matplotlib/Chart.js for analytics.',
-    github: 'https://github.com/ItsWanheda/expense-tracker',
-    live: null,
-    license: 'MIT',
-    status: 'Active'
-  },
-];
-
-const REPOS_DATA = [
-  { name: 'SNI-Spoofing Tool', desc: 'A high-performanc Python tool for bypassing DPI via IP/TCP-Header manipulation and SNI spoofing, designed for network analysis and privacy testing.', lang: 'Python,DPI-Bypass,Networking', stars: 0, forks: 0, github: 'https://github.com/ItsWanheda/SNI-SPOOFING' },
-  { name: 'http-header-analyzer', desc: 'A high-performance Go-based security tool that inspects HTTP headers, TLS configurations, and redirect chains.', lang: 'Go,CyberSecurity,TLS/SSL', stars: 0, forks: 0, github: 'https://github.com/ItsWanheda/http-header-analyzer' },
-  { name: 'SpectraScan', desc: 'A lightweight network reconnaissance tool written in Go for discovering hosts, ports, and services.', lang: 'Python,Networking', stars: 0, forks: 0, github: 'https://github.com/ItsWanheda/SpectraScan' },
-  { name: 'Expense Tracker', desc: 'A versatile personal finance management tool with dual interfaces (CLI & Web) for tracking expenses and visualizing spending.', lang: 'Python,SQLite', stars: 0, forks: 0, github: 'https://github.com/ItsWanheda/expense-tracker' },
+  { name: 'VS Code', icon: '💙', cat: 'tools', level: 100, desc: 'Primary editor — extensions, debugging, and workflow tuning.' },
+  { name: 'Docker', icon: '🐳', cat: 'tools', level: 70, desc: 'Containerization for consistent, portable dev environments.' },
+  { name: 'Windows', icon: '🖥', cat: 'tools', level: 100, desc: 'Primary desktop OS for development and daily workflows.' },
 ];
 
 const TIMELINE_DATA = [
