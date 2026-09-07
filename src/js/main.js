@@ -6736,14 +6736,6 @@ grid.addEventListener('click', e => {
   openSkillModal(card.dataset.name);
 });
 
-grid.addEventListener('keydown', e => {
-  if (e.key !== 'Enter' && e.key !== ' ') return;
-  const card = e.target.closest('.skill-card');
-  if (!card) return;
-  e.preventDefault();
-  openSkillModal(card.dataset.name);
-});
-
 // Category filter buttons
 catContainer.addEventListener('click', e => {
   const btn = e.target.closest('.cat-btn');
