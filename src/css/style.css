@@ -5667,35 +5667,26 @@ section {
 
 .section-label {
   position: relative;
-
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
-
   margin-bottom: var(--space-3);
-
   color: var(--red);
-
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 600;
-
   letter-spacing: var(--ls-widest);
   text-transform: uppercase;
   white-space: nowrap;
-
   text-shadow:
     0 0 12px rgba(255, 0, 60, 0.18);
 }
 
 .section-label::before {
   content: "";
-
   width: 30px;
   height: 1px;
-
   flex-shrink: 0;
-
   background:
     linear-gradient(
       90deg,
@@ -5710,20 +5701,15 @@ section {
 
 .section-title {
   max-width: 800px;
-
   margin:
     0 0 var(--space-4);
 
   color: var(--white);
-
   font-family: var(--font-display);
-
   font-size: var(--text-4xl);
   font-weight: 800;
-
   line-height: var(--lh-tight);
   letter-spacing: var(--ls-tight);
-
   text-wrap: balance;
 
   text-shadow:
@@ -5732,15 +5718,10 @@ section {
 
 .section-desc {
   max-width: 600px;
-
   margin: 0;
-
   color: var(--muted);
-
   font-size: var(--text-base);
-
   line-height: var(--lh-relaxed);
-
   text-wrap: pretty;
 }
 
@@ -5750,7 +5731,6 @@ section {
 
 .reveal {
   opacity: 0;
-
   transform:
     translate3d(0, 24px, 0);
 
@@ -5765,7 +5745,6 @@ section {
 
 .reveal.visible {
   opacity: 1;
-
   transform:
     translate3d(0, 0, 0);
 }
@@ -5802,36 +5781,26 @@ section {
 
 .btn {
   position: relative;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   gap: var(--space-2);
-
   min-height: 42px;
-
   padding:
     var(--space-3) var(--space-6);
 
   overflow: hidden;
-
   border:
     1px solid transparent;
 
   border-radius: var(--r-sm);
-
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 600;
-
   letter-spacing: var(--ls-wider);
-
   text-decoration: none;
   text-transform: uppercase;
-
   cursor: pointer;
-
   isolation: isolate;
 
   -webkit-tap-highlight-color: transparent;
@@ -5851,13 +5820,9 @@ section {
 
 .btn::before {
   content: '';
-
   position: absolute;
-
   inset: 0;
-
   z-index: -1;
-
   background:
     linear-gradient(110deg,
       transparent 20%,
@@ -5884,7 +5849,6 @@ section {
 .btn svg,
 .btn i {
   flex-shrink: 0;
-
   transition:
     transform 0.2s var(--ease-out);
 }
@@ -5902,7 +5866,6 @@ section {
 
 .btn-primary {
   color: #fff;
-
   background:
     linear-gradient(135deg,
       var(--red),
@@ -5917,7 +5880,6 @@ section {
 
 .btn-primary:hover {
   color: #fff;
-
   transform:
     translateY(-2px);
 
@@ -5941,7 +5903,6 @@ section {
 
 .btn-outline {
   color: var(--white);
-
   background:
     rgba(255, 255, 255, 0.015);
 
@@ -5951,7 +5912,6 @@ section {
 
 .btn-outline:hover {
   color: var(--red);
-
   background:
     var(--red-faint);
 
@@ -5978,12 +5938,9 @@ section {
 
 .btn-ghost {
   min-height: 36px;
-
   padding:
     var(--space-2) var(--space-4);
-
   color: var(--muted);
-
   background:
     transparent;
 
@@ -5996,7 +5953,6 @@ section {
 
 .btn-ghost:hover {
   color: var(--white);
-
   background:
     var(--red-faint);
 
@@ -6037,7 +5993,6 @@ section {
 .tag {
   display: inline-flex;
   align-items: center;
-
   min-height: 24px;
 
   padding:
@@ -6057,13 +6012,9 @@ section {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 500;
-
   letter-spacing: var(--ls-wide);
-
   line-height: 1;
-
   white-space: nowrap;
-
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
@@ -6091,14 +6042,10 @@ section {
 
 #home {
   position: relative;
-
   min-height: 100svh;
-
   display: flex;
   align-items: center;
-
   padding-top: 66px;
-
   overflow: hidden;
 }
 
@@ -6108,15 +6055,11 @@ section {
 
 #home::before {
   content: '';
-
   position: absolute;
-
   width: 700px;
   height: 700px;
-
   top: 50%;
   left: 52%;
-
   transform:
     translate(-50%, -50%);
 
@@ -6127,17 +6070,13 @@ section {
       transparent 70%);
 
   pointer-events: none;
-
   z-index: -1;
 }
 
 #home::after {
   content: '';
-
   position: absolute;
-
   inset: 0;
-
   background:
     linear-gradient(90deg,
       transparent 0%,
@@ -6145,7 +6084,6 @@ section {
       transparent 100%);
 
   pointer-events: none;
-
   z-index: -1;
 }
 
@@ -6155,16 +6093,12 @@ section {
 
 .hero-wrap {
   position: relative;
-
   width: 100%;
-
   display: grid;
-
   grid-template-columns:
     minmax(0, 1fr) minmax(320px, 440px);
 
   align-items: center;
-
   gap: clamp(var(--space-10),
       8vw,
       var(--space-16));
@@ -6191,35 +6125,24 @@ section {
 .hero-greeting {
   display: inline-flex;
   align-items: center;
-
   gap: var(--space-3);
-
   margin-bottom: var(--space-5);
-
   color: var(--red);
-
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 600;
-
   letter-spacing: var(--ls-wider);
-
   opacity: 0;
-
   animation:
     fadeUp 0.7s 0.25s var(--ease-out) forwards;
 }
 
 .hero-greeting::before {
   content: '';
-
   width: 32px;
   height: 1px;
-
   flex-shrink: 0;
-
   background: var(--red);
-
   box-shadow:
     0 0 7px var(--red),
     0 0 14px var(--red-glow);
@@ -6231,38 +6154,27 @@ section {
 
 .hero-name {
   margin: 0 0 var(--space-4);
-
   max-width: 760px;
-
   color: var(--white);
-
   font-family: var(--font-display);
-
   font-size:
     clamp(3.5rem,
       7vw,
       var(--text-6xl));
-
   font-weight: 800;
-
   line-height:
     0.95;
 
   letter-spacing: var(--ls-tighter);
-
   text-wrap: balance;
-
   opacity: 0;
-
   animation:
     fadeUp 0.75s 0.38s var(--ease-out) forwards;
 }
 
 .hero-name span {
   position: relative;
-
   color: var(--red);
-
   text-shadow:
     0 0 24px rgba(255, 0, 60, 0.22);
 }
@@ -6271,16 +6183,11 @@ section {
 
 .hero-name span::after {
   content: '';
-
   position: absolute;
-
   left: 0;
   right: 0;
-
   bottom: -5px;
-
   height: 2px;
-
   background:
     linear-gradient(90deg,
       var(--red),
@@ -6295,24 +6202,17 @@ section {
 
 .hero-roles {
   margin: 0 0 var(--space-6);
-
   color: var(--muted);
-
   font-family: var(--font-display);
-
   font-size:
     clamp(var(--text-lg),
       2vw,
       var(--text-xl));
 
   font-weight: 600;
-
   line-height: var(--lh-snug);
-
   letter-spacing: -0.01em;
-
   opacity: 0;
-
   animation:
     fadeUp 0.75s 0.5s var(--ease-out) forwards;
 }
@@ -6324,42 +6224,29 @@ section {
 .hero-typed-wrap {
   display: flex;
   align-items: center;
-
   min-height: 28px;
-
   gap: var(--space-2);
-
   margin-bottom: var(--space-8);
-
   color: var(--white);
-
   font-family: var(--font-mono);
   font-size: var(--text-sm);
-
   line-height: 1.6;
-
   opacity: 0;
-
   animation:
     fadeUp 0.75s 0.62s var(--ease-out) forwards;
 }
 
 .hero-typed-prefix {
   color: var(--red);
-
   font-weight: 700;
 }
 
 .hero-cursor {
   display: inline-block;
-
   width: 2px;
   height: 1.1em;
-
   margin-left: 2px;
-
   background: var(--red);
-
   box-shadow:
     0 0 6px var(--red);
 
@@ -6373,15 +6260,10 @@ section {
 
 .hero-buttons {
   display: flex;
-
   align-items: center;
-
   flex-wrap: wrap;
-
   gap: var(--space-3);
-
   opacity: 0;
-
   animation:
     fadeUp 0.75s 0.74s var(--ease-out) forwards;
 }
@@ -6392,16 +6274,11 @@ section {
 
 .hero-right {
   position: relative;
-
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   min-width: 0;
-
   opacity: 0;
-
   animation:
     fadeIn 1s 0.6s var(--ease-out) forwards;
 }
@@ -6412,12 +6289,9 @@ section {
 
 .hero-avatar-wrap {
   position: relative;
-
   width: 340px;
   height: 340px;
-
   display: flex;
-
   align-items: center;
   justify-content: center;
 }
@@ -6428,9 +6302,7 @@ section {
 
 .hero-avatar {
   position: relative;
-
   z-index: 3;
-
   width:
     clamp(230px,
       25vw,
@@ -6442,19 +6314,14 @@ section {
       300px);
 
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
-
   border:
     2px solid var(--red);
 
   border-radius: 50%;
-
   background: var(--card);
-
   box-shadow:
     0 0 0 6px rgba(255, 0, 60, 0.035),
     0 0 35px rgba(255, 0, 60, 0.18),
@@ -6468,15 +6335,13 @@ section {
 .hero-profile-img {
   width: 100%;
   height: 100%;
-
   display: block;
-
   object-fit: cover;
-
   object-position: center;
 
   filter:
-    saturate(0.92) contrast(1.04);
+    saturate(0.92) 
+    contrast(1.04);
 
   transition:
     transform 0.7s var(--ease-out),
