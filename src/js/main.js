@@ -6659,16 +6659,17 @@ function renderSkills() {
     : SKILLS_DATA.filter(s => s.cat === activeCategory);
 
   grid.innerHTML = list.map(s => `
-    <article class="skill-card"
-             data-name="${s.name}"
-             style="--level: ${s.level}%"
-             tabindex="0"
-             role="button"
-             aria-haspopup="dialog">
+    <button class="skill-card"
+            type="button"
+            data-name="${s.name}"
+            style="--level: ${s.level}%"
+            aria-haspopup="dialog">
       <div class="skill-icon" aria-hidden="true">${s.icon}</div>
       <div class="skill-name">${s.name}</div>
-      <div class="skill-level"><div class="skill-level-fill"></div></div>
-    </article>
+      <div class="skill-level" aria-hidden="true">
+        <div class="skill-level-fill"></div>
+      </div>
+    </button>
   `).join('');
 
   requestAnimationFrame(() => {

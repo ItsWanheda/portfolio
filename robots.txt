@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wanheda.vercel.app/sitemap.xml
+Sitemap: https://itswanheda.vercel.app/sitemap.xml
