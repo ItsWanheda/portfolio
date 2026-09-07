@@ -7174,16 +7174,19 @@ function renderGithubRepositories(
             </div>
 
 
-            <a
-              href="${escapeGithubHTML(
+          <a
+            href="${escapeGithubHTML(
             repo.html_url
-          )}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="repo-link"
-            >
-              View Repository →
-            </a>
+            )}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="repo-link"
+            aria-label="View ${escapeGithubHTML(
+              repo.name
+            )} repository on GitHub"
+          >
+            View Repository →
+          </a>
 
           </article>
         `;
