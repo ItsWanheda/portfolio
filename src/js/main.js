@@ -4784,9 +4784,7 @@ window.initNav = function initNav() {
         `INTEGRITY: ${random(98, 100)}%`;
 
     }
-
   }
-
 
   /* ==========================================================
      TELEMETRY LOOP
@@ -8062,9 +8060,7 @@ window.initAll = function initAll() {
   updateLearningDaysStat();
   initCounters();
   initContactForm();
-  renderContact();
   initContactLinks();
-  initContactForm();
   initClickParticles();
 
   console.log('[WANHEDA] Main application initialized successfully.');
