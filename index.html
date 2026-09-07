@@ -812,111 +812,258 @@
 
   </div>
 
-  <!-- HERO -->
-  <section id="home">
-    <div class="container">
-      <div class="hero-wrap">
-        <div class="hero-left">
-          <div class="hero-greeting">WELCOME TO MY PORTFOLIO</div>
-          <h1 class="hero-name">Its <span>Wanheda</span></h1>
-          <div class="hero-roles">Cybersecurity Enthusiast · Backend Developer · Networking Explorer</div>
-          <div class="hero-typed-wrap">
-            <span class="hero-typed-prefix">$&gt;</span>
-            <span class="hero-typed-text" id="typed-text"></span>
-            <span class="hero-cursor"></span>
-          </div>
-          <div class="hero-buttons">
-            <a href="#blog" class="btn btn-primary">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M9 9h6M9 13h6M9 17h4" />
-              </svg>
-              View Blog
-            </a>
-            <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener" class="btn btn-outline">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-              </svg>
-              GitHub
-            </a>
-          </div>
-        </div>
-        <div class="hero-right">
-          <div class="hero-avatar-wrap">
-            <div class="hero-avatar">
-              <img src="./src/images/Profile.jpg" width="180" height="180" fetchpriority="high" decoding="async"
-                alt="ItsWanheda Profile">
-            </div>
-            <div class="hero-ring1"></div>
-            <div class="hero-ring2"></div>
-            <div class="hero-ring3"></div>
-            <div class="hero-glow"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-    <a href="#about" class="hero-scroll">
-      <span>SCROLL</span>
-      <div class="hero-scroll-line"></div>
-    </a>
-  </section>
+<!-- HERO + ABOUT -->
+<section id="home">
 
-  <!-- ABOUT -->
-  <section id="about" class="section-pad">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-text reveal">
-          <div class="section-label">About Me</div>
-          <h2 class="section-title">Building the <span class="text-red">secure</span> web</h2>
-          <p>I'm a passionate technologist focused on the intersection of <strong>cybersecurity, backend
-              engineering,</strong> and <strong>network infrastructure</strong>. My journey started with a fascination
-            for how systems communicate and how they can be made resilient against threats.</p>
-          <p>I dive deep into <strong>authentication systems, API security, and network protocols</strong> —
-            constantly
-            exploring how to engineer software that is not only functional but fundamentally secure by design.</p>
-          <p>Currently learning <strong>Go and TypeScript</strong> while building projects that solve real security
-            challenges. I believe that understanding attacks makes for better defenders, and every system I build
-            reflects that philosophy.</p>
-          <div class="about-highlight">
-            &gt; Focus Areas<br>
-            ├── Cybersecurity &amp; Threat Analysis<br>
-            ├── Backend Development (Node.js, Go)<br>
-            ├── Network Protocols (TCP/IP, TLS, DNS)<br>
-            ├── Authentication &amp; Authorization (JWT, RBAC)<br>
-            └── IT Infrastructure &amp; Systems
-          </div>
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero-wrap">
+
+      <div class="hero-left">
+
+        <div class="hero-greeting">
+          WELCOME TO MY PORTFOLIO
         </div>
-        <div class="stats-grid reveal reveal-d2">
-          <div class="stat-card">
-            <div class="stat-number" data-target="15">0</div>
-            <div class="stat-label">Technologies</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" data-target="1642">0</div>
-            <div class="stat-label">Days Learning</div>
-          </div>
+
+        <h1 class="hero-name">
+          Its <span>Wanheda</span>
+        </h1>
+
+        <div class="hero-roles">
+          Cybersecurity Enthusiast · Backend Developer · Networking Explorer
         </div>
+
+        <div class="hero-typed-wrap">
+          <span class="hero-typed-prefix">$&gt;</span>
+          <span class="hero-typed-text" id="typed-text"></span>
+          <span class="hero-cursor"></span>
+        </div>
+
+        <div class="hero-buttons">
+
+          <a href="#blog" class="btn btn-primary">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M9 9h6M9 13h6M9 17h4" />
+            </svg>
+            View Blog
+          </a>
+
+          <a
+            href="https://github.com/ItsWanheda"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-outline"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7.678 1.856.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+              />
+            </svg>
+            GitHub
+          </a>
+
+        </div>
+
       </div>
-    </div>
-  </section>
-  <!-- SKILLS -->
-  <section id="skills" class="section-pad">
-    <div class="container">
-      <div class="section-label reveal">Tech Stack</div>
-      <h2 class="section-title reveal reveal-d1">Skills &amp; <span class="text-red">Technologies</span></h2>
-      <p class="section-desc reveal reveal-d2" style="margin-bottom:48px">A curated set of tools, languages, and
-        frameworks I use to build secure, scalable systems.</p>
-      <div class="skills-categories reveal reveal-d3" id="skill-cats">
-        <button class="cat-btn active" data-cat="all">All</button>
-        <button class="cat-btn" data-cat="frontend">Frontend</button>
-        <button class="cat-btn" data-cat="backend">Backend</button>
-        <button class="cat-btn" data-cat="languages">Languages</button>
+
+      <div class="hero-right">
+
+        <div class="hero-avatar-wrap">
+
+          <div class="hero-avatar">
+            <img
+              class="hero-profile-img"
+              src="./src/images/Profile.jpg"
+              width="180"
+              height="180"
+              fetchpriority="high"
+              decoding="async"
+              alt="ItsWanheda Profile"
+            >
+          </div>
+
+          <div class="hero-ring1"></div>
+          <div class="hero-ring2"></div>
+          <div class="hero-ring3"></div>
+          <div class="hero-glow"></div>
+
+        </div>
+
       </div>
-      <div class="skills-grid" id="skills-grid"></div>
+
     </div>
-  </section>
+
+
+    <!-- ABOUT -->
+    <div id="about" class="about-grid">
+
+      <div class="about-text reveal">
+
+        <div class="section-label">
+          About Me
+        </div>
+
+        <h2 class="section-title">
+          Building the <span class="text-red">secure</span> web
+        </h2>
+
+        <p>
+          I'm a passionate technologist focused on the intersection of
+          <strong>cybersecurity, backend engineering,</strong> and
+          <strong>network infrastructure</strong>. My journey started with
+          a fascination for how systems communicate and how they can be made
+          resilient against threats.
+        </p>
+
+        <p>
+          I dive deep into
+          <strong>authentication systems, API security, and network protocols</strong>
+          — constantly exploring how to engineer software that is not only
+          functional but fundamentally secure by design.
+        </p>
+
+        <p>
+          Currently learning <strong>Go and TypeScript</strong> while building
+          projects that solve real security challenges. I believe that
+          understanding attacks makes for better defenders, and every system
+          I build reflects that philosophy.
+        </p>
+
+        <div class="about-highlight">
+
+          &gt; Focus Areas<br>
+
+          ├── Cybersecurity &amp; Threat Analysis<br>
+
+          ├── Backend Development (Node.js, Go)<br>
+
+          ├── Network Protocols (TCP/IP, TLS, DNS)<br>
+
+          ├── Authentication &amp; Authorization (JWT, RBAC)<br>
+
+          └── IT Infrastructure &amp; Systems
+
+        </div>
+
+      </div>
+
+
+      <div class="stats-grid reveal reveal-d2">
+
+        <div class="stat-card">
+
+          <div
+            class="stat-number"
+            data-target="15"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Technologies
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div
+            class="stat-number"
+            data-target="1642"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Days Learning
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- SCROLL -->
+  <a href="#about" class="hero-scroll">
+
+    <span>SCROLL</span>
+
+    <div class="hero-scroll-line"></div>
+
+  </a>
+
+</section>
+
+
+<!-- SKILLS -->
+<section id="skills" class="section-pad">
+
+  <div class="container">
+
+    <div class="section-label reveal">
+      Tech Stack
+    </div>
+
+    <h2 class="section-title reveal reveal-d1">
+      Skills &amp; <span class="text-red">Technologies</span>
+    </h2>
+
+    <p
+      class="section-desc reveal reveal-d2"
+      style="margin-bottom:48px"
+    >
+      A curated set of tools, languages, and frameworks I use to build
+      secure, scalable systems.
+    </p>
+
+    <div
+      class="skills-categories reveal reveal-d3"
+      id="skill-cats"
+    >
+      <button class="cat-btn active" data-cat="all">
+        All
+      </button>
+
+      <button class="cat-btn" data-cat="frontend">
+        Frontend
+      </button>
+
+      <button class="cat-btn" data-cat="backend">
+        Backend
+      </button>
+
+      <button class="cat-btn" data-cat="languages">
+        Languages
+      </button>
+    </div>
+
+    <div
+      class="skills-grid"
+      id="skills-grid"
+    ></div>
+
+  </div>
+
+</section>
 
   <!-- GITHUB -->
   <section id="github" class="section-pad">
