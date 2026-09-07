@@ -3822,9 +3822,27 @@ Private keys
 ];
 
 const CONTACT_DATA = [
-  { icon: '⚡', label: 'GitHub', value: 'https://github.com/ItsWanheda', href: 'https://github.com/ItsWanheda', copyValue: 'https://github.com/ItsWanheda' },
-  { icon: '📧', label: 'Email', value: 'wanheda.work@gmail.com', href: 'mailto:wanheda.work@gmail.com', copyValue: 'wanheda.work@gmail.com' },
-  { icon: '🎮', label: 'Discord', value: 'ItsWanheda', href: null, copyValue: 'ItsWanheda' },
+  {
+    icon: '⚡',
+    label: 'GitHub',
+    value: 'https://github.com/ItsWanheda',
+    href: 'https://github.com/ItsWanheda',
+    copyValue: 'https://github.com/ItsWanheda'
+  },
+  {
+    icon: '📧',
+    label: 'Email',
+    value: 'wanheda.work@gmail.com',
+    href: 'mailto:wanheda.work@gmail.com',
+    copyValue: 'wanheda.work@gmail.com'
+  },
+  {
+    icon: '🎮',
+    label: 'Discord',
+    value: 'ItsWanheda',
+    href: null,
+    copyValue: 'ItsWanheda'
+  }
 ];
 
 /* ============================================================
@@ -7795,83 +7813,166 @@ document.addEventListener(
 /* ============================================================
    CONTACT
 ============================================================ */
+
 function renderContact() {
   const links = document.getElementById('contact-links');
-  links.innerHTML = CONTACT_DATA.map(c => {
-    const isLink = !!c.href;
-    const infoWrapper = isLink
-      ? `<a href="${c.href}" target="_blank" rel="noopener noreferrer" class="contact-link-info">`
-      : `<div class="contact-static-info">`;
-    const closeInfoWrapper = isLink ? `</a>` : `</div>`;
 
-    return `
-      <div class="contact-item">
-        ${infoWrapper}
-          <div class="contact-icon">${c.icon}</div>
-          <div class="contact-info">
-            <div class="contact-label">${c.label}</div>
-            <div class="contact-value">${c.value}</div>
-          </div>
-        ${closeInfoWrapper}
-        
-        <button class="contact-copy" 
-                data-copy="${c.copyValue}" 
-                aria-label="Copy ${c.label}">
-          COPY
-        </button>
-      </div>
-    `;
-  }).join('');
+  if (!links || !Array.isArray(CONTACT_DATA)) {
+    return;
+  }
 
-  // Attach event listeners directly to each copy button
-  document.querySelectorAll('.contact-copy').forEach(button => {
-    button.addEventListener('click', function (e) {
-      // Prevent any parent link from opening
-      e.preventDefault();
-      e.stopPropagation();
+  const fragment = document.createDocumentFragment();
 
-      const valueToCopy = this.getAttribute('data-copy');
-      if (!valueToCopy) return;
+  CONTACT_DATA.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'contact-item';
 
-      // Copy to clipboard
-      navigator.clipboard.writeText(valueToCopy).then(() => {
-        const originalText = this.textContent;
-        this.textContent = 'COPIED!';
-        this.classList.add('copied');
+    // INFO WRAPPER
+    const infoWrapper = c.href
+      ? document.createElement('a')
+      : document.createElement('div');
 
-        setTimeout(() => {
-          this.textContent = originalText;
-          this.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy:', err);
-        this.textContent = 'ERROR';
-        setTimeout(() => {
-          this.textContent = 'COPY';
-        }, 2000);
-      });
-    });
+    infoWrapper.className = c.href
+      ? 'contact-link-info'
+      : 'contact-static-info';
+
+    if (c.href) {
+      infoWrapper.href = c.href;
+      infoWrapper.target = '_blank';
+      infoWrapper.rel = 'noopener noreferrer';
+    }
+
+    // ICON
+    const icon = document.createElement('div');
+    icon.className = 'contact-icon';
+    icon.textContent = c.icon;
+
+    // INFO
+    const info = document.createElement('div');
+    info.className = 'contact-info';
+
+    const label = document.createElement('div');
+    label.className = 'contact-label';
+    label.textContent = c.label;
+
+    const value = document.createElement('div');
+    value.className = 'contact-value';
+    value.textContent = c.value;
+
+    info.appendChild(label);
+    info.appendChild(value);
+
+    // BUILD INFO
+    infoWrapper.appendChild(icon);
+    infoWrapper.appendChild(info);
+
+    // COPY BUTTON
+    const copyButton = document.createElement('button');
+
+    copyButton.type = 'button';
+    copyButton.className = 'contact-copy';
+    copyButton.dataset.copy = c.copyValue || '';
+    copyButton.setAttribute(
+      'aria-label',
+      `Copy ${c.label}`
+    );
+    copyButton.textContent = 'COPY';
+
+    // BUILD ITEM
+    item.appendChild(infoWrapper);
+    item.appendChild(copyButton);
+
+    fragment.appendChild(item);
+  });
+
+  // Replace everything at once
+  links.replaceChildren(fragment);
+}
+
+
+/* ============================================================
+   CONTACT COPY BUTTONS
+============================================================ */
+
+function initContactLinks() {
+  const links = document.getElementById('contact-links');
+
+  if (!links) {
+    return;
+  }
+
+  // Event delegation
+  links.addEventListener('click', async (e) => {
+    const button = e.target.closest('.contact-copy');
+
+    if (!button || !links.contains(button)) {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const valueToCopy = button.dataset.copy;
+
+    if (!valueToCopy) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(valueToCopy);
+
+      const originalText = button.textContent;
+
+      button.textContent = 'COPIED!';
+      button.classList.add('copied');
+
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove('copied');
+      }, 2000);
+
+    } catch (err) {
+      console.error('Failed to copy:', err);
+
+      button.textContent = 'ERROR';
+
+      setTimeout(() => {
+        button.textContent = 'COPY';
+      }, 2000);
+    }
   });
 }
+
+
+/* ============================================================
+   CONTACT FORM
+============================================================ */
+
 function initContactForm() {
   const form = document.getElementById('contact-form');
+
+  if (!form) {
+    return;
+  }
+
   const status = document.getElementById('form-status');
-  const submitBtn = form?.querySelector('.form-submit');
-  const emailInput = form?.querySelector('input[name="_replyto"]');
+  const submitBtn = form.querySelector('.form-submit');
 
-  if (!form || !status || !submitBtn || !emailInput) return;
+  // HTML uses name="email"
+  const emailInput = form.querySelector('input[name="email"]');
 
-  const FORM_ENDPOINT = 'https://formspree.io/f/xeebvwpq';
+  if (!status || !submitBtn || !emailInput) {
+    return;
+  }
+
+  // Keep this identical to your HTML form action
+  const FORM_ENDPOINT = 'https://formspree.io/f/mgawkqgn';
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     status.textContent = '';
     status.className = 'form-status';
-
-    /* =========================
-       Gmail Validation
-       ========================= */
 
     const email = emailInput.value.trim();
 
@@ -7885,12 +7986,9 @@ function initContactForm() {
       status.classList.add('error');
 
       emailInput.focus();
+
       return;
     }
-
-    /* =========================
-       Submit
-       ========================= */
 
     submitBtn.disabled = true;
 
@@ -7911,16 +8009,16 @@ function initContactForm() {
         }
       });
 
-      if (res.ok) {
-        status.textContent =
-          '✓ Message sent successfully!';
-
-        status.classList.add('success');
-
-        form.reset();
-      } else {
+      if (!res.ok) {
         throw new Error('Send failed');
       }
+
+      status.textContent =
+        '✓ Message sent successfully!';
+
+      status.classList.add('success');
+
+      form.reset();
 
     } catch (err) {
       console.error('Contact form error:', err);
@@ -7940,188 +8038,6 @@ function initContactForm() {
   });
 }
 
-/* ============================================================
-   COMMAND PALETTE (Ctrl+K)
-   ============================================================ */
-function initPalette() {
-  const overlay = document.getElementById('palette-overlay');
-  const input = document.getElementById('palette-input');
-  const results = document.getElementById('palette-results');
-  if (!overlay || !input) return;
-
-  // Build searchable index from existing data
-  const ITEMS = [
-    { icon: '🏠', title: 'Home', sub: 'Section', action: () => document.getElementById('home').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '👤', title: 'About', sub: 'Section', action: () => document.getElementById('about').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '🛠️', title: 'Skills', sub: 'Section', action: () => document.getElementById('skills').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '📂', title: 'Projects', sub: 'Section', action: () => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '💼', title: 'Experience', sub: 'Section', action: () => document.getElementById('experience').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '⚡', title: 'GitHub Activity', sub: 'Section', action: () => document.getElementById('github').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '🎓', title: 'Certifications', sub: 'Section', action: () => document.getElementById('certifications').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '📝', title: 'Blog', sub: 'Section', action: () => document.getElementById('blog').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '📧', title: 'Contact', sub: 'Section', action: () => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }) },
-    { icon: '⚡', title: 'GitHub: @ItsWanheda', sub: 'External', action: () => window.open('https://github.com/ItsWanheda', '_blank') },
-    { icon: '📧', title: 'Email: wanheda.work@gmail.com', sub: 'Contact', action: () => window.open('mailto:wanheda.work@gmail.com') },
-    { icon: '⬆️', title: 'Back to Top', sub: 'Action', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
-    { icon: '🌙', title: 'Toggle Theme', sub: 'Action', action: () => toggleTheme() },
-    // Dynamic items from projects
-    ...PROJECTS_DATA.map(p => ({
-      icon: p.emoji,
-      title: p.name,
-      sub: 'Project',
-      action: () => openProjectModal(p.id)
-    })),
-    // Dynamic items from blog
-    ...BLOG_DATA.map(b => ({
-      icon: '📄',
-      title: b.title,
-      sub: `Blog · ${b.tag}`,
-      action: () => openBlogModal(BLOG_DATA.indexOf(b))
-    }))
-  ];
-
-  let activeIndex = 0;
-  let filtered = ITEMS;
-  let lastFocused = null;
-
-  // ---------- Core functions ----------
-  function render(query = '') {
-    const q = query.trim().toLowerCase();
-    filtered = q
-      ? ITEMS.filter(i =>
-        i.title.toLowerCase().includes(q) ||
-        i.sub.toLowerCase().includes(q)
-      )
-      : ITEMS;
-    activeIndex = 0;
-
-    if (!filtered.length) {
-      results.innerHTML = `
-        <div class="palette-empty">
-          No results for "<strong>${escapeHtml(query)}</strong>"
-        </div>`;
-      return;
-    }
-
-    results.innerHTML = filtered.map((item, i) => `
-      <div class="palette-item ${i === 0 ? 'active' : ''}" data-index="${i}">
-        <div class="icon">${item.icon}</div>
-        <div class="text">
-          <div class="title">${escapeHtml(item.title)}</div>
-          <div class="sub">${escapeHtml(item.sub)}</div>
-        </div>
-      </div>
-    `).join('');
-
-    results.querySelectorAll('.palette-item').forEach((el, i) => {
-      el.addEventListener('click', () => execute(filtered[i]));
-      el.addEventListener('mouseenter', () => {
-        activeIndex = i;
-        updateActive();
-      });
-    });
-  }
-
-  function updateActive() {
-    const items = results.querySelectorAll('.palette-item');
-    if (!items.length) return;
-    // Wrap around
-    if (activeIndex < 0) activeIndex = items.length - 1;
-    if (activeIndex >= items.length) activeIndex = 0;
-    items.forEach((el, i) => el.classList.toggle('active', i === activeIndex));
-    const active = items[activeIndex];
-    if (active) {
-      active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }
-  }
-
-  function execute(item) {
-    if (!item || typeof item.action !== 'function') return;
-    closePalette();
-    // Defer slightly so the modal/close animation doesn't conflict
-    setTimeout(() => {
-      try { item.action(); }
-      catch (err) { console.error('Palette action failed:', err); }
-    }, 50);
-  }
-
-  function openPalette() {
-    lastFocused = document.activeElement;
-    overlay.classList.add('open');
-    overlay.setAttribute('aria-hidden', 'false');
-    input.value = '';
-    render('');
-    // Wait a tick so the focus doesn't fight the transition
-    setTimeout(() => input.focus(), 10);
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closePalette() {
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (lastFocused && typeof lastFocused.focus === 'function') {
-      lastFocused.focus();
-    }
-  }
-
-  function isOpen() {
-    return overlay.classList.contains('open');
-  }
-
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
-  // ---------- Event listeners ----------
-  // Open / close on Ctrl+K (or Cmd+K on Mac)
-  document.addEventListener('keydown', (e) => {
-    const isToggle = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k';
-    if (isToggle) {
-      e.preventDefault();
-      isOpen() ? closePalette() : openPalette();
-      return;
-    }
-    if (!isOpen()) return;
-
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      closePalette();
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      activeIndex++;
-      updateActive();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      activeIndex--;
-      updateActive();
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      execute(filtered[activeIndex]);
-    } else if (e.key === 'Home') {
-      e.preventDefault();
-      activeIndex = 0;
-      updateActive();
-    } else if (e.key === 'End') {
-      e.preventDefault();
-      activeIndex = filtered.length - 1;
-      updateActive();
-    }
-  });
-
-  // Live search
-  input.addEventListener('input', (e) => render(e.target.value));
-
-  // Click outside the palette box to close
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closePalette();
-  });
-}
 /* ============================================================
    INIT ALL
 ============================================================ */
@@ -8145,7 +8061,9 @@ window.initAll = function initAll() {
 
   updateLearningDaysStat();
   initCounters();
-  initTheme();
+  initContactForm();
+  renderContact();
+  initContactLinks();
   initContactForm();
   initClickParticles();
 
