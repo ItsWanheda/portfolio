@@ -4156,7 +4156,7 @@ window.initNav = function initNav() {
                   entry.isIntersecting
               )
               .sort(
-                (a,b) =>
+                (a, b) =>
                   b.intersectionRatio -
                   a.intersectionRatio
               );
@@ -4218,11 +4218,11 @@ window.initNav = function initNav() {
         const id =
           link
             .getAttribute("href")
-            ?.replace("#","");
+            ?.replace("#", "");
 
 
 
-        if(id)
+        if (id)
           setActive(id);
 
 
@@ -4248,11 +4248,11 @@ window.initNav = function initNav() {
         const id =
           link
             .getAttribute("href")
-            ?.replace("#","");
+            ?.replace("#", "");
 
 
 
-        if(id)
+        if (id)
           setActive(id);
 
 
@@ -4319,53 +4319,34 @@ window.initNav = function initNav() {
 
   const CONFIG = {
 
-    typeSpeed: 18,
+    typeSpeed: 12,
 
-    commandPause: 120,
+    commandPause: 80,
 
-    linePause: 80,
+    linePause: 50,
 
-    identityDuration: 1100,
+    identityDuration: 450,
 
-    finalMessageDuration: 850,
+    finalMessageDuration: 300,
 
-    fadeDuration: 700,
+    fadeDuration: 450,
 
-    maxBootTime: 15000,
+    maxBootTime: 3500,
 
-    binaryColumns: 34,
+    binaryColumns: 24,
 
-    reducedMotionSpeed: 5,
+    reducedMotionSpeed: 1,
 
     commands: [
-
       {
         command: './initialize',
-        message: '[ OK ] Boot sequence initialized',
-        type: 'success'
-      },
-
-      {
-        command: './load_kernel',
-        message: '[ OK ] Kernel modules loaded',
-        type: 'success'
-      },
-
-      {
-        command: './mount_secure_fs',
-        message: '[ OK ] /secure mounted read-write',
-        type: 'success'
-      },
-
-      {
-        command: './initialize_crypto',
-        message: '[ OK ] AES-256 encryption engine online',
+        message: '[ OK ] WANHEDA kernel initialized',
         type: 'success'
       },
 
       {
         command: './establish_uplink',
-        message: '[ OK ] Encrypted tunnel established',
+        message: '[ OK ] Secure uplink established',
         type: 'success'
       },
 
@@ -4373,8 +4354,13 @@ window.initNav = function initNav() {
         command: './verify_identity',
         message: '[ OK ] Identity hash verified',
         type: 'success'
-      }
+      },
 
+      {
+        command: './start_interface',
+        message: '[ OK ] Interface engine ready',
+        type: 'success'
+      }
     ]
 
   };
@@ -5160,17 +5146,25 @@ window.initNav = function initNav() {
 
     state.initCalled = true;
 
-    console.log('[WANHEDA] Revealing main application...');
+    console.log(
+      '[WANHEDA] Initializing main application...'
+    );
 
-    /* Remove all loading states */
+    /*
+     * Remove loading state immediately.
+     */
     document.body.classList.remove('loading');
     document.documentElement.classList.remove('loading');
 
-    /* Make sure scrolling is restored */
+    /*
+     * Restore scrolling.
+     */
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
 
-    /* Make sure main content is not hidden by inline styles */
+    /*
+     * Make sure main content is visible.
+     */
     const main = document.querySelector('main');
 
     if (main) {
@@ -5179,7 +5173,9 @@ window.initNav = function initNav() {
       main.style.removeProperty('opacity');
     }
 
-    /* Initialize website */
+    /*
+     * Initialize the actual portfolio.
+     */
     if (typeof window.initAll === 'function') {
 
       try {
@@ -5187,7 +5183,7 @@ window.initNav = function initNav() {
         window.initAll();
 
         console.log(
-          '[WANHEDA] Main application initialized successfully.'
+          '[WANHEDA] Main application initialized.'
         );
 
       } catch (error) {
@@ -5433,12 +5429,19 @@ window.initNav = function initNav() {
 
     state.started = true;
 
-    state.startTime =
-      Date.now();
+    state.startTime = Date.now();
 
-    document.body.classList.add(
-      'loading'
-    );
+    /*
+     * Initialize the actual website FIRST.
+     *
+     * The preloader is now purely visual and
+     * must never block the main application.
+     */
+    initializeApplication();
+
+    /*
+     * Start visual boot sequence.
+     */
 
     generateSession();
 
@@ -5448,11 +5451,6 @@ window.initNav = function initNav() {
 
     startTelemetry();
 
-    /*
-     * Show rain after initial
-     * terminal boot.
-     */
-
     await wait(250);
 
     if (state.skipped) {
@@ -5460,10 +5458,7 @@ window.initNav = function initNav() {
     }
 
     if (binaryRain) {
-
-      binaryRain.style.opacity =
-        '1';
-
+      binaryRain.style.opacity = '1';
     }
 
     /*
@@ -5477,7 +5472,6 @@ window.initNav = function initNav() {
     }
 
     setProgress(8);
-
 
     /*
      * Execute boot stages
@@ -5497,9 +5491,7 @@ window.initNav = function initNav() {
       if (state.skipped) {
         return;
       }
-
     }
-
 
     /*
      * Extra system data
@@ -5512,7 +5504,6 @@ window.initNav = function initNav() {
     }
 
     setProgress(90);
-
 
     /*
      * Final checks
@@ -5539,7 +5530,6 @@ window.initNav = function initNav() {
 
     await wait(180);
 
-
     /*
      * Access granted
      */
@@ -5552,7 +5542,6 @@ window.initNav = function initNav() {
       return;
     }
 
-
     /*
      * Identity
      */
@@ -5562,7 +5551,6 @@ window.initNav = function initNav() {
     if (state.skipped) {
       return;
     }
-
 
     /*
      * Final message
@@ -5574,13 +5562,11 @@ window.initNav = function initNav() {
       return;
     }
 
-
     /*
      * Exit
      */
 
     await finishBoot();
-
   }
 
 
@@ -6216,7 +6202,7 @@ window.initNav = function initNav() {
     'scroll',
     updateHeader,
     {
-      passive:true
+      passive: true
     }
   );
 
@@ -6298,8 +6284,8 @@ window.initNav = function initNav() {
 
     const parent =
       active
-      .closest('.nav-links')
-      .getBoundingClientRect();
+        .closest('.nav-links')
+        .getBoundingClientRect();
 
 
 
@@ -6349,7 +6335,7 @@ window.initNav = function initNav() {
 
 
 
-      if(window.scrollY >= top){
+      if (window.scrollY >= top) {
 
         current = section.id;
 
@@ -6360,7 +6346,7 @@ window.initNav = function initNav() {
 
 
 
-    if(current){
+    if (current) {
 
       setActive(current);
 
@@ -6375,7 +6361,7 @@ window.initNav = function initNav() {
     'scroll',
     updateActive,
     {
-      passive:true
+      passive: true
     }
   );
 
@@ -6391,8 +6377,8 @@ window.initNav = function initNav() {
 
         const id =
           link
-          .getAttribute('href')
-          .replace('#','');
+            .getAttribute('href')
+            .replace('#', '');
 
 
         setActive(id);
@@ -6438,7 +6424,7 @@ window.initNav = function initNav() {
 ============================================================ */
 
 
-window.initScrollProgress = function initScrollProgress(){
+window.initScrollProgress = function initScrollProgress() {
 
   const progress =
     document.getElementById(
@@ -6446,7 +6432,7 @@ window.initScrollProgress = function initScrollProgress(){
     );
 
 
-  if(!progress)
+  if (!progress)
     return;
 
 
@@ -6464,8 +6450,8 @@ window.initScrollProgress = function initScrollProgress(){
 
       const percent =
         height > 0
-        ? (window.scrollY / height) * 100
-        : 0;
+          ? (window.scrollY / height) * 100
+          : 0;
 
 
 
@@ -6475,7 +6461,7 @@ window.initScrollProgress = function initScrollProgress(){
 
     },
     {
-      passive:true
+      passive: true
     }
   );
 
@@ -6494,7 +6480,7 @@ window.initScrollProgress = function initScrollProgress(){
 ============================================================ */
 
 
-window.initBackToTop = function initBackToTop(){
+window.initBackToTop = function initBackToTop() {
 
 
   const btt =
@@ -6504,7 +6490,7 @@ window.initBackToTop = function initBackToTop(){
 
 
 
-  if(!btt)
+  if (!btt)
     return;
 
 
@@ -6522,7 +6508,7 @@ window.initBackToTop = function initBackToTop(){
 
     },
     {
-      passive:true
+      passive: true
     }
   );
 
@@ -6535,9 +6521,9 @@ window.initBackToTop = function initBackToTop(){
 
       window.scrollTo({
 
-        top:0,
+        top: 0,
 
-        behavior:'smooth'
+        behavior: 'smooth'
 
       });
 
@@ -7092,13 +7078,13 @@ function renderGithubRepositories(
           <a
             href="${escapeGithubHTML(
             repo.html_url
-            )}"
+          )}"
             target="_blank"
             rel="noopener noreferrer"
             class="repo-link"
             aria-label="View ${escapeGithubHTML(
-              repo.name
-            )} repository on GitHub"
+            repo.name
+          )} repository on GitHub"
           >
             View Repository →
           </a>
