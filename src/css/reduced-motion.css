@@ -37,7 +37,6 @@
     transform: scale(0.94);
   }
 
-
   /* ----------------------------------------------------------
      HOVER RESET
      ---------------------------------------------------------- */
@@ -63,7 +62,6 @@
     transform: none;
   }
 
-
   /* ----------------------------------------------------------
      PRELOADER SAFE AREA
      ---------------------------------------------------------- */
@@ -78,7 +76,6 @@
       max(16px, env(safe-area-inset-bottom))
       max(16px, env(safe-area-inset-left));
   }
-
 
   /* ----------------------------------------------------------
      DECORATIVE ANIMATIONS
@@ -101,7 +98,6 @@
   .hacker-final {
     transition: none !important;
   }
-
 
   /* ----------------------------------------------------------
      TOUCH TERMINAL
@@ -136,7 +132,6 @@
   }
 }
 
-
 /* ============================================================
    REDUCED MOTION
    Accessibility: respect user's motion preferences
@@ -166,7 +161,6 @@
   .cursor-dot {
     animation: none !important;
   }
-
 
   /* ----------------------------------------------------------
      NAVBAR
@@ -202,7 +196,6 @@
     transition: none !important;
   }
 
-
   /* ----------------------------------------------------------
      HERO
      ---------------------------------------------------------- */
@@ -231,7 +224,6 @@
     transition: none !important;
   }
 
-
   /* ----------------------------------------------------------
      SCROLL / NAVIGATION UTILITIES
      ---------------------------------------------------------- */
@@ -250,7 +242,6 @@
     transform: none;
   }
 
-
   /* ----------------------------------------------------------
      ABOUT
      ---------------------------------------------------------- */
@@ -264,7 +255,6 @@
   .stat-card::after {
     transition: none !important;
   }
-
 
   /* ----------------------------------------------------------
      EXPERIENCE / TIMELINE
@@ -288,7 +278,6 @@
     transform: none !important;
   }
 
-
   /* ----------------------------------------------------------
      SCROLL REVEALS
      ---------------------------------------------------------- */
@@ -298,7 +287,6 @@
     transform: none;
     transition: none !important;
   }
-
 
   /* ----------------------------------------------------------
      SKILLS
@@ -318,7 +306,6 @@
   .skill-modal-overlay {
     transition: none !important;
   }
-
 
   /* ----------------------------------------------------------
      CERTIFICATIONS
@@ -341,7 +328,6 @@
     animation: none !important;
   }
 
-
   /* ----------------------------------------------------------
      BUTTONS / TAGS
      ---------------------------------------------------------- */
@@ -353,7 +339,6 @@
   .tag {
     transition: none !important;
   }
-
 
   /* ----------------------------------------------------------
      BLOG
@@ -377,7 +362,6 @@
     animation: none !important;
   }
 
-
   /* ----------------------------------------------------------
      THEME TOGGLE
      ---------------------------------------------------------- */
@@ -391,7 +375,6 @@
   .theme-toggle:active {
     transform: none !important;
   }
-
 
   /* ----------------------------------------------------------
      PRELOADER
@@ -413,7 +396,6 @@
     animation-iteration-count: 1 !important;
   }
 
-
   /* ----------------------------------------------------------
      GITHUB
      ---------------------------------------------------------- */
@@ -425,7 +407,10 @@
   .repo-card,
   .repo-icon,
   .repo-link,
-  .repo-card::before {
+  .github-loading,
+  .github-profile-card::after,
+  .repo-card::before,
+  .contrib-cell[data-level="4"] {
     transition: none !important;
   }
 
@@ -433,13 +418,16 @@
   .gh-stat:hover,
   .repo-card:hover,
   .contrib-cell:hover {
-    transform: none !important;
+    transform: 
+      none !important;
+
+    animation:
+      none !important;
   }
 
   .repo-card:hover::before {
     width: 0;
   }
-
 
   /* ----------------------------------------------------------
      FOOTER
@@ -460,7 +448,6 @@
     transform: none !important;
   }
 
-
   /* ----------------------------------------------------------
      INTERACTION EFFECTS
      ---------------------------------------------------------- */
@@ -470,7 +457,6 @@
     display: none;
   }
 }
-
 
 /* ============================================================
    HIGH CONTRAST

@@ -2258,30 +2258,3 @@
   }
 
 }
-
-
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-  .github-profile-card,
-  .github-avatar,
-  .gh-stat,
-  .repo-card,
-  .repo-icon,
-  .contrib-cell,
-  .github-loading,
-  .github-profile-card::after,
-  .contrib-cell[data-level="4"] {
-
-    animation:
-      none !important;
-
-    transition:
-      none !important;
-
-  }
-
-}
