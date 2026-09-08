@@ -2,23 +2,41 @@
    DATA
 ============================================================ */
 const SKILLS_DATA = [
+
   { name: 'JavaScript', icon: '⚡', cat: 'frontend', level: 90, desc: 'DOM manipulation, event-driven interactivity, and vanilla scripting.' },
+
   { name: 'C++', icon: '⚙️', cat: 'languages', level: 55, desc: 'Low-level systems programming and performance-critical logic.' },
+
   { name: 'Python', icon: '🐍', cat: 'languages', level: 85, desc: 'CLI tools, network scanners, and security scripting.' },
-  { name: 'Go', icon: '🐹', cat: 'languages', level: 50, desc: 'High-concurrency backend services and network utilities.' },
-  { name: 'TypeScript', icon: '🟦', cat: 'languages', level: 60, desc: 'Strongly typed JS for safer, more maintainable backend code.' },
+
+  { name: 'Go', icon: '🐹', cat: 'backend', level: 50, desc: 'High-concurrency backend services and network utilities.' },
+
+  { name: 'TypeScript', icon: '🟦', cat: 'backend', level: 60, desc: 'Strongly typed JavaScript for safer, more maintainable code.' },
+
   { name: 'React', icon: '⚛️', cat: 'frontend', level: 85, desc: 'Component-based UIs with hooks and shared state.' },
+
   { name: 'Next.js', icon: '▲', cat: 'frontend', level: 70, desc: 'React framework for routing, SSR, and production builds.' },
+
   { name: 'Node.js', icon: '🟢', cat: 'backend', level: 90, desc: 'Server-side JavaScript runtime for APIs and tooling.' },
+
   { name: 'Express.js', icon: '🚀', cat: 'backend', level: 75, desc: 'Minimal routing and middleware framework for Node APIs.' },
+
   { name: 'Git', icon: '🌲', cat: 'tools', level: 100, desc: 'Version control, branching strategies, and collaborative workflows.' },
+
   { name: 'GitHub', icon: '🐙', cat: 'tools', level: 100, desc: 'Repository hosting, issue tracking, and CI/CD workflows.' },
+
   { name: 'Void Linux', icon: '🐧', cat: 'tools', level: 65, desc: 'Lightweight, independent Linux distro for daily driving.' },
+
   { name: 'BlackArch', icon: '🐉', cat: 'tools', level: 50, desc: 'Arch-based penetration testing distro with security tooling.' },
+
   { name: 'Kali Linux', icon: '🐉', cat: 'tools', level: 80, desc: 'Security-focused distro for testing and network analysis.' },
+
   { name: 'VS Code', icon: '💙', cat: 'tools', level: 100, desc: 'Primary editor — extensions, debugging, and workflow tuning.' },
+
   { name: 'Docker', icon: '🐳', cat: 'tools', level: 70, desc: 'Containerization for consistent, portable dev environments.' },
+
   { name: 'Windows', icon: '🖥', cat: 'tools', level: 100, desc: 'Primary desktop OS for development and daily workflows.' },
+
 ];
 
 const TIMELINE_DATA = [
