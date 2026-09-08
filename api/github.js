@@ -8,6 +8,7 @@ const GITHUB_API = 'https://api.github.com';
 const GITHUB_API_VERSION = '2026-03-10';
 
 const CACHE_SECONDS = 300;
+const REPOSITORY_LIMIT = 30;
 
 
 /* ============================================================
@@ -23,11 +24,8 @@ async function githubRequest(endpoint) {
       headers: {
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': GITHUB_API_VERSION,
-        Authorization:
-          `Bearer ${process.env.GITHUB_TOKEN}`
-      },
-
-      cache: 'no-store'
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+      }
     }
   );
 
@@ -57,16 +55,13 @@ async function githubGraphQL(query, variables = {}) {
         Accept: 'application/vnd.github+json',
         'Content-Type': 'application/json',
         'X-GitHub-Api-Version': GITHUB_API_VERSION,
-        Authorization:
-          `Bearer ${process.env.GITHUB_TOKEN}`
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
       },
 
       body: JSON.stringify({
         query,
         variables
-      }),
-
-      cache: 'no-store'
+      })
     }
   );
 
@@ -93,7 +88,6 @@ async function githubGraphQL(query, variables = {}) {
 ============================================================ */
 
 async function getTotalCommits() {
-
   const query = `
     query GetUserContributions($login: String!) {
       user(login: $login) {
@@ -158,11 +152,9 @@ export default async function handler(req, res) {
   ========================================================== */
 
   if (req.method !== 'GET') {
-
     return res.status(405).json({
       error: 'Method Not Allowed'
     });
-
   }
 
 
@@ -179,30 +171,30 @@ export default async function handler(req, res) {
     return res.status(500).json({
       error: 'GitHub integration is not configured.'
     });
-
   }
 
 
   try {
 
     /* ========================================================
-       PROFILE
+       FETCH GITHUB DATA IN PARALLEL
     ======================================================== */
 
-    const profile =
-      await githubRequest(
+    const [
+      profile,
+      allRepos,
+      totalCommits
+    ] = await Promise.all([
+      githubRequest(
         `/users/${GITHUB_USERNAME}`
-      );
+      ),
 
+      githubRequest(
+        `/users/${GITHUB_USERNAME}/repos?per_page=${REPOSITORY_LIMIT}&sort=updated`
+      ),
 
-    /* ========================================================
-       REPOSITORIES
-    ======================================================== */
-
-    const allRepos =
-      await githubRequest(
-        `/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`
-      );
+      getTotalCommits()
+    ]);
 
 
     /* ========================================================
@@ -210,9 +202,22 @@ export default async function handler(req, res) {
     ======================================================== */
 
     const repositories =
-      allRepos.filter(
-        repo => !repo.fork
-      );
+      allRepos
+        .filter(repo => !repo.fork)
+        .map(repo => ({
+          id: repo.id,
+          name: repo.name,
+          full_name: repo.full_name,
+          description: repo.description,
+          html_url: repo.html_url,
+          homepage: repo.homepage,
+          language: repo.language,
+          stargazers_count: repo.stargazers_count,
+          forks_count: repo.forks_count,
+          topics: repo.topics,
+          updated_at: repo.updated_at,
+          created_at: repo.created_at
+        }));
 
 
     /* ========================================================
@@ -223,9 +228,7 @@ export default async function handler(req, res) {
       repositories.reduce(
         (total, repo) =>
           total +
-          Number(
-            repo.stargazers_count || 0
-          ),
+          Number(repo.stargazers_count || 0),
         0
       );
 
@@ -238,19 +241,9 @@ export default async function handler(req, res) {
       repositories.reduce(
         (total, repo) =>
           total +
-          Number(
-            repo.forks_count || 0
-          ),
+          Number(repo.forks_count || 0),
         0
       );
-
-
-    /* ========================================================
-       TOTAL COMMITS
-    ======================================================== */
-
-    const totalCommits =
-      await getTotalCommits();
 
 
     /* ========================================================
@@ -304,11 +297,8 @@ export default async function handler(req, res) {
       error
     );
 
-
     return res.status(500).json({
       error: 'Failed to load GitHub data.'
     });
-
   }
-
 }
