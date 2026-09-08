@@ -6,7 +6,7 @@ const SKILLS_DATA = [
   { name: 'C++', icon: '⚙️', cat: 'languages', level: 55, desc: 'Low-level systems programming and performance-critical logic.' },
   { name: 'Python', icon: '🐍', cat: 'languages', level: 85, desc: 'CLI tools, network scanners, and security scripting.' },
   { name: 'Go', icon: '🐹', cat: 'backend', level: 50, desc: 'High-concurrency backend services and network utilities.' },
-  { name: 'TypeScript', icon: '🟦', cat: 'backend', level: 60, desc: 'Strongly typed JS for safer, more maintainable backend code.' },
+  { name: 'TypeScript', icon: '🟦', cat: 'backend', level: 60, desc: 'Strongly typed JavaScript for safer, more maintainable code.' },
   { name: 'React', icon: '⚛️', cat: 'frontend', level: 85, desc: 'Component-based UIs with hooks and shared state.' },
   { name: 'Next.js', icon: '▲', cat: 'frontend', level: 70, desc: 'React framework for routing, SSR, and production builds.' },
   { name: 'Node.js', icon: '🟢', cat: 'backend', level: 90, desc: 'Server-side JavaScript runtime for APIs and tooling.' },
@@ -19,6 +19,7 @@ const SKILLS_DATA = [
   { name: 'VS Code', icon: '💙', cat: 'tools', level: 100, desc: 'Primary editor — extensions, debugging, and workflow tuning.' },
   { name: 'Docker', icon: '🐳', cat: 'tools', level: 70, desc: 'Containerization for consistent, portable dev environments.' },
   { name: 'Windows', icon: '🖥', cat: 'tools', level: 100, desc: 'Primary desktop OS for development and daily workflows.' },
+
 ];
 
 const TIMELINE_DATA = [
@@ -4303,10 +4304,10 @@ window.initNav = function initNav() {
 
 };
 
-/* ============================================================
-   TERMINAL BOOT ENGINE
+/*============================================================
+  TERMINAL BOOT ENGINE
    v2.0
-   ============================================================ */
+  ============================================================ */
 
 (() => {
 
@@ -5429,19 +5430,12 @@ window.initNav = function initNav() {
 
     state.started = true;
 
-    state.startTime = Date.now();
+    state.startTime =
+      Date.now();
 
-    /*
-     * Initialize the actual website FIRST.
-     *
-     * The preloader is now purely visual and
-     * must never block the main application.
-     */
-    initializeApplication();
-
-    /*
-     * Start visual boot sequence.
-     */
+    document.body.classList.add(
+      'loading'
+    );
 
     generateSession();
 
@@ -5451,6 +5445,11 @@ window.initNav = function initNav() {
 
     startTelemetry();
 
+    /*
+     * Show rain after initial
+     * terminal boot.
+     */
+
     await wait(250);
 
     if (state.skipped) {
@@ -5458,7 +5457,10 @@ window.initNav = function initNav() {
     }
 
     if (binaryRain) {
-      binaryRain.style.opacity = '1';
+
+      binaryRain.style.opacity =
+        '1';
+
     }
 
     /*
@@ -5472,6 +5474,7 @@ window.initNav = function initNav() {
     }
 
     setProgress(8);
+
 
     /*
      * Execute boot stages
@@ -5491,7 +5494,9 @@ window.initNav = function initNav() {
       if (state.skipped) {
         return;
       }
+
     }
+
 
     /*
      * Extra system data
@@ -5504,6 +5509,7 @@ window.initNav = function initNav() {
     }
 
     setProgress(90);
+
 
     /*
      * Final checks
@@ -5530,6 +5536,7 @@ window.initNav = function initNav() {
 
     await wait(180);
 
+
     /*
      * Access granted
      */
@@ -5542,6 +5549,7 @@ window.initNav = function initNav() {
       return;
     }
 
+
     /*
      * Identity
      */
@@ -5551,6 +5559,7 @@ window.initNav = function initNav() {
     if (state.skipped) {
       return;
     }
+
 
     /*
      * Final message
@@ -5562,11 +5571,13 @@ window.initNav = function initNav() {
       return;
     }
 
+
     /*
      * Exit
      */
 
     await finishBoot();
+
   }
 
 
@@ -7494,6 +7505,7 @@ function openBlogModal(index, updateUrl = true) {
     return;
   }
 
+
   /* ==========================================================
      MODAL HEADER
   ========================================================== */
@@ -7501,6 +7513,7 @@ function openBlogModal(index, updateUrl = true) {
   modalNumber.textContent = blog.num;
   modalTag.textContent = blog.tag;
   modalTitle.textContent = blog.title;
+
 
   /* ==========================================================
      MODAL CONTENT
