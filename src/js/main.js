@@ -7494,7 +7494,6 @@ function openBlogModal(index, updateUrl = true) {
     return;
   }
 
-
   /* ==========================================================
      MODAL HEADER
   ========================================================== */
@@ -7502,7 +7501,6 @@ function openBlogModal(index, updateUrl = true) {
   modalNumber.textContent = blog.num;
   modalTag.textContent = blog.tag;
   modalTitle.textContent = blog.title;
-
 
   /* ==========================================================
      MODAL CONTENT
