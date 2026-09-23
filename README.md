@@ -1,334 +1,459 @@
-# Portfolio — Cybersecurity & Backend Engineering
+# 🛡️ Portfolio — Cybersecurity & Backend Engineering
 
-**Cybersecurity Enthusiast · Backend Developer · Networking Explorer**
-
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Maintained](https://img.shields.io/badge/Maintained-Yes-FF003C?style=for-the-badge)](https://github.com/ItsWanheda/portfolio/commits/main)
-[![GitHub Stars](https://img.shields.io/github/stars/ItsWanheda/portfolio?style=for-the-badge&logo=github&color=FF003C)](https://github.com/ItsWanheda/portfolio/stargazers)
-
-· [Report Bug](https://github.com/ItsWanheda/portfolio/issues) · [Request Feature](https://github.com/ItsWanheda/portfolio/issues)
-
-</div>
-
----
-
-## 📑 Table of Contents
-
-- [About](#-about)
-- [✨ Features](#-features)
-- [🖥️ Live Demo](#-live-demo)
-- [🛠️ Tech Stack](#-tech-stack)
-- [📂 Project Structure](#-project-structure)
-- [🚀 Quick Start](#-quick-start)
-- [⚙️ Configuration](#-configuration)
-- [🎨 Customization](#-customization)
-- [📸 Screenshots](#-screenshots)
-- [🔒 Security](#-security)
-- [🐛 Known Issues](#-known-issues)
-- [🗺️ Roadmap](#-roadmap)
-- [🤝 Contributing](#-contributing)
-- [📜 License](#-license)
-- [📞 Contact](#-contact)
-- [🙏 Acknowledgments](#-acknowledgments)
-
----
-
-## 📸 Screenshots
 <p align="center">
-  <img src="./src/images/preview.png"/>
+  <strong>Cybersecurity Enthusiast · Backend Developer · Networking Explorer</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/ItsWanheda/portfolio/actions/workflows/deploy.yml">
+    <img src="https://github.com/ItsWanheda/portfolio/actions/workflows/deploy.yml/badge.svg" alt="Deploy to GitHub Pages">
+  </a>
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+  <img src="https://img.shields.io/badge/Maintained-Yes-FF003C?style=for-the-badge" alt="Maintained">
+</p>
+
+<p align="center">
+  <a href="https://github.com/ItsWanheda/portfolio/stargazers">
+    <img src="https://img.shields.io/github/stars/ItsWanheda/portfolio?style=for-the-badge&logo=github&color=FF003C" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/ItsWanheda/portfolio/issues">
+    Report Bug
+  </a>
+  ·
+  <a href="https://github.com/ItsWanheda/portfolio/issues">
+    Request Feature
+  </a>
+</p>
+
+> **A cybersecurity-themed portfolio built from scratch with vanilla HTML, CSS, and JavaScript.**
+
+---
+
+## 📑 Contents
+
+* [🧠 About](#-about)
+* [✨ Features](#-features)
+* [🛠️ Tech Stack](#️-tech-stack)
+* [🚀 Quick Start](#-quick-start)
+* [⚙️ Configuration](#️-configuration)
+* [🎨 Customization](#-customization)
+* [🔒 Security](#-security)
+* [🐛 Known Issues](#-known-issues)
+* [🗺️ Roadmap](#️-roadmap)
+* [🤝 Contributing](#-contributing)
+* [📜 License](#-license)
+* [📞 Contact](#-contact)
+* [🙏 Acknowledgments](#-acknowledgments)
+
+---
+
+## 📸 Preview
+
+<p align="center">
+  <img src="./src/images/preview.png" alt="Portfolio Preview">
 </p>
 
 ---
 
 ## 🧠 About
 
-A **cybersecurity-themed personal portfolio** built with vanilla web technologies. This isn't just a résumé — it's a demonstration of my engineering philosophy: **secure by design, performant by default, beautiful by intention**.
+This is my personal **cybersecurity and backend engineering portfolio**, built without a frontend framework or runtime dependency.
 
-The project showcases my journey through:
-- 🔐 **Cybersecurity** — protocol analysis, attack vectors, defensive programming
-- ⚙️ **Backend Engineering** — REST APIs, authentication systems, data modeling
-- 🌐 **Network Infrastructure** — TCP/IP, TLS, DNS, packet analysis
-- 💻 **Software Craftsmanship** — clean code, type safety, modular architecture
+It is more than a résumé — it is a practical demonstration of how I approach software:
 
-> *\"Building secure systems one project at a time.\"*
+> **Secure by design. Performant by default. Beautiful by intention.**
+
+The portfolio reflects my focus across four areas:
+
+| Focus                       | What it covers                                           |
+| --------------------------- | -------------------------------------------------------- |
+| 🔐 **Cybersecurity**        | Protocol analysis, attack vectors, defensive programming |
+| ⚙️ **Backend Engineering**  | REST APIs, authentication systems, data modeling         |
+| 🌐 **Networking**           | TCP/IP, TLS, DNS, packet analysis                        |
+| 💻 **Software Engineering** | Clean code, modular architecture, type safety            |
+
+> *“Building secure systems one project at a time.”*
 
 ---
 
 ## ✨ Features
 
-### 🎨 Design & UX
-- **Cyberpunk-themed UI** with red (#FF003C) accent palette and dark mode
-- **Custom animated cursor** with hover effects
-- **Canvas-based network background** with interactive node connections
-- **Typewriter effect** in the hero section
-- **Smooth scroll reveals** using Intersection Observer API
-- **Fully responsive** — mobile, tablet, desktop, and ultrawide
-- **Accessibility-first** — ARIA labels, keyboard navigation, reduced-motion support
+### 🎨 Design & Experience
+
+* 🟥 Cyberpunk-inspired dark interface with a red accent palette
+* 🖱️ Custom animated cursor with interactive hover effects
+* 🌐 Canvas-based network background with connected nodes
+* ⌨️ Typewriter animation in the hero section
+* ✨ Smooth scroll-reveal animations using `IntersectionObserver`
+* 📱 Responsive across mobile, tablet, desktop, and ultrawide displays
+* ♿ Accessibility considerations including ARIA labels, keyboard navigation, and reduced-motion support
+* 🖨️ Dedicated print stylesheet for clean résumé printing
 
 ### ⚡ Performance
-- **Zero runtime dependencies** — pure HTML/CSS/JS
-- **Lazy rendering** for off-screen sections
-- **Optimized canvas animations** using `requestAnimationFrame`
-- **Mobile-aware** — custom cursor disabled on touch devices
-- **Print stylesheet** for clean resume printing
+
+* 🚫 Zero runtime dependencies
+* 🎨 Pure HTML, CSS, and JavaScript
+* 💤 Lazy rendering for off-screen content
+* 🎞️ `requestAnimationFrame` optimized canvas animations
+* 📱 Custom cursor automatically disabled on touch devices
+* 📦 No bundler or build system required
 
 ### 🛡️ Security
-- **No external trackers** or analytics
-- **Strict CSP-ready** markup (no inline event handlers except where minimal)
-- **HTTPS-only assets** for fonts and CDNs
-- **Open source transparency** — every line of code is auditable
 
-### 📑 Content Sections
-| Section | Description |
-|---------|-------------|
-| **Hero** | Animated introduction with avatar and CTAs |
-| **About** | Bio, focus areas, and learning stats |
-| **Skills** | Filterable tech stack with proficiency bars |
-| **Projects** | Featured work with detailed modal views |
-| **GitHub** | Live repo showcase with language stats |
-| **Experience** | Interactive learning timeline |
-| **Certifications** | Credentials and badges |
-| **Blog** | Technical writeups with full-article modals |
-| **Contact** | Click-to-copy email and social links |
+* 🚫 No third-party analytics or tracking
+* 🔐 CSP-ready markup
+* 🔒 External resources loaded over HTTPS
+* 🔍 Open-source and fully auditable codebase
+* 🚫 No `eval()`, `Function()`, or unsafe DOM sinks
+
+### 📑 Portfolio Sections
+
+| Section               | Purpose                                     |
+| --------------------- | ------------------------------------------- |
+| 🏠 **Hero**           | Introduction, avatar, and primary CTAs      |
+| 🧰 **Skills**         | Filterable technology stack                 |
+| 🐙 **GitHub**         | Repository showcase and language statistics |
+| 📈 **Experience**     | Interactive learning timeline               |
+| 🎓 **Certifications** | Credentials and badges                      |
+| 📝 **Blog**           | Technical articles and writeups             |
+| 📬 **Contact**        | Email and social links                      |
 
 ---
 
-## 🖥️ Live Demo
+### Deploy Your Own
 
-> **Coming soon** — deployed via GitHub Pages
-> 
-> Once deployed, the link will be: `https://ItsWanheda.github.io/portfolio/`
-
-To deploy your own:
-1. Fork this repository
-2. Go to **Settings → Pages**
-3. Source: `Deploy from a branch` → `main` → `/ (root)`
-4. Save and wait ~2 minutes
+1. Fork this repository.
+2. Open **Settings → Pages**.
+3. Select **Deploy from a branch**.
+4. Choose `main` and `/ (root)`.
+5. Save and wait for GitHub Pages to publish the site.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| **Markup** | HTML5 (semantic) | Structure & accessibility |
-| **Styling** | CSS3 (Grid, Flexbox, Custom Properties) | Theme, layout, animations |
-| **Logic** | Vanilla JavaScript (ES6 Modules) | Interactivity, rendering |
-| **Animation** | Canvas API + CSS Keyframes | Background, transitions |
-| **Typography** | Google Fonts (Syne, DM Sans, Share Tech Mono) | Display, body, monospace |
-| **Version Control** | Git + GitHub | Source control & CI |
+| Layer               | Technology                       | Purpose                            |
+| ------------------- | -------------------------------- | ---------------------------------- |
+| **Markup**          | HTML5                            | Semantic structure & accessibility |
+| **Styling**         | CSS3                             | Layout, theme, animations          |
+| **Logic**           | Vanilla JavaScript / ES6 Modules | Interactivity & rendering          |
+| **Animation**       | Canvas API + CSS Keyframes       | Visual effects & transitions       |
+| **Typography**      | Syne · DM Sans · Share Tech Mono | Display, body & monospace text     |
+| **Version Control** | Git + GitHub                     | Source control & deployment        |
 
-**Why no frameworks?** This portfolio is intentionally framework-free to demonstrate mastery of web fundamentals. Every animation, every interaction, every responsive breakpoint is hand-crafted.
+### Why No Framework?
 
----
+This portfolio intentionally avoids React, Vue, Next.js, and other frontend frameworks.
 
-## 📂 Project Structure
-```text
-portfolio/
-├── index.html # Main entry point (semantic HTML5)
-├── README.md # You are here
-├── SECURITY.md # Vulnerability disclosure policy
-├── LICENSE #  License
-└── src/
-├── css/
-│ └── style.css # Single stylesheet (~1500 lines, organized)
-├── js/
-│ └── main.js # Module-based JS (ES6, no bundler needed)
-└── images/
-   └── Profile.jpg # Profile avatar
-```
+The goal is to demonstrate what can be achieved with the fundamentals:
+
+**HTML → CSS → JavaScript → Browser APIs**
+
+Every animation, interaction, responsive breakpoint, and component is implemented directly.
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- A modern browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
-- That's literally it. No build tools. No Node. No npm.
+### Requirements
 
-### Installation
+That's it:
+
+* A modern browser
+* Git
+* Optional: Python 3 for a local development server
+
+No Node.js, npm, build tools, or framework are required.
+
+### Clone
 
 ```bash
-# Clone the repository
 git clone https://github.com/ItsWanheda/portfolio.git
-
-# Navigate into the directory
 cd portfolio
-
-# Open in your default browser
-# Windows
-start index.html
-
-# macOS
-open index.html
-
-# Linux
-xdg-open index.html
-
-# OR use any local server (recommended for module support)
-# Python 3
-python -m http.server 8000
-
-# Node.js
-npx serve .
-
-# Then visit http://localhost:8000
 ```
+
+### Run Locally
+
+#### Option 1 — Open directly
+
+**Windows**
+
+```bash
+start index.html
+```
+
+**macOS**
+
+```bash
+open index.html
+```
+
+**Linux**
+
+```bash
+xdg-open index.html
+```
+
+#### Option 2 — Recommended
+
+Using Python:
+
+```bash
+python -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+You can also use any local static server that correctly serves ES modules.
 
 ---
 
 ## ⚙️ Configuration
-All content is driven by JavaScript data objects at the top of src/js/main.js. No JSON imports, no CMS, no database.
 
-* **Personal Info**
-Update these constants in src/js/main.js:
-```bash
-// Hero section
+The portfolio is driven primarily by JavaScript data objects in:
+
+```text
+src/js/main.js
+```
+
+No CMS, database, or JSON import pipeline is required.
+
+### 👤 Personal Information
+
+Update the relevant constants:
+
+```javascript
 const TYPED_STRINGS = [
   'Building Secure Systems...',
-  // ... add your own phrases
+  // Add your own phrases
 ];
 
-// GitHub username (used in repo links)
 const GITHUB_USERNAME = 'ItsWanheda';
 
-// Contact info
 const CONTACT_DATA = [
-  { icon: '⚡', label: 'GitHub', value: 'github.com/ItsWanheda', ... },
-  { icon: '📧', label: 'Email',  value: 'your@email.com', ... },
-  // ... add Discord, LinkedIn, etc.
+  {
+    icon: '⚡',
+    label: 'GitHub',
+    value: 'github.com/ItsWanheda',
+    // ...
+  },
+  {
+    icon: '📧',
+    label: 'Email',
+    value: 'your@email.com',
+    // ...
+  }
 ];
 ```
-* **Theme Colors**
-Edit CSS custom properties in src/css/style.css:
-```bash
+
+### 🎨 Theme
+
+Edit the CSS custom properties in:
+
+```text
+src/css/style.css
+```
+
+Example:
+
+```css
 :root {
-  --black:  #0A0A0A;   /* Main background */
-  --red:    #FF003C;   /* Accent color */
-  --white:  #F5F5F5;   /* Primary text */
-  --muted:  #888888;   /* Secondary text */
-  /* ... */
+  --black: #0A0A0A;
+  --red: #FF003C;
+  --white: #F5F5F5;
+  --muted: #888888;
 }
 ```
-To create a different color scheme, change only these variables — every component will adapt automatically.
+
+Changing these variables allows the main color scheme to be customized without rewriting individual components.
 
 ---
 
 ## 🎨 Customization
-* **Adding a New Project**
-Open src/js/main.js and append to PROJECTS_DATA:
-```bash
-{
-  id: 'my-new-project',
-  name: 'Project Name',
-  emoji: '🛡️',
-  desc: 'Short description (1-2 sentences).',
-  tags: ['Tag1', 'Tag2'],
-  features: [
-    'Feature one',
-    'Feature two',
-  ],
-  arch: 'Technical architecture explanation.',
-  github: 'https://github.com/ItsWanheda/project-repo',
-  live: 'https://demo.example.com',  // or null
-  status: 'Active',
-}
-```
-> The card, modal, and detail view will render automatically.
 
-* **Adding a Blog Post**
-Append to BLOG_DATA:
-```bash
+### 📝 Add a Blog Post
+
+Append to `BLOG_DATA`:
+
+```javascript
 {
-  num: '07',                              // Sequential number
-  tag: 'Category Name',
+  num: '07',
+  tag: 'Category',
   title: 'Your Article Title',
-  excerpt: '1-2 sentence preview.',
+  excerpt: 'Short article preview.',
   date: 'Jun 2025',
   readTime: '5 min',
+
   content: `
     <p>Your HTML content here...</p>
+
     <h3>Section</h3>
-    <pre><code>// code blocks work too</code></pre>
+
+    <pre>
+      <code>// Code blocks work too</code>
+    </pre>
   `,
 }
 ```
-* **Adding a Skill**
-Append to SKILLS_DATA:
-```bash
-{ name: 'Rust', icon: '🦀', cat: 'languages', level: 40 }
+
+### 🧰 Add a Skill
+
+Add a skill to `SKILLS_DATA`:
+
+```javascript
+{
+  name: 'Rust',
+  icon: '🦀',
+  cat: 'languages',
+  level: 40,
+}
 ```
-For rich details (description, experience, projects), add to SKILL_DETAILS:
-```bash
+
+For additional information:
+
+```javascript
 'Rust': {
   desc: 'Memory-safe systems programming language.',
   exp: 'Currently exploring for security tooling.',
-  projects: ['Memory-safe port scanner'],
+  projects: [
+    'Memory-safe port scanner',
+  ],
 }
 ```
 
 ---
 
 ## 🔒 Security
-This portfolio takes security seriously. For details on:
-* **How to report a vulnerability** → see SECURITY.md
-* **Security headers implemented** → see security section in code
-* **Dependencies and supply chain** → zero external runtime dependencies
 
-**Security Features Baked In**
-* ✅ No third-party analytics or tracking scripts
-* ✅ All external resources loaded over HTTPS
-* ✅ Click-to-copy contact info (no email harvesting by bots)
-* ✅ Print stylesheet disables interactive elements
+Security is a core consideration of this project.
+
+For more information:
+
+* 📄 **Vulnerability reporting** → `SECURITY.md`
+* 🛡️ **Security headers** → security section in the source code
+* 📦 **Dependencies** → zero external runtime dependencies
+
+### Security Practices
+
+* ✅ No third-party analytics or tracking
+* ✅ External resources loaded over HTTPS
 * ✅ Reduced-motion preference respected
-* ✅ No eval(), Function(), or unsafe DOM sinks
+* ✅ No `eval()` or `Function()`
+* ✅ Avoidance of unsafe DOM sinks
+* ✅ Click-to-copy contact information
+* ✅ Print stylesheet disables interactive elements
+* ✅ Source code remains open and auditable
+
+---
 
 ## 🐛 Known Issues
 
-* **Custom cursor** may stutter on low-end devices with the canvas background running
-* **Safari iOS** has minor differences in backdrop-filter rendering (cosmetic only)
-* **Long blog content** in modals requires scrolling — keyboard arrow keys don't auto-scroll the modal body
+A few minor limitations remain:
+
+* 🖱️ The custom cursor may stutter on low-end devices while the canvas background is active.
+* 🍎 Safari iOS has minor cosmetic differences in `backdrop-filter` rendering.
+* 📜 Long blog articles inside modals require manual scrolling; keyboard arrow keys do not automatically scroll the modal body.
+
+---
+
+## 🗺️ Roadmap
+
+Potential future improvements:
+
+* [ ] Improve canvas performance on low-end devices
+* [ ] Further optimize mobile rendering
+* [ ] Expand technical blog content
+* [ ] Add more cybersecurity-focused projects
+* [ ] Improve accessibility coverage
+* [ ] Add additional performance optimizations
+* [ ] Expand GitHub integration
 
 ---
 
 ## 🤝 Contributing
-Contributions are welcome! Whether it's a bug fix, new feature, or documentation improvement — I appreciate your help.
 
-**How to Contribute**
-1. Fork the repository
-2.Create your feature branch (git checkout -b feature/AmazingFeature)
-3. Commit your changes (git commit -m 'Add some AmazingFeature')
-4. Push to the branch (git push origin feature/AmazingFeature)
-5. Open a Pull Request
+Contributions are welcome.
 
-**Code Style**
-* 2-space indentation
-* Single quotes for JS strings
-* Semantic HTML (use `<section>`, `<article>`, `<nav>`, etc.)
-* Mobile-first CSS (write base styles for mobile, then layer @media for larger)
+Whether it's a bug fix, documentation improvement, performance optimization, or new feature, feel free to open an issue or submit a pull request.
+
+### Development Workflow
+
+```bash
+# 1. Fork the repository
+
+# 2. Create a feature branch
+git checkout -b feature/AmazingFeature
+
+# 3. Make your changes
+
+# 4. Commit
+git commit -m "feat: add AmazingFeature"
+
+# 5. Push
+git push origin feature/AmazingFeature
+
+# 6. Open a Pull Request
+```
+
+### Code Style
+
+* Use **2-space indentation**
+* Use **single quotes** for JavaScript strings
+* Prefer semantic HTML elements
+* Follow a mobile-first CSS approach
 * Comment non-obvious logic
+* Keep changes focused and maintainable
 
 ---
 
 ## 📜 License
-See LICENSE for the full text.
+
+See [`LICENSE`](./LICENSE) for the full license text.
 
 ---
 
 ## 📞 Contact
-> ItsWanheda — Cybersecurity Enthusiast & Backend Developer
-- github:`https://github.com/ItsWanheda`
-- Email:`Wanheda.work@gmail.com`
-> Project Link: https://github.com/ItsWanheda/portfolio
+
+<p align="center">
+
+**ItsWanheda**
+Cybersecurity Enthusiast · Backend Developer · Networking Explorer
+
+<br><br>
+
+<a href="https://github.com/ItsWanheda">
+  <img src="https://img.shields.io/badge/GitHub-ItsWanheda-181717?style=for-the-badge&logo=github" alt="GitHub">
+</a>
+
+<a href="mailto:Wanheda.work@gmail.com">
+  <img src="https://img.shields.io/badge/Email-Contact-FF003C?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+</a>
+
+</p>
+
+**Project:**
+https://github.com/ItsWanheda/portfolio
 
 ---
 
 ## 🙏 Acknowledgments
-This portfolio was built with knowledge and inspiration from:
-* **MDN Web Docs** — the truth source for web standards
-* **CSS-Tricks** — Flexbox and Grid tutorials
-* **TryHackMe & HackTheBox** — hands-on cybersecurity training
-* **OWASP Foundation**  — web security best practices
-* The open-source community — for tools, fonts, and inspiration
+
+Built with knowledge, inspiration, and resources from:
+
+* 📚 **MDN Web Docs** — web standards and browser APIs
+* 🎨 **CSS-Tricks** — CSS, Flexbox, and Grid resources
+* 🧪 **TryHackMe & Hack The Box** — hands-on cybersecurity learning
+* 🛡️ **OWASP Foundation** — web security practices
+* 🌐 **Open-source community** — tools, fonts, ideas, and inspiration
+
+---
+
+<p align="center">
+  <sub>Built with HTML, CSS, JavaScript, curiosity, and a questionable amount of caffeine. ☕</sub>
+</p>
