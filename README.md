@@ -14,10 +14,6 @@
   <img src="https://img.shields.io/badge/Maintained-Yes-FF003C?style=for-the-badge" alt="Maintained">
 </p>
 
-<p align="center">
-  <a href="https://github.com/ItsWanheda/portfolio/stargazers">
-    <img src="https://img.shields.io/github/stars/ItsWanheda/portfolio?style=for-the-badge&logo=github&color=FF003C" alt="GitHub Stars">
-  </a>
   <a href="https://github.com/ItsWanheda/portfolio/issues">
     Report Bug
   </a>
