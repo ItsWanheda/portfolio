@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+
+  <!-- =========================
+     SECURITY HEADERS
+     ========================= -->
+
+  <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+
+      script-src
+        'self'
+        https://cdn.jsdelivr.net
+        'unsafe-inline'
+        'unsafe-eval';
+
+      style-src
+        'self'
+        'unsafe-inline'
+        https://fonts.googleapis.com;
+
+      font-src
+        'self'
+        https://fonts.gstatic.com
+        data:;
+
+      img-src
+        'self'
+        data:
+        https:
+        blob:;
+
+      connect-src
+        'self'
+        https://formspree.io;
+
+      form-action
+        'self'
+        https://formspree.io;
+
+      base-uri 'self';
+
+      object-src 'none';
+
+      worker-src
+        'self'
+        blob:;
+
+      child-src
+        'self'
+        blob:;
+
+      upgrade-insecure-requests;
+    ">
+
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+  <meta http-equiv="Permissions-Policy" content="
+      camera=(),
+      microphone=(),
+      geolocation=(),
+      payment=(),
+      usb=()
+    ">
+
+  <!-- =========================================================
+       PRIMARY SEO
+       ========================================================= -->
+
+  <title>
+    ItsWanheda — Cybersecurity Enthusiast & Backend Engineer
+  </title>
+
+  <meta name="title" content="ItsWanheda — Cybersecurity Enthusiast & Backend Engineer">
+
+  <meta name="description"
+    content="Cybersecurity enthusiast, backend developer, and networking explorer building secure, resilient systems with TypeScript, Node.js, Go, authentication, API security, and network protocols.">
+
+  <meta name="author" content="ItsWanheda">
+
+  <meta name="keywords"
+    content="ItsWanheda, cybersecurity, cybersecurity enthusiast, backend engineer, backend developer, network security, ethical hacking, penetration testing, API security, authentication, authorization, JWT, OAuth, TypeScript, JavaScript, Node.js, Express.js, Go, Python, PostgreSQL, REST API, TCP/IP, TLS, DNS, networking, secure systems, application security, web security, software security, developer portfolio">
+
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+  <meta name="language" content="en">
+
+  <meta name="content-language" content="en">
+
+  <meta name="distribution" content="global">
+
+  <meta name="rating" content="general">
+
+  <meta name="copyright" content="© 2026 ItsWanheda. All rights reserved.">
+
+  <meta name="revisit-after" content="7 days">
+
+  <link rel="author" href="https://github.com/ItsWanheda">
+
+  <!-- =========================================================
+       CANONICAL
+       ========================================================= -->
+
+  <link rel="canonical" href="https://itswanheda.vercel.app/">
+
+  <link rel="alternate" hreflang="en" href="https://itswanheda.vercel.app/">
+
+  <link rel="alternate" hreflang="x-default" href="https://itswanheda.vercel.app/">
+
+  <!-- =========================================================
+     RSS / SITEMAP
+     ========================================================= -->
+
+  <link rel="alternate" type="application/rss+xml" title="ItsWanheda Blog RSS Feed"
+    href="https://itswanheda.vercel.app/rss.xml">
+
+  <!-- =========================================================
+     THEME & BROWSER COLORS
+     ========================================================= -->
+
+  <meta name="color-scheme" content="dark light">
+
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A0A0A">
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
+
+  <!-- =========================================================
+     MOBILE / APP
+     ========================================================= -->
+
+  <meta name="application-name" content="ItsWanheda">
+
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="apple-mobile-web-app-title" content="ItsWanheda">
+
+  <!-- =========================================================
+     FAVICONS
+     ========================================================= -->
+
+  <link rel="icon" type="image/svg+xml" href="./src/images/favicon.svg">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./src/images/apple-touch-icon.png">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="./src/images/apple-touch-icon.png">
+
+  <link rel="shortcut icon" href="./src/images/favicon.ico">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./src/images/apple-touch-icon.png">
+
+  <!-- =========================================================
+     WINDOWS
+     ========================================================= -->
+
+  <meta name="msapplication-TileColor" content="#0A0A0A">
+
+  <meta name="msapplication-TileImage" content="./src/images/apple-touch-icon.png">
+
+  <!-- =========================================================
+     PWA
+     ========================================================= -->
+
+  <link rel="manifest" href="./manifest.webmanifest">
+
+  <!-- =========================================================
+     PERFORMANCE HINTS
+     ========================================================= -->
+
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="preload" as="image" href="./src/images/Profile.jpg" fetchpriority="high">
+
+  <!-- =========================================================
+     OPEN GRAPH
+     ========================================================= -->
+
+  <meta property="og:type" content="website">
+
+  <meta property="og:site_name" content="ItsWanheda">
+
+  <meta property="og:url" content="https://itswanheda.vercel.app/">
+
+  <meta property="og:title" content="ItsWanheda — Cybersecurity & Backend Engineer">
+
+  <meta property="og:description"
+    content="Cybersecurity enthusiast, backend developer, and networking explorer building secure, resilient systems through authentication, API security, networking, and backend engineering.">
+
+  <meta property="og:image" content="https://itswanheda.vercel.app/src/images/og-image.jpg">
+
+  <meta property="og:image:secure_url" content="https://itswanheda.vercel.app/src/images/og-image.jpg">
+
+  <meta property="og:image:type" content="image/jpeg">
+
+  <meta property="og:image:alt" content="ItsWanheda — Cybersecurity and Backend Engineering Portfolio">
+
+  <meta property="og:image:width" content="1200">
+
+  <meta property="og:image:height" content="630">
+
+  <meta property="og:locale" content="en_US">
+
+  <meta property="og:updated_time" content="2026-08-16T08:00:00-07:00">
+
+  <!-- =========================================================
+     X / TWITTER
+     ========================================================= -->
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <meta name="twitter:url" content="https://itswanheda.vercel.app/">
+
+  <meta name="twitter:title" content="ItsWanheda — Cybersecurity & Backend Engineer">
+
+  <meta name="twitter:description"
+    content="Cybersecurity enthusiast and backend developer building secure systems, APIs, authentication systems, and network-focused software.">
+
+  <meta name="twitter:image" content="https://itswanheda.vercel.app/src/images/og-image.jpg">
+
+  <meta name="twitter:image:alt" content="ItsWanheda — Cybersecurity and Backend Engineering Portfolio">
+
+  <meta name="twitter:site" content="@ItsWanheda">
+
+  <meta name="twitter:creator" content="@ItsWanheda">
+
+  <!-- =========================================================
+       SEARCH ENGINE VERIFICATION
+       ========================================================= -->
+
+  <meta name="google-site-verification" content="fPE4fDYumFkpoetTY3Cweod8xdN4jvjV2QD4zHHeE88">
+
+  <!-- =========================================================
+     STRUCTURED DATA — JSON-LD
+     ========================================================= -->
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+
+      {
+        "@type": "Person",
+        "@id": "https://itswanheda.vercel.app/#person",
+
+        "name": "ItsWanheda",
+
+        "alternateName": [
+          "Wanheda",
+          "ItsWanheda"
+        ],
+
+        "url": "https://itswanheda.vercel.app/",
+
+        "image": {
+          "@type": "ImageObject",
+          "@id": "https://itswanheda.vercel.app/#person-image",
+          "url": "https://itswanheda.vercel.app/src/images/Profile.jpg",
+          "width": 800,
+          "height": 800
+        },
+
+        "jobTitle": "Cybersecurity Enthusiast & Backend Developer",
+
+        "description": "Cybersecurity enthusiast, backend developer, and networking explorer focused on building secure and resilient software systems.",
+
+        "email": "mailto:Wanheda.work@gmail.com",
+
+        "sameAs": [
+          "https://github.com/ItsWanheda"
+        ],
+
+        "knowsAbout": [
+          "Cybersecurity",
+          "Backend Development",
+          "Network Security",
+          "Web Security",
+          "Application Security",
+          "API Security",
+          "Authentication",
+          "Authorization",
+          "JWT",
+          "OAuth",
+          "RBAC",
+          "Penetration Testing",
+          "Ethical Hacking",
+          "Network Protocols",
+          "TCP/IP",
+          "TLS",
+          "DNS",
+          "TypeScript",
+          "JavaScript",
+          "Node.js",
+          "Express.js",
+          "Go",
+          "Python",
+          "PostgreSQL"
+        ],
+
+        "knowsLanguage": [
+          {
+            "@type": "Language",
+            "name": "English",
+            "alternateName": "en"
+          }
+        ]
+      },
+
+
+      {
+        "@type": "WebSite",
+        "@id": "https://itswanheda.vercel.app/#website",
+
+        "url": "https://itswanheda.vercel.app/",
+
+        "name": "ItsWanheda",
+
+        "alternateName": "ItsWanheda Portfolio",
+
+        "description": "Personal portfolio of ItsWanheda, a cybersecurity enthusiast and backend developer.",
+
+        "inLanguage": "en-US",
+
+        "publisher": {
+          "@id": "https://itswanheda.vercel.app/#person"
+        }
+      },
+
+
+      {
+        "@type": "WebPage",
+        "@id": "https://itswanheda.vercel.app/#webpage",
+
+        "url": "https://itswanheda.vercel.app/",
+
+        "name": "ItsWanheda — Cybersecurity & Backend Engineer",
+
+        "description": "Explore ItsWanheda's cybersecurity projects, backend systems, networking work, skills, certifications, and technical experience.",
+
+        "isPartOf": {
+          "@id": "https://itswanheda.vercel.app/#website"
+        },
+
+        "about": {
+          "@id": "https://itswanheda.vercel.app/#person"
+        },
+
+        "primaryImageOfPage": {
+          "@id": "https://itswanheda.vercel.app/#person-image"
+        },
+
+        "inLanguage": "en-US"
+      }
+
+    ]
+  }
+  </script>
+
+  <!-- =========================================================
+     THREE.JS IMPORT MAP
+     MUST APPEAR BEFORE MODULES THAT IMPORT THREE
+     ========================================================= -->
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <!-- =========================================================
+     THREE.JS CANVAS
+     ========================================================= -->
+
+  <script type="module" defer src="./src/js/canvas.js"></script>
+
+  <!-- =========================================================
+     STYLESHEETS & FONTS
+     ========================================================= -->
+
+  <link rel="stylesheet" href="./src/css/root.css">
+  <link rel="stylesheet" href="./src/css/style.css">
+  <link rel="stylesheet" href="./src/css/preloader.css">
+  <link rel="stylesheet" href="./src/css/github.css">
+  <link rel="stylesheet" href="./src/css/responsive.css">
+  <link rel="stylesheet" href="./src/css/reduced-motion.css">
+
+</head>
+
+<body class="loading">
+  <!-- SCROLL-PROGRESS -->
+  <div id="scroll-progress"></div>
+  <!-- DEVIL CURSOR -->
+  <div id="devil-cursor">
+    <span class="cursor-dot"></span>
+  </div>
+  <!-- CANVAS BG -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <a href="#home" class="skip-link">Skip to main content</a>
+  <!--Back-to-Top-->
+  <button id="back-to-top" aria-label="Back to top">↑</button>
+
+  <!-- ============================================================
+     TERMINAL PRELOADER
+     v2.0
+     ============================================================ -->
+
+  <div id="preloader" class="wanheda-preloader" role="dialog" aria-modal="true" aria-label="System initialization">
+
+    <!-- ==========================================================
+       VISUAL FX
+       ========================================================== -->
+
+    <div class="hacker-noise" aria-hidden="true"></div>
+    <div class="hacker-scanlines" aria-hidden="true"></div>
+    <div class="hacker-vignette" aria-hidden="true"></div>
+
+    <div class="ambient-grid" aria-hidden="true"></div>
+
+    <!-- ==========================================================
+       TOP SYSTEM HUD
+       ========================================================== -->
+
+    <div class="boot-hud boot-hud-top">
+
+      <div class="hud-left">
+        <span class="hud-indicator"></span>
+        <span>WANHEDA // CORE</span>
+      </div>
+
+      <div class="hud-center">
+        <span id="boot-session">SESSION: ----</span>
+      </div>
+
+      <div class="hud-right">
+        <span id="boot-clock">00:00:00</span>
+      </div>
+
+    </div>
+
+
+    <!-- ==========================================================
+       TERMINAL
+       ========================================================== -->
+
+    <section class="hacker-terminal" aria-label="Boot terminal">
+
+      <!-- Terminal header -->
+      <header class="terminal-header">
+
+        <div class="terminal-dots" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div class="terminal-title">
+          root@wanheda:~ / SYSTEM BOOT
+        </div>
+
+        <div class="terminal-status" id="terminal-status" aria-live="polite">
+          INITIALIZING
+        </div>
+
+      </header>
+
+
+      <!-- Terminal body -->
+      <div class="terminal-body">
+
+        <div class="terminal-output" id="terminal-output" aria-live="polite" aria-atomic="false"></div>
+
+
+        <!-- Current command -->
+        <div class="terminal-command">
+
+          <span class="terminal-prompt">
+            root@wanheda:~$
+          </span>
+
+          <span id="terminal-command-text" class="terminal-command-text"></span>
+
+          <span class="terminal-cursor" aria-hidden="true"></span>
+
+        </div>
+
+
+        <!-- Progress -->
+        <div class="boot-progress">
+
+          <div class="progress-meta">
+            <span>SYSTEM INITIALIZATION</span>
+
+            <span>
+              <span id="boot-percent">0</span>%
+            </span>
+          </div>
+
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+            aria-label="System initialization progress">
+            <div class="progress-bar" id="boot-progress-bar"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================================
+       BINARY / CODE RAIN
+       ========================================================== -->
+
+    <div class="binary-rain" id="binary-rain" aria-hidden="true"></div>
+
+
+    <!-- ==========================================================
+       FLOATING SYSTEM DATA
+       ========================================================== -->
+
+    <div class="system-data system-data-left" aria-hidden="true">
+      <span>SYS://WANHEDA</span>
+      <span>NODE://LOCAL</span>
+      <span>PROTO://SECURE</span>
+      <span>CORE://ONLINE</span>
+    </div>
+
+    <div class="system-data system-data-right" aria-hidden="true">
+      <span id="data-latency">LATENCY: --ms</span>
+      <span id="data-entropy">ENTROPY: --%</span>
+      <span id="data-nodes">NODES: --</span>
+      <span id="data-integrity">INTEGRITY: --</span>
+    </div>
+
+
+    <!-- ==========================================================
+       IDENTITY REVEAL
+       ========================================================== -->
+
+    <div class="hacker-identity" id="hacker-identity" aria-hidden="true">
+
+      <div class="identity-tag" aria-hidden="true">
+        // AUTHORIZED ENTITY
+      </div>
+
+      <div class="identity-logo-wrap">
+
+        <div class="identity-glitch identity-glitch-red" aria-hidden="true">
+          WANHEDA
+        </div>
+
+        <div class="identity-glitch identity-glitch-white" aria-hidden="true">
+          WANHEDA
+        </div>
+
+        <pre class="ascii-logo">██     ██  █████  ███    ██ ██   ██ ███████ ██████   █████
+██     ██ ██   ██ ████   ██ ██   ██ ██      ██   ██ ██   ██
+██  █  ██ ███████ ██ ██  ██ ███████ █████   ██   ██ ███████
+██ ███ ██ ██   ██ ██  ██ ██ ██   ██ ██      ██   ██ ██   ██
+ ███ ███  ██   ██ ██   ████ ██   ██ ███████ ██████  ██   ██</pre>
+
+      </div>
+
+      <div class="identity-name">
+        WANHEDA
+      </div>
+
+      <div class="identity-subtitle">
+        &lt; SYSTEM ACCESS GRANTED / &gt;
+      </div>
+
+      <div class="identity-line"></div>
+
+    </div>
+
+
+    <!-- ==========================================================
+       FINAL STATUS
+       ========================================================== -->
+
+    <div class="hacker-final" id="hacker-final" aria-live="polite">
+
+      <span class="final-symbol">&gt;</span>
+
+      <span id="final-message">
+        SYSTEM READY
+      </span>
+
+      <span class="final-cursor" aria-hidden="true">_</span>
+
+    </div>
+
+
+    <!-- ==========================================================
+       GLITCH
+       ========================================================== -->
+
+    <div class="hacker-glitch-overlay" aria-hidden="true"></div>
+
+
+    <!-- ==========================================================
+       SKIP
+       ========================================================== -->
+
+    <button type="button" id="skip-boot" class="skip-boot" aria-label="Skip system boot animation">
+      SKIP BOOT <span>[ESC]</span>
+    </button>
+
+
+    <!-- ==========================================================
+       CORNER MARKERS
+       ========================================================== -->
+
+    <div class="corner-marker corner-tl"></div>
+    <div class="corner-marker corner-tr"></div>
+    <div class="corner-marker corner-bl"></div>
+    <div class="corner-marker corner-br"></div>
+
+  </div>
+
+  <!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+  <header class="site-header" id="site-header">
+    <nav class="navbar" id="navbar" aria-label="Primary navigation">
+
+      <!-- Ambient effects -->
+      <div class="navbar-noise" aria-hidden="true"></div>
+      <div class="navbar-glow" aria-hidden="true"></div>
+
+      <!-- Brand -->
+      <a href="#home" class="nav-brand" aria-label="ItsWanheda — Home">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-mark-core"></span>
+        </span>
+
+        <span class="brand-copy">
+          <span class="brand-name">ItsWanheda</span>
+          <span class="brand-status">
+            <span class="status-dot"></span>
+            <span class="status-text">AVAILABLE</span>
+            <span class="status-ping"></span>
+          </span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="nav-center">
+        <ul class="nav-links" id="nav-links">
+          <li>
+            <a href="#home" class="nav-link active">
+              <span class="nav-index">01</span>
+              <span>Home</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#skills" class="nav-link">
+              <span class="nav-index">02</span>
+              <span>Skills</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#github" class="nav-link">
+              <span class="nav-index">03</span>
+              <span>GitHub</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#experience" class="nav-link">
+              <span class="nav-index">04</span>
+              <span>Experience</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#certifications" class="nav-link">
+              <span class="nav-index">05</span>
+              <span>Certs</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#blog" class="nav-link">
+              <span class="nav-index">06</span>
+              <span>Blog</span>
+            </a>
+          </li>
+
+        </ul>
+
+        <!-- Sliding active indicator -->
+        <span class="nav-active-line" aria-hidden="true"></span>
+      </div>
+
+      <!-- Right Controls -->
+      <div class="nav-actions">
+
+        <a href="#contact" class="nav-cta">
+          <span>Let's Talk</span>
+          <span class="cta-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <!-- Mobile hamburger -->
+        <button class="nav-hamburger" id="hamburger" type="button" aria-label="Open navigation menu"
+          aria-expanded="false" aria-controls="nav-mobile">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+
+    </nav>
+  </header>
+
+
+  <!-- ============================================================
+     MOBILE NAVIGATION
+     ============================================================ -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+
+    <div class="mobile-menu-header">
+      <span class="mobile-menu-label">NAVIGATION</span>
+      <span class="mobile-menu-status">
+        <span></span>
+        ONLINE
+      </span>
+    </div>
+
+    <div class="mobile-menu-links">
+
+      <a href="#home" class="mobile-nav-link active">
+        <span class="mobile-index">01</span>
+        <span class="mobile-link-name">Home</span>
+        <span class="mobile-arrow">↗</span>
+      </a>
+
+      <a href="#skills" class="mobile-nav-link">
+        <span class="mobile-index">02</span>
+        <span class="mobile-link-name">Skills</span>
+        <span class="mobile-arrow">↗</span>
+      </a>
+
+      <a href="#github" class="mobile-nav-link">
+        <span class="mobile-index">03</span>
+        <span class="mobile-link-name">GitHub</span>
+        <span class="mobile-arrow">↗</span>
+      </a>
+
+      <a href="#experience" class="mobile-nav-link">
+        <span class="mobile-index">04</span>
+        <span class="mobile-link-name">Experience</span>
+        <span class="mobile-arrow">↗</span>
+      </a>
+
+      <a href="#certifications" class="mobile-nav-link">
+        <span class="mobile-index">05</span>
+        <span class="mobile-link-name">Certifications</span>
+        <span class="mobile-arrow">↗</span>
+      </a>
+
+      <a href="#blog" class="mobile-nav-link">
+        <span class="mobile-index">06</span>
+        <span class="mobile-link-name">Blog</span>
+        <span class="mobile-arrow">↗</span>
+      </a>
+
+      <a href="#contact" class="mobile-nav-link">
+        <span class="mobile-index">07</span>
+        <span class="mobile-link-name">Contact</span>
+        <span class="mobile-arrow">↗</span>
+      </a>
+
+    </div>
+
+    <div class="mobile-menu-footer">
+      <span>ITSWANHEDA</span>
+      <span>© 2026</span>
+    </div>
+
+  </div>
+
+<!-- HERO + ABOUT -->
+<section id="home">
+
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero-wrap">
+
+      <div class="hero-left">
+
+        <div class="hero-greeting">
+          WELCOME TO MY PORTFOLIO
+        </div>
+
+        <h1 class="hero-name">
+          Its <span>Wanheda</span>
+        </h1>
+
+        <div class="hero-roles">
+          Cybersecurity Enthusiast · Backend Developer · Networking Explorer
+        </div>
+
+        <div class="hero-typed-wrap">
+          <span class="hero-typed-prefix">$&gt;</span>
+          <span class="hero-typed-text" id="typed-text"></span>
+          <span class="hero-cursor"></span>
+        </div>
+
+        <div class="hero-buttons">
+
+          <a href="#blog" class="btn btn-primary">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M9 9h6M9 13h6M9 17h4" />
+            </svg>
+            View Blog
+          </a>
+
+          <a
+            href="https://github.com/ItsWanheda"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-outline"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7.678 1.856.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+              />
+            </svg>
+            GitHub
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="hero-right">
+
+        <div class="hero-avatar-wrap">
+
+          <div class="hero-avatar">
+            <img
+              class="hero-profile-img"
+              src="./src/images/Profile.jpg"
+              width="180"
+              height="180"
+              fetchpriority="high"
+              decoding="async"
+              alt="ItsWanheda Profile"
+            >
+          </div>
+
+          <div class="hero-ring1"></div>
+          <div class="hero-ring2"></div>
+          <div class="hero-ring3"></div>
+          <div class="hero-glow"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ABOUT -->
+    <div id="about" class="about-grid">
+
+      <div class="about-text reveal">
+
+        <div class="section-label">
+          About Me
+        </div>
+
+        <h2 class="section-title">
+          Building the <span class="text-red">secure</span> web
+        </h2>
+
+        <p>
+          I'm a passionate technologist focused on the intersection of
+          <strong>cybersecurity, backend engineering,</strong> and
+          <strong>network infrastructure</strong>. My journey started with
+          a fascination for how systems communicate and how they can be made
+          resilient against threats.
+        </p>
+
+        <p>
+          I dive deep into
+          <strong>authentication systems, API security, and network protocols</strong>
+          — constantly exploring how to engineer software that is not only
+          functional but fundamentally secure by design.
+        </p>
+
+        <p>
+          Currently learning <strong>Go and TypeScript</strong> while building
+          projects that solve real security challenges. I believe that
+          understanding attacks makes for better defenders, and every system
+          I build reflects that philosophy.
+        </p>
+
+        <div class="about-highlight">
+
+          &gt; Focus Areas<br>
+
+          ├── Cybersecurity &amp; Penetration Testing<br>
+
+          ├── Backend Development (Node.js, Express, Go, Next.js)<br>
+
+          ├── Networking &amp; Infrastructure<br>
+
+          ├── Authentication &amp; Authorization (JWT, RBAC)<br>
+
+          └── IT Infrastructure &amp; Security
+
+        </div>
+
+      </div>
+
+
+      <div class="stats-grid reveal reveal-d2">
+
+        <div class="stat-card">
+
+          <div
+            class="stat-number"
+            data-target="9"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Technologies
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div
+            class="stat-number"
+            data-target="1642"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Days Learning
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SKILLS -->
+<section id="skills" class="section-pad">
+
+  <div class="container">
+
+    <div class="section-label reveal">
+      Tech Stack
+    </div>
+
+    <h2 class="section-title reveal reveal-d1">
+      Skills &amp; <span class="text-red">Technologies</span>
+    </h2>
+
+    <p
+      class="section-desc reveal reveal-d2"
+      style="margin-bottom:48px"
+    >
+      A curated set of tools, languages, and frameworks I use to build
+      secure, scalable systems.
+    </p>
+
+    <div
+      class="skills-categories reveal reveal-d3"
+      id="skill-cats"
+    >
+      <button class="cat-btn active" data-cat="all">
+        All
+      </button>
+
+      <button class="cat-btn" data-cat="frontend">
+        Frontend
+      </button>
+
+      <button class="cat-btn" data-cat="backend">
+        Backend
+      </button>
+
+      <button class="cat-btn" data-cat="languages">
+        Languages
+      </button>
+    </div>
+
+    <div
+      class="skills-grid"
+      id="skills-grid"
+    ></div>
+
+  </div>
+
+</section>
+
+  <!-- GITHUB -->
+  <section id="github" class="section-pad">
+    <div class="container">
+
+      <div class="section-label reveal">Open Source</div>
+
+      <h2 class="section-title reveal reveal-d1">
+        GitHub <span class="text-red">Activity</span>
+      </h2>
+
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">
+        A snapshot of my open-source contributions and repositories.
+        Live data powered by GitHub API.
+      </p>
+
+      <div class="github-layout reveal reveal-d2">
+
+        <div>
+          <div class="github-profile-card">
+
+            <!-- REAL GITHUB AVATAR -->
+            <img id="gh-avatar" class="github-avatar" src="https://avatars.githubusercontent.com/u/116275068?v=4&s=86"
+              alt="ItsWanheda GitHub avatar" loading="lazy" width="86" height="86">
+
+            <div class="github-username" id="gh-username">
+              @ItsWanheda
+            </div>
+
+            <div class="github-bio" id="gh-bio">
+              Loading GitHub profile...
+            </div>
+
+            <div class="github-stats">
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-repos-count">—</div>
+                <div class="gh-stat-label">Repos</div>
+              </div>
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-commits-count">—</div>
+                <div class="gh-stat-label">Commits</div>
+              </div>
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-followers-count">—</div>
+                <div class="gh-stat-label">Followers</div>
+              </div>
+
+              <div class="gh-stat">
+                <div class="gh-stat-num" id="gh-following-count">—</div>
+                <div class="gh-stat-label">Following</div>
+              </div>
+
+            </div>
+
+            <a href="https://github.com/ItsWanheda" target="_blank" rel="noopener noreferrer" class="btn btn-primary"
+              style="width:100%;justify-content:center">
+              View Profile →
+            </a>
+
+          </div>
+        </div>
+
+        <div class="repos-grid" id="repos-grid">
+          <div class="github-loading">
+            Loading repositories...
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Journey</div>
+      <h2 class="section-title reveal reveal-d1">Learning <span class="text-red">Timeline</span></h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:64px">My continuous path through the world of
+        technology, security, and software engineering.</p>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Credentials</div>
+      <h2 class="section-title reveal reveal-d1"><span class="text-red">Certifications</span> &amp; Badges</h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Formal recognition of skills and knowledge
+        in
+        security, networking, and cloud infrastructure.</p>
+      <div class="certs-grid" id="certs-grid"></div>
+    </div>
+  </section>
+
+  <!-- BLOG -->
+  <section id="blog" class="section-pad">
+    <div class="container">
+      <div class="section-label reveal">Research</div>
+      <h2 class="section-title reveal reveal-d1">Blog &amp; <span class="text-red">Writings</span></h2>
+      <p class="section-desc reveal reveal-d2" style="margin-bottom:56px">Notes, breakdowns, and deep dives into
+        cybersecurity concepts, protocols, and software engineering principles.</p>
+      <div class="blog-grid" id="blog-grid"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section-pad">
+    <div class="container">
+
+      <div class="section-label reveal">
+        Get In Touch
+      </div>
+
+      <h2 class="section-title reveal reveal-d1">
+        Let's <span class="text-red">Connect</span>
+      </h2>
+
+      <div class="contact-layout">
+
+        <div class="reveal reveal-d2">
+
+          <p class="contact-info-text">
+            I'm open to collaboration, security research discussions,
+            backend engineering projects, and networking conversations.
+            Feel free to reach out through any channel below.
+          </p>
+
+          <div class="contact-links" id="contact-links"></div>
+
+        </div>
+
+
+        <div class="reveal reveal-d3">
+
+          <div class="contact-form-title">
+            Send a Message
+          </div>
+
+          <form id="contact-form" class="contact-form" action="https://formspree.io/f/mgawkqgn" method="POST"
+            target="_top">
+
+            <div class="form-field">
+              <label class="form-label" for="name">
+                Your Name
+              </label>
+
+              <input class="form-input" type="text" id="name" name="name" placeholder="Your Name" autocomplete="name"
+                required />
+            </div>
+
+
+            <div class="form-field">
+              <label class="form-label" for="email">
+                Email
+              </label>
+
+              <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com"
+                autocomplete="email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com" required />
+
+              <p class="form-description">
+                This will help me respond to your query via email.
+              </p>
+            </div>
+
+
+            <div class="form-field">
+              <label class="form-label" for="subject">
+                Subject
+              </label>
+
+              <input class="form-input" type="text" id="subject" name="subject" placeholder="Subject" required />
+            </div>
+
+
+            <div class="form-field">
+              <label class="form-label" for="message">
+                Message
+              </label>
+
+              <textarea class="form-input" id="message" name="message" placeholder="Your message..." rows="5"
+                required></textarea>
+
+              <p class="form-description">
+                What would you like to discuss?
+              </p>
+            </div>
+
+
+            <div class="form-button-group">
+              <button type="submit" class="btn btn-primary form-submit">
+                <span class="btn-text">
+                  Send Message
+                </span>
+              </button>
+            </div>
+
+
+            <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-name">Its <span>Wanheda</span></div>
+        <div class="footer-quote">"Building secure systems one project at a time."</div>
+        <div class="footer-socials">
+          <a href="https://github.com/ItsWanheda" target="_blank" class="footer-social" title="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+          </a>
+          <a href="mailto:Wanheda.work@gmail.com" class="footer-social" title="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+          </a>
+        </div>
+        <div class="footer-copy">© 2026 ItsWanheda — BUILT WITH PRECISION &amp; PURPOSE</div>
+      </div>
+    </div>
+  </footer>
+  <!-- BLOG MODAL (Unified) -->
+  <div id="blog-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <div class="modal-header">
+        <div class="modal-meta">
+          <div class="modal-number" id="modal-number"></div>
+          <div class="modal-tag" id="modal-tag"></div>
+        </div>
+        <h2 class="modal-title" id="modal-title"></h2>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Full content will be injected here -->
+      </div>
+    </div>
+  </div>
+  <!-- Generic Modal -->
+  <div id="modal-overlay" class="generic-modal-overlay" hidden>
+    <div class="generic-modal" role="dialog" aria-modal="true" aria-labelledby="generic-modal-title">
+      <button class="generic-modal-close" type="button" aria-label="Close modal">×</button>
+      <div class="modal-header">
+        <div class="modal-emoji" id="generic-modal-emoji"></div>
+        <div>
+          <h2 id="generic-modal-title" class="modal-title"></h2>
+          <div id="generic-modal-subtitle" class="modal-subtitle"></div>
+        </div>
+      </div>
+      <div id="generic-modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- SKILL MODAL -->
+  <div id="skill-modal-overlay" class="skill-modal-overlay">
+    <div class="skill-modal" role="dialog" aria-modal="true" aria-labelledby="skill-modal-name">
+      <button class="skill-modal-close" type="button" aria-label="Close">×</button>
+      <div class="skill-modal-icon" id="skill-modal-icon"></div>
+      <div class="skill-modal-name" id="skill-modal-name"></div>
+      <div class="skill-modal-badge" id="skill-modal-badge"></div>
+      <p class="skill-modal-desc" id="skill-modal-desc"></p>
+      <div class="skill-modal-level-row">
+        <div class="skill-modal-level-track">
+          <div class="skill-modal-level-fill" id="skill-modal-level-fill"></div>
+        </div>
+        <span class="skill-modal-pct" id="skill-modal-pct"></span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/js/main.js"></script>
+</body>
+
+</html>

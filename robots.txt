@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://itswanheda.vercel.app/sitemap.xml

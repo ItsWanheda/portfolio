@@ -1,0 +1,612 @@
+/* ============================================================
+  RESET & ROOT VARIABLES
+============================================================ */
+@font-face {
+  font-family: "PT Serif";
+  src: url("../fonts/PTSeif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PT Serif";
+  src: url("../fonts/PTSeif-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PT Serif";
+  src: url("../fonts/PTSeif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PT Serif";
+  src: url("../fonts/PTSeif-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ============================================================
+  RESET
+============================================================ */
+
+*,
+*::before,
+*::after {
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+html {
+
+  scroll-behavior: smooth;
+
+  font-size: 16px;
+
+  -webkit-text-size-adjust: 100%;
+
+  scrollbar-gutter: stable;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    var(--red)
+    var(--black);
+
+}
+
+body {
+
+  background:
+    var(--black);
+
+  color:
+    var(--white);
+
+  font-family:
+    var(--font-serif);
+
+  font-size:
+    var(--text-base);
+
+  line-height:
+    var(--lh-relaxed);
+
+  overflow-x: hidden;
+
+  cursor: auto;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+
+  text-rendering:
+    optimizeLegibility;
+
+}
+
+
+/* ============================================================
+  LOADING STATE
+============================================================ */
+
+body.loading {
+
+  overflow: hidden;
+
+}
+
+
+/* ============================================================
+   ROOT VARIABLES
+============================================================ */
+
+:root {
+
+  /* ----------------------------------------------------------
+    CORE COLORS
+  ---------------------------------------------------------- */
+
+  --black:
+    #000000;
+
+  --black-soft:
+    #050505;
+
+  --dark:
+    #0A0A0A;
+
+  --darker:
+    #0D0D0D;
+
+  --darkest:
+    #121212;
+
+  --card:
+    #161616;
+
+  --card2:
+    #1A1A1A;
+
+
+  /* ----------------------------------------------------------
+    PRIMARY RED
+  --------------------------------------------------------- */
+
+  --red:
+    #FF003C;
+
+  --red2:
+    #CC0030;
+
+  --red-dark:
+    #8F0024;
+
+  --red-bright:
+    #FF174F;
+
+  --red-glow:
+    rgba(255, 0, 60, 0.18);
+
+  --red-glow-strong:
+    rgba(255, 0, 60, 0.35);
+
+  --red-faint:
+    rgba(255, 0, 60, 0.07);
+
+  --red-ultra-faint:
+    rgba(255, 0, 60, 0.035);
+
+
+  /* ----------------------------------------------------------
+    TERMINAL / HACKER COLORS
+  ---------------------------------------------------------- */
+
+  --terminal-green:
+    #00FF41;
+
+  --terminal-green-dim:
+    rgba(0, 255, 65, 0.45);
+
+  --terminal-green-faint:
+    rgba(0, 255, 65, 0.08);
+
+  --terminal-red:
+    #FF003C;
+
+  --terminal-white:
+    #EDEDED;
+
+  --terminal-dim:
+    rgba(255, 255, 255, 0.38);
+
+  --terminal-muted:
+    rgba(255, 255, 255, 0.18);
+
+
+  /* ----------------------------------------------------------
+    TEXT
+  ---------------------------------------------------------- */
+
+  --white:
+    #F5F5F5;
+
+  --white-soft:
+    #DADADA;
+
+  --muted:
+    #8A8A8A;
+
+  --muted-2:
+    #5A5A5A;
+
+  --muted-3:
+    #353535;
+
+
+  /* ----------------------------------------------------------
+    NAVIGATION
+  ---------------------------------------------------------- */
+
+  --nav-bg:
+    rgba(10, 10, 10, 0.7);
+
+  --nav-mobile-bg:
+    rgba(10, 10, 10, 0.97);
+
+
+  /* ----------------------------------------------------------
+    BORDERS
+  ---------------------------------------------------------- */
+
+  --border:
+    rgba(255, 255, 255, 0.07);
+
+  --border-soft:
+    rgba(255, 255, 255, 0.045);
+
+  --border-strong:
+    rgba(255, 255, 255, 0.12);
+
+  --border-red:
+    rgba(255, 0, 60, 0.3);
+
+  --border-red-strong:
+    rgba(255, 0, 60, 0.5);
+
+
+  /* ----------------------------------------------------------
+    TYPOGRAPHY
+  ---------------------------------------------------------- */
+
+  --font-mono:
+    "Share Tech Mono",
+    "Courier New",
+    Consolas,
+    Monaco,
+    monospace;
+
+  --font-display:
+    "Syne",
+    sans-serif;
+
+  --font-body:
+    "DM Sans",
+    sans-serif;
+
+  --font-serif:
+    "PT Serif",
+    Georgia,
+    serif;
+
+
+  /* ----------------------------------------------------------
+     TYPE SCALE
+  ---------------------------------------------------------- */
+
+--text-xs:
+  clamp(
+    0.75rem,
+    0.72rem + 0.1vw,
+    0.8125rem
+  );
+
+--text-sm:
+  clamp(
+    0.875rem,
+    0.83rem + 0.15vw,
+    0.9375rem
+  );
+
+--text-base:
+  clamp(
+    1rem,
+    0.94rem + 0.22vw,
+    1.125rem
+  );
+
+--text-lg:
+  clamp(
+    1.125rem,
+    1.05rem + 0.35vw,
+    1.25rem
+  );
+
+--text-xl:
+  clamp(
+    1.25rem,
+    1.12rem + 0.65vw,
+    1.5rem
+  );
+
+--text-2xl:
+  clamp(
+    1.5rem,
+    1.3rem + 1vw,
+    1.875rem
+  );
+
+--text-3xl:
+  clamp(
+    1.875rem,
+    1.55rem + 1.7vw,
+    2.625rem
+  );
+
+--text-4xl:
+  clamp(
+    2.25rem,
+    1.85rem + 2.2vw,
+    3.5rem
+  );
+
+--text-5xl:
+  clamp(
+    2.75rem,
+    2.15rem + 3vw,
+    4.5rem
+  );
+
+--text-6xl:
+  clamp(
+    3.5rem,
+    2.6rem + 4.5vw,
+    5.75rem
+  );
+
+
+  /* ----------------------------------------------------------
+    LINE HEIGHTS
+  ---------------------------------------------------------- */
+
+  --lh-tight:
+    1.1;
+
+  --lh-snug:
+    1.25;
+
+  --lh-normal:
+    1.5;
+
+  --lh-relaxed:
+    1.7;
+
+  --lh-loose:
+    1.85;
+
+
+  /* ----------------------------------------------------------
+    LETTER SPACING
+    ---------------------------------------------------------- */
+
+  --ls-tighter:
+    -0.04em;
+
+  --ls-tight:
+    -0.02em;
+
+  --ls-normal:
+    0;
+
+  --ls-wide:
+    0.04em;
+
+  --ls-wider:
+    0.08em;
+
+  --ls-widest:
+    0.16em;
+
+  --ls-terminal:
+    0.1em;
+
+  --ls-terminal-wide:
+    0.18em;
+
+
+  /* ----------------------------------------------------------
+    SPACING
+  ---------------------------------------------------------- */
+
+  --space-1:
+    4px;
+
+  --space-2:
+    8px;
+
+  --space-3:
+    12px;
+
+  --space-4:
+    16px;
+
+  --space-5:
+    20px;
+
+  --space-6:
+    24px;
+
+  --space-7:
+    28px;
+
+  --space-8:
+    32px;
+
+  --space-10:
+    40px;
+
+  --space-12:
+    48px;
+
+  --space-14:
+    56px;
+
+  --space-16:
+    64px;
+
+  --space-20:
+    80px;
+
+  --space-24:
+    96px;
+
+  --space-28:
+    112px;
+
+  --space-32:
+    128px;
+
+
+  /* ----------------------------------------------------------
+    SECTION RHYTHM
+  ---------------------------------------------------------- */
+
+  --section-pad:
+    clamp(
+      64px,
+      8vw,
+      120px
+    );
+
+  --container-px:
+    clamp(
+      16px,
+      4vw,
+      60px
+    );
+
+  --container-max:
+    1240px;
+
+  --nav-height:
+    72px;
+
+  --nav-radius:
+    18px;
+
+  --nav-side-gap:
+    18px;
+
+
+  /* ----------------------------------------------------------
+   GRID
+   ---------------------------------------------------------- */
+
+  --grid-gap:
+    clamp(
+      16px,
+      2vw,
+      24px
+    );
+
+  --grid-gap-lg:
+    clamp(
+      24px,
+      4vw,
+      48px
+    );
+
+  --grid-line:
+    rgba(255, 0, 60, 0.04);
+
+  --grid-line-strong:
+    rgba(255, 0, 60, 0.08);
+
+
+  /* ----------------------------------------------------------
+    TERMINAL DIMENSIONS
+  ---------------------------------------------------------- */
+
+  --terminal-width:
+    min(850px, 88vw);
+
+  --terminal-height:
+    min(430px, 60vh);
+
+  --terminal-border:
+    rgba(255, 0, 60, 0.18);
+
+  --terminal-bg:
+    rgba(3, 3, 3, 0.96);
+
+  --terminal-shadow:
+    rgba(255, 0, 60, 0.04);
+
+
+  /* ----------------------------------------------------------
+    CRT
+  ---------------------------------------------------------- */
+
+  --crt-line:
+    rgba(255, 255, 255, 0.025);
+
+  --crt-noise-opacity:
+    0.035;
+
+  --crt-vignette:
+    rgba(0, 0, 0, 0.85);
+
+
+  /* ----------------------------------------------------------
+    RADII
+  ---------------------------------------------------------- */
+
+  --r-sm:
+    4px;
+
+  --r-md:
+    6px;
+
+  --r-lg:
+    10px;
+
+  --r-xl:
+    16px;
+
+  --r-full:
+    9999px;
+
+
+/* ----------------------------------------------------------
+  EASING
+---------------------------------------------------------- */
+
+  --ease-out:
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+
+  --ease-in-out:
+    cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    );
+
+  --ease-spring:
+    cubic-bezier(
+      0.34,
+      1.56,
+      0.64,
+      1
+    );
+
+  --ease-terminal:
+    cubic-bezier(
+      0.77,
+      0,
+      0.18,
+      1
+    );
+
+
+/* ----------------------------------------------------------
+    TRANSITIONS
+---------------------------------------------------------- */
+
+  --transition-fast:
+    150ms var(--ease-out);
+
+  --transition-base:
+    250ms var(--ease-out);
+
+  --transition-slow:
+    450ms var(--ease-out);
+
+}
