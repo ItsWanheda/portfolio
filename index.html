@@ -9,6 +9,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+  
+  <!-- =========================
+    SECURITY HEADERS
+  ========================= -->
+
+  <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+
+      script-src
+        'self'
+        https://cdn.jsdelivr.net;
+      style-src
+        'self'
+        https://fonts.googleapis.com;
+
+      font-src
+        'self'
+        https://fonts.gstatic.com
+        data:;
+
+      img-src
+        'self'
+        data:
+        https:
+        blob:;
+
+      connect-src
+        'self'
+        https://formspree.io;
+
+      form-action
+        'self'
+        https://formspree.io;
+
+      base-uri 'self';
+
+      object-src 'none';
+
+      worker-src
+        'self'
+        blob:;
+
+      child-src
+        'self'
+        blob:;
+
+      upgrade-insecure-requests;
+    ">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 
   <meta http-equiv="Permissions-Policy" content="
