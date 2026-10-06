@@ -19,9 +19,13 @@
 
       script-src
         'self'
-        https://cdn.jsdelivr.net;
+        https://cdn.jsdelivr.net
+        'unsafe-inline'
+        'unsafe-eval';
+
       style-src
         'self'
+        'unsafe-inline'
         https://fonts.googleapis.com;
 
       font-src
@@ -365,6 +369,20 @@
     ]
   }
   </script>
+  <!-- =========================================================
+     THREE.JS IMPORT MAP
+     MUST APPEAR BEFORE MODULES THAT IMPORT THREE
+     ========================================================= -->
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
   <!-- =========================================================
      THREE.JS CANVAS
      ========================================================= -->
