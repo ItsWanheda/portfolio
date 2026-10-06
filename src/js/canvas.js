@@ -1,20 +1,12 @@
-import * as THREE from 'three';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
-import {
-    EffectComposer
-} from 'three/addons/postprocessing/EffectComposer.js';
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js';
 
-import {
-    RenderPass
-} from 'three/addons/postprocessing/RenderPass.js';
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/RenderPass.js';
 
-import {
-    UnrealBloomPass
-} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-import {
-    OutputPass
-} from 'three/addons/postprocessing/OutputPass.js';
+import { OutputPass } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/postprocessing/OutputPass.js';
 
 
 /* ============================================================
