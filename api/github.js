@@ -10,60 +10,77 @@ const GITHUB_API_VERSION = '2026-03-10';
 const CACHE_SECONDS = 300;
 const REPOSITORY_LIMIT = 30;
 
+// Defense-in-depth rate limit. Vercel Firewall should remain the
+// primary distributed control; this protects warm function instances.
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 30;
+const requestBuckets = new Map();
 
-/* ============================================================
-   GITHUB REST REQUEST
-============================================================ */
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+
+  if (typeof forwarded === 'string' && forwarded.length > 0) {
+    return forwarded.split(',')[0].trim();
+  }
+
+  return req.socket?.remoteAddress || 'unknown';
+}
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const bucket = requestBuckets.get(ip);
+
+  if (!bucket || now - bucket.startedAt >= RATE_LIMIT_WINDOW_MS) {
+    requestBuckets.set(ip, { startedAt: now, count: 1 });
+    return false;
+  }
+
+  bucket.count += 1;
+
+  if (bucket.count > RATE_LIMIT_MAX_REQUESTS) {
+    return true;
+  }
+
+  return false;
+}
+
+function githubHeaders() {
+  const token = process.env.GITHUB_TOKEN;
+
+  if (!token) {
+    throw new Error('GITHUB_TOKEN is not configured.');
+  }
+
+  return {
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': GITHUB_API_VERSION,
+    Authorization: `Bearer ${token}`
+  };
+}
 
 async function githubRequest(endpoint) {
-  const response = await fetch(
-    `${GITHUB_API}${endpoint}`,
-    {
-      method: 'GET',
-
-      headers: {
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': GITHUB_API_VERSION,
-        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
-      }
-    }
-  );
+  const response = await fetch(`${GITHUB_API}${endpoint}`, {
+    method: 'GET',
+    headers: githubHeaders()
+  });
 
   if (!response.ok) {
     const error = await response.text();
-
-    throw new Error(
-      `GitHub API ${response.status}: ${error}`
-    );
+    throw new Error(`GitHub API ${response.status}: ${error}`);
   }
 
   return response.json();
 }
 
-
-/* ============================================================
-   GITHUB GRAPHQL REQUEST
-============================================================ */
-
 async function githubGraphQL(query, variables = {}) {
-  const response = await fetch(
-    `${GITHUB_API}/graphql`,
-    {
-      method: 'POST',
-
-      headers: {
-        Accept: 'application/vnd.github+json',
-        'Content-Type': 'application/json',
-        'X-GitHub-Api-Version': GITHUB_API_VERSION,
-        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
-      },
-
-      body: JSON.stringify({
-        query,
-        variables
-      })
-    }
-  );
+  const response = await fetch(`${GITHUB_API}/graphql`, {
+    method: 'POST',
+    headers: {
+      ...githubHeaders(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ query, variables })
+  });
 
   const data = await response.json();
 
@@ -82,11 +99,6 @@ async function githubGraphQL(query, variables = {}) {
   return data.data;
 }
 
-
-/* ============================================================
-   TOTAL COMMITS
-============================================================ */
-
 async function getTotalCommits() {
   const query = `
     query GetUserContributions($login: String!) {
@@ -98,160 +110,85 @@ async function getTotalCommits() {
     }
   `;
 
-  const data = await githubGraphQL(
-    query,
-    {
-      login: GITHUB_USERNAME
-    }
-  );
+  const data = await githubGraphQL(query, {
+    login: GITHUB_USERNAME
+  });
 
-  return (
-    data?.user?.contributionsCollection
-      ?.totalCommitContributions || 0
-  );
+  return data?.user?.contributionsCollection?.totalCommitContributions || 0;
 }
 
-
-/* ============================================================
-   VERCEL HANDLER
-============================================================ */
-
 export default async function handler(req, res) {
-
-  /* ==========================================================
-     CORS
-  ========================================================== */
-
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    '*'
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, OPTIONS'
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Content-Type'
-  );
-
-
-  /* ==========================================================
-     OPTIONS
-  ========================================================== */
+  res.setHeader('Access-Control-Allow-Origin', 'https://itswanheda.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Vary', 'Origin');
 
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
   }
 
-
-  /* ==========================================================
-     METHOD CHECK
-  ========================================================== */
-
   if (req.method !== 'GET') {
-    return res.status(405).json({
-      error: 'Method Not Allowed'
+    res.setHeader('Allow', 'GET, OPTIONS');
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  if (isRateLimited(getClientIp(req))) {
+    res.setHeader('Retry-After', '60');
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(429).json({
+      error: 'Too many requests. Please try again later.'
     });
   }
 
-
-  /* ==========================================================
-     TOKEN CHECK
-  ========================================================== */
-
   if (!process.env.GITHUB_TOKEN) {
-
-    console.error(
-      '[GitHub API] GITHUB_TOKEN is not configured.'
-    );
-
+    console.error('[GitHub API] GITHUB_TOKEN is not configured.');
     return res.status(500).json({
       error: 'GitHub integration is not configured.'
     });
   }
 
-
   try {
-
-    /* ========================================================
-       FETCH GITHUB DATA IN PARALLEL
-    ======================================================== */
-
-    const [
-      profile,
-      allRepos,
-      totalCommits
-    ] = await Promise.all([
-      githubRequest(
-        `/users/${GITHUB_USERNAME}`
-      ),
-
+    const [profile, allRepos, totalCommits] = await Promise.all([
+      githubRequest(`/users/${GITHUB_USERNAME}`),
       githubRequest(
         `/users/${GITHUB_USERNAME}/repos?per_page=${REPOSITORY_LIMIT}&sort=updated`
       ),
-
       getTotalCommits()
     ]);
 
+    const repositories = allRepos
+      .filter(repo => !repo.fork)
+      .map(repo => ({
+        id: repo.id,
+        name: repo.name,
+        full_name: repo.full_name,
+        description: repo.description,
+        html_url: repo.html_url,
+        homepage: repo.homepage,
+        language: repo.language,
+        stargazers_count: repo.stargazers_count,
+        forks_count: repo.forks_count,
+        topics: repo.topics,
+        updated_at: repo.updated_at,
+        created_at: repo.created_at
+      }));
 
-    /* ========================================================
-       REMOVE FORKS
-    ======================================================== */
+    const totalStars = repositories.reduce(
+      (total, repo) => total + Number(repo.stargazers_count || 0),
+      0
+    );
 
-    const repositories =
-      allRepos
-        .filter(repo => !repo.fork)
-        .map(repo => ({
-          id: repo.id,
-          name: repo.name,
-          full_name: repo.full_name,
-          description: repo.description,
-          html_url: repo.html_url,
-          homepage: repo.homepage,
-          language: repo.language,
-          stargazers_count: repo.stargazers_count,
-          forks_count: repo.forks_count,
-          topics: repo.topics,
-          updated_at: repo.updated_at,
-          created_at: repo.created_at
-        }));
+    const totalForks = repositories.reduce(
+      (total, repo) => total + Number(repo.forks_count || 0),
+      0
+    );
 
+    res.setHeader(
+      'Cache-Control',
+      `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=600`
+    );
 
-    /* ========================================================
-       TOTAL STARS
-    ======================================================== */
-
-    const totalStars =
-      repositories.reduce(
-        (total, repo) =>
-          total +
-          Number(repo.stargazers_count || 0),
-        0
-      );
-
-
-    /* ========================================================
-       TOTAL FORKS
-    ======================================================== */
-
-    const totalForks =
-      repositories.reduce(
-        (total, repo) =>
-          total +
-          Number(repo.forks_count || 0),
-        0
-      );
-
-
-    /* ========================================================
-       RESPONSE
-    ======================================================== */
-
-    const responseData = {
-
+    return res.status(200).json({
       profile: {
         login: profile.login,
         avatar_url: profile.avatar_url,
@@ -260,43 +197,15 @@ export default async function handler(req, res) {
         followers: profile.followers,
         following: profile.following
       },
-
       repositories,
-
       stats: {
         totalStars,
         totalForks,
         totalCommits
       }
-
-    };
-
-
-    /* ========================================================
-       VERCEL EDGE CACHE
-    ======================================================== */
-
-    res.setHeader(
-      'Cache-Control',
-      `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=600`
-    );
-
-
-    /* ========================================================
-       RESPONSE
-    ======================================================== */
-
-    return res.status(200).json(
-      responseData
-    );
-
+    });
   } catch (error) {
-
-    console.error(
-      '[GitHub API] Request failed:',
-      error
-    );
-
+    console.error('[GitHub API] Request failed:', error);
     return res.status(500).json({
       error: 'Failed to load GitHub data.'
     });
