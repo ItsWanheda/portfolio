@@ -5,9 +5,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ItsWanheda/portfolio/actions/workflows/deploy.yml">
-    <img src="https://github.com/ItsWanheda/portfolio/actions/workflows/deploy.yml/badge.svg" alt="Deploy to GitHub Pages">
-  </a>
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
@@ -118,13 +115,17 @@ The portfolio reflects my focus across four areas:
 
 ---
 
-### Deploy Your Own
+### Deployment
 
-1. Fork this repository.
-2. Open **Settings → Pages**.
-3. Select **Deploy from a branch**.
-4. Choose `main` and `/ (root)`.
-5. Save and wait for GitHub Pages to publish the site.
+The production deployment is hosted on Vercel. GitHub Pages is intentionally not used, so Vercel remains the single canonical deployment target for the site and `/api/github` serverless function.
+
+### GitHub API configuration
+
+The GitHub integration uses a server-side `GITHUB_TOKEN`. Keep this value in Vercel Environment Variables only; never expose it to client-side JavaScript.
+
+Use the narrowest available GitHub token permissions needed to read the public profile, repositories, and contribution data. A fine-grained, read-only token is preferred over a broad classic token.
+
+The `/api/github` endpoint also applies an application-level rate limit and should be protected by a Vercel Firewall rate-limit rule in production for distributed enforcement.
 
 ---
 
