@@ -1191,7 +1191,7 @@
                 Your Name
               </label>
 
-              <input class="form-input" type="text" id="name" name="name" placeholder="Your Name" autocomplete="name"
+              <input class="form-input" type="text" id="name" name="name" placeholder="Your Name" autocomplete="name" maxlength="100"
                 required />
             </div>
 
@@ -1201,8 +1201,8 @@
                 Email
               </label>
 
-              <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com"
-                autocomplete="email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com" required />
+              <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com"
+                autocomplete="email" maxlength="254" required />
 
               <p class="form-description">
                 This will help me respond to your query via email.
@@ -1215,7 +1215,7 @@
                 Subject
               </label>
 
-              <input class="form-input" type="text" id="subject" name="subject" placeholder="Subject" required />
+              <input class="form-input" type="text" id="subject" name="subject" placeholder="Subject" maxlength="160" required />
             </div>
 
 
@@ -1224,7 +1224,7 @@
                 Message
               </label>
 
-              <textarea class="form-input" id="message" name="message" placeholder="Your message..." rows="5"
+              <textarea class="form-input" id="message" name="message" placeholder="Your message..." rows="5" maxlength="5000"
                 required></textarea>
 
               <p class="form-description">
