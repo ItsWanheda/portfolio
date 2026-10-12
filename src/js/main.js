@@ -7952,16 +7952,16 @@ function initContactForm() {
 
   const status = document.getElementById('form-status');
   const submitBtn = form.querySelector('.form-submit');
-
-  // HTML uses name="email"
   const emailInput = form.querySelector('input[name="email"]');
 
   if (!status || !submitBtn || !emailInput) {
     return;
   }
 
-  // Keep this identical to your HTML form action
   const FORM_ENDPOINT = 'https://formspree.io/f/mgawkqgn';
+  const btnText = submitBtn.querySelector('.btn-text');
+  const defaultButtonText = btnText?.textContent?.trim() || 'Send Message';
+  const requestTimeoutMs = 15000;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -7969,69 +7969,70 @@ function initContactForm() {
     status.textContent = '';
     status.className = 'form-status';
 
-    const email = emailInput.value.trim();
-
-    const gmailRegex =
-      /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
-
-    if (!gmailRegex.test(email)) {
-      status.textContent =
-        '✗ Please enter a valid Gmail address.';
-
-      status.classList.add('error');
-
-      emailInput.focus();
-
-      return;
-    }
+    // Let the browser validate the email format, but accept any valid provider.
+    emailInput.value = emailInput.value.trim();
 
     submitBtn.disabled = true;
-
-    const btnText = submitBtn.querySelector('.btn-text');
+    form.setAttribute('aria-busy', 'true');
 
     if (btnText) {
       btnText.textContent = 'SENDING...';
     }
 
-    try {
-      const data = new FormData(form);
+    status.textContent = 'Sending your message…';
 
-      const res = await fetch(FORM_ENDPOINT, {
+    const controller = new AbortController();
+    let requestTimedOut = false;
+    const timeoutId = window.setTimeout(() => {
+      requestTimedOut = true;
+      controller.abort();
+    }, requestTimeoutMs);
+
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        body: data,
+        body: new FormData(form),
         headers: {
           Accept: 'application/json'
-        }
+        },
+        signal: controller.signal,
+        cache: 'no-store'
       });
 
-      if (!res.ok) {
-        throw new Error('Send failed');
+      if (!response.ok) {
+        status.textContent = response.status === 429
+          ? 'Too many attempts. Please wait a moment and try again.'
+          : response.status === 400 || response.status === 422
+            ? 'Please check your details and try sending the message again.'
+            : response.status >= 500
+              ? 'The contact service is temporarily unavailable. Please try again later or use a direct contact option.'
+              : 'Your message could not be submitted. Please try again or use a direct contact option.';
+
+        status.classList.add('error');
+        return;
       }
 
-      status.textContent =
-        '✓ Message sent successfully!';
-
+      status.textContent = '✓ Message sent successfully. Thank you for reaching out!';
       status.classList.add('success');
-
       form.reset();
-
-    } catch (err) {
-      console.error('Contact form error:', err);
-
-      status.textContent =
-        '✗ Failed to send. Email me directly.';
+    } catch (error) {
+      status.textContent = requestTimedOut
+        ? 'The request timed out. Check your connection and try again, or use a direct contact option.'
+        : 'We could not reach the contact service. Check your connection and try again, or use a direct contact option.';
 
       status.classList.add('error');
-
     } finally {
+      window.clearTimeout(timeoutId);
+      form.removeAttribute('aria-busy');
       submitBtn.disabled = false;
 
       if (btnText) {
-        btnText.textContent = 'Send Message';
+        btnText.textContent = defaultButtonText;
       }
     }
   });
 }
+
 
 /* ============================================================
    INIT ALL
