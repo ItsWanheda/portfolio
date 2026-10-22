@@ -9794,3 +9794,216 @@ footer::after {
 [hidden] {
   display: none !important;
 }
+
+/* ============================================================
+   EXPANDABLE TIMELINE — dwell-to-open, no modal
+   ============================================================ */
+.timeline-card-trigger {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.timeline-card-trigger:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 7px;
+  border-radius: calc(var(--r-lg) - 3px);
+}
+
+.timeline-card-trigger .timeline-title,
+.timeline-card-trigger .timeline-desc {
+  display: block;
+}
+
+.timeline-card-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  opacity: 0.76;
+  transition: opacity 0.25s ease;
+}
+
+.timeline-card-trigger:hover .timeline-card-prompt,
+.timeline-card-trigger:focus-visible .timeline-card-prompt {
+  opacity: 1;
+}
+
+.timeline-loader {
+  display: inline-block;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(255, 0, 60, 0.22);
+  border-top-color: var(--red);
+  border-right-color: var(--red);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.timeline-item.is-dwelling .timeline-loader {
+  opacity: 1;
+  transform: scale(1);
+  animation: timelineDwellSpin 0.65s linear infinite;
+}
+
+@keyframes timelineDwellSpin {
+  to { transform: rotate(360deg); }
+}
+
+.timeline-item.is-expanded .timeline-card {
+  border-color: var(--border-red);
+  background:
+    linear-gradient(135deg, rgba(255, 0, 60, 0.055), transparent 62%),
+    var(--card);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22), 0 0 22px var(--red-glow);
+}
+
+.timeline-item.is-expanded .timeline-card::before {
+  width: 100%;
+}
+
+.timeline-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 1px solid transparent;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.45s var(--ease-out),
+    opacity 0.3s ease,
+    margin-top 0.45s var(--ease-out),
+    padding-top 0.45s var(--ease-out),
+    border-color 0.3s ease;
+}
+
+.timeline-details-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.timeline-item.is-expanded .timeline-details {
+  grid-template-rows: 1fr;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top-color: rgba(255, 0, 60, 0.22);
+  opacity: 1;
+}
+
+.timeline-detail-kicker {
+  margin: 0 0 12px;
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.timeline-detail-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 19px;
+  color: var(--muted);
+  font-size: var(--text-sm);
+  line-height: var(--lh-relaxed);
+}
+
+.timeline-detail-list li {
+  padding-left: 3px;
+}
+
+.timeline-detail-list li::marker {
+  color: var(--red);
+}
+
+.timeline-tags,
+.timeline-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.timeline-tags {
+  margin-top: 17px;
+}
+
+.timeline-tag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 0, 60, 0.2);
+  border-radius: var(--r-full);
+  background: rgba(255, 0, 60, 0.045);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.timeline-links {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.timeline-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--white);
+  font-size: var(--text-xs);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.timeline-links a:hover,
+.timeline-links a:focus-visible {
+  color: var(--red);
+}
+
+@media (max-width: 600px) {
+  .timeline-card-prompt {
+    align-items: flex-start;
+    font-size: 9px;
+  }
+
+  .timeline-details {
+    overflow-wrap: anywhere;
+  }
+
+  .timeline-detail-list {
+    font-size: var(--text-xs);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-loader {
+    animation: none !important;
+  }
+
+  .timeline-details,
+  .timeline-card-trigger,
+  .timeline-card-prompt,
+  .timeline-loader {
+    transition-duration: 0.01ms !important;
+  }
+}
