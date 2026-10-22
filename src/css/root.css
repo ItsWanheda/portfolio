@@ -49,6 +49,9 @@
 
 html {
 
+  /* Keep the page backdrop behind the transparent WebGL canvas. */
+  background: var(--black);
+
   scroll-behavior: smooth;
 
   font-size: 16px;
@@ -67,8 +70,9 @@ html {
 
 body {
 
-  background:
-    var(--black);
+  /* The canvas uses a negative stacking level; keep this layer transparent
+     so the html background does not paint over the WebGL scene. */
+  background: transparent;
 
   color:
     var(--white);
