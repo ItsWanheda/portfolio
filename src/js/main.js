@@ -23,13 +23,116 @@ const SKILLS_DATA = [
 ];
 
 const TIMELINE_DATA = [
-  { date: '2022 · Q1', title: 'The Genesis: Web Fundamentals', desc: 'Embarked on the journey of understanding the web. Mastered HTML, CSS, and JavaScript, focusing on the core mechanics of how browsers render and interact with web technologies.' },
-  { date: '2022 · Q3', title: 'Type Safety & Software Craftsmanship', desc: 'Transitioned to TypeScript. This was a turning point; moving from dynamic scripting to disciplined, type-safe development, which fundamentally changed my approach to building reliable software architecture.' },
-  { date: '2023 · Q1', title: 'Backend Mastery & Data Persistence', desc: 'Deep dive into server-side engineering. Developed robust RESTful APIs, mastered PostgreSQL for relational data modeling, and learned the nuances of scalable backend systems and database optimization.' },
-  { date: '2023 · Q3', title: 'The Shift to Cybersecurity', desc: 'Curiosity turned into a mission. Started analyzing the OWASP Top 10, studying JWT vulnerabilities, and understanding the critical importance of TLS/SSL and API hardening in modern web ecosystems.' },
-  { date: '2024 · Q1', title: 'Networking & Protocol Engineering', desc: 'Moving down the OSI model. Deep-seated study of TCP/IP, DNS, and HTTP/S. Started working with low-level packet manipulation and understanding how network traffic can be intercepted, analyzed, and secured.' },
-  { date: '2024 · Q3', title: 'Systems Programming & High-Performance Tools', desc: 'Leveraging Go and Python for security tooling. Focused on building high-concurrency network scanners and protocol-level manipulation tools (like SNI spoofing) to test network resilience and DPI evasion.' },
-  { date: '2025 · Present', title: 'Advanced Security Research & Engineering', desc: 'Currently focused on deep-dive security engineering: exploring advanced evasion techniques, contributing to security-centric open-source projects, and pursuing formal industry certifications to solidify my expertise.' },
+  {
+    date: "01 / FOUNDATIONS",
+    title: "Learning how the web actually works",
+    desc: "Started with HTML, CSS, and JavaScript, then moved from styling individual pages to understanding browser behavior and how interfaces work as a whole.",
+    details: [
+      "Built up practical knowledge of semantic HTML, layout, responsive styling, JavaScript behavior, and browser rendering.",
+      "Shifted toward building complete, usable interfaces instead of treating markup, styling, and interaction as separate exercises.",
+      "This foundation still informs how I debug UI behavior, accessibility, performance, and visual issues."
+    ],
+    stack: ["HTML", "CSS", "JavaScript", "Responsive UI"],
+    links: []
+  },
+  {
+    date: "02 / FRONTEND",
+    title: "From interfaces to interactive experiences",
+    desc: "Expanded into React-based UI work and explored Vue, Tailwind, basic Next.js, and Three.js while building a distinct black-and-red developer portfolio.",
+    details: [
+      "Worked across vanilla JavaScript and component-oriented frontend tools, including React, Vue, and Tailwind.",
+      "Built this portfolio around a cybersecurity-inspired visual identity, custom cursor effects, GitHub repository views, RSS content, and PWA metadata.",
+      "Added a Three.js background scene and investigated real rendering, stacking, loading, Content Security Policy, and performance behavior—not just appearance."
+    ],
+    stack: ["React", "Vue", "Tailwind", "Three.js", "PWA"],
+    links: [
+      { label: "Portfolio source", url: "https://github.com/ItsWanheda/portfolio" },
+      { label: "Live portfolio", url: "https://itswanheda.vercel.app/" }
+    ]
+  },
+  {
+    date: "03 / BACKEND",
+    title: "APIs, authentication, and persistent data",
+    desc: "Moved deeper into server-side engineering with Node.js, Express, TypeScript, REST APIs, database modeling, authentication flows, and realtime application behavior.",
+    details: [
+      "Worked with Node.js and Express API patterns, TypeScript, request validation, and structured error handling.",
+      "Explored relational data modeling with PostgreSQL and authentication patterns involving Passport, JWTs, and CSRF considerations.",
+      "Built a Socket.IO messenger as a practical realtime application exercise, connecting frontend behavior to backend events."
+    ],
+    stack: ["Node.js", "Express", "TypeScript", "REST", "PostgreSQL", "Socket.IO"],
+    links: [
+      { label: "MERN e-commerce project", url: "https://github.com/ItsWanheda/mern-ecommerce" }
+    ]
+  },
+  {
+    date: "04 / APPLICATION SECURITY",
+    title: "Turning security concepts into usable tools",
+    desc: "Applied security learning to developer tooling, including a Go-based HTTP security-header analyzer with JSON and CLI workflows.",
+    details: [
+      "The HTTP Header Analyzer reached v0.7.0 and includes JSON/CLI use cases plus options such as --fail-on and --min-score.",
+      "Worked on security-oriented quality checks, including a CodeQL Go workflow and dependency-maintenance updates.",
+      "The goal is to make security findings actionable: clear output, predictable exit behavior, and thresholds that fit automated checks."
+    ],
+    stack: ["Go", "HTTP Headers", "CLI", "JSON", "CodeQL"],
+    links: [
+      { label: "HTTP Header Analyzer", url: "https://github.com/ItsWanheda/http-header-analyzer" }
+    ]
+  },
+  {
+    date: "05 / NETWORKING",
+    title: "Building and testing network-focused utilities",
+    desc: "Broadened the work from web applications into local-network tooling, Python scanning experiments, and protocol behavior in a controlled lab.",
+    details: [
+      "LANSpeed uses a local client/server workflow (including launcher.py and port 8765) to measure network throughput between machines.",
+      "SpectraScan is a Python scanner project where the current engineering priorities include asynchronous I/O, clear failure handling, bounded concurrency, and structured results.",
+      "Explored SNMP v2c behavior and network-device discovery with MoonLan in a local lab, alongside hands-on Linux and networking practice."
+    ],
+    stack: ["Python", "asyncio", "aiohttp", "TCP/IP", "SNMP", "Linux"],
+    links: [
+      { label: "LANSpeed source", url: "https://github.com/ItsWanheda/lanspeed" }
+    ]
+  },
+  {
+    date: "06 / TESTING & RELIABILITY",
+    title: "Treating edge cases as part of the feature",
+    desc: "Worked on REGEX-PRO with a regression-first mindset: a feature is not complete until difficult inputs and failure paths behave predictably.",
+    details: [
+      "Regression coverage includes capture offsets, named groups, unmatched groups, zero-width matches, and invalid flags.",
+      "The checklist also covers match-limit warnings, stopping potentially expensive ReDoS cases, safe HTML rendering, and malformed saved-state recovery.",
+      "The focus is on precise output, graceful failure, and protecting existing UI behavior while adding functionality."
+    ],
+    stack: ["JavaScript RegExp", "Regression Tests", "ReDoS", "Output Safety"],
+    links: []
+  },
+  {
+    date: "07 / FULL-STACK PRODUCT",
+    title: "Engineering a Persian RTL e-commerce experience",
+    desc: "Applied frontend, backend, and security work to a Persian, right-to-left MERN store with customer-facing pages and administrative workflows.",
+    details: [
+      "The project combines a React storefront with a Node/Express backend and database-driven product, category, order, and account flows.",
+      "Reliability and security work has focused on auth/CSRF boundaries, aligning admin image uploads with backend validation and storage, handling uncertain payment outcomes, and defining finite-stock reservation rules.",
+      "The product work also includes Persian error messages, RTL details, technical SEO, and practical deployment planning for environment variables, database/cache services, and Iranian hosting."
+    ],
+    stack: ["MongoDB", "Express", "React", "Node.js", "Persian RTL", "Security Review"],
+    links: [
+      { label: "MERN e-commerce repository", url: "https://github.com/ItsWanheda/mern-ecommerce" }
+    ]
+  },
+  {
+    date: "08 / 2026 · NOW",
+    title: "A security-first, project-led direction",
+    desc: "The current direction brings frontend craft, backend engineering, application security, networking, and maintainable open-source work into one practical development path.",
+    details: [
+      "Current priorities include regression checks, stronger error paths, static analysis, dependency hygiene, documentation, and production-readiness reviews.",
+      "The working toolkit spans TypeScript/JavaScript, Node.js, Python, Go, SQL, Git, and Linux—selected to solve a project problem rather than for a language checklist.",
+      "I keep the work grounded in visible projects and reproducible behavior, with security and maintainability considered alongside the user experience."
+    ],
+    stack: ["Secure-by-design", "Backend", "Networking", "Open Source", "Production Readiness"],
+    links: [
+      { label: "GitHub profile", url: "https://github.com/ItsWanheda" },
+      { label: "Portfolio source", url: "https://github.com/ItsWanheda/portfolio" }
+    ]
+  }
 ];
 
 const CERTS_DATA = [
@@ -7297,25 +7400,116 @@ export async function renderGithub() {
 /* ============================================================
    TIMELINE
 ============================================================ */
-function renderTimeline() {
-  const tl = document.getElementById('timeline');
-  tl.innerHTML = TIMELINE_DATA.map((item, i) => `
-    <div class="timeline-item reveal reveal-d${Math.min(i + 1, 5)}">
-      <div class="timeline-dot"></div>
-      <div class="timeline-date">${item.date}</div>
-      <div class="timeline-card">
-        <div class="timeline-title">${item.title}</div>
-        <div class="timeline-desc">${item.desc}</div>
-      </div>
-    </div>
-  `).join('');
-
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  tl.querySelectorAll('.timeline-item').forEach(c => obs.observe(c));
+function escapeTimelineHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
 }
 
+function renderTimeline() {
+  const tl = document.getElementById("timeline");
+  if (!tl) return;
+
+  tl.innerHTML = TIMELINE_DATA.map((item, i) => {
+    const index = String(i + 1).padStart(2, "0");
+    const detailId = "timeline-detail-" + (i + 1);
+    const details = Array.isArray(item.details) ? item.details : [];
+    const stack = Array.isArray(item.stack) ? item.stack : [];
+    const links = Array.isArray(item.links) ? item.links : [];
+
+    return [
+      '<div class="timeline-item reveal reveal-d' + Math.min(i + 1, 5) + '" data-index="' + index + '">',
+      '  <div class="timeline-dot" aria-hidden="true"></div>',
+      '  <div class="timeline-date">' + escapeTimelineHTML(item.date) + '</div>',
+      '  <div class="timeline-card">',
+      '    <button class="timeline-card-trigger" type="button" aria-expanded="false" aria-controls="' + detailId + '">',
+      '      <span class="timeline-title">' + escapeTimelineHTML(item.title) + '</span>',
+      '      <span class="timeline-desc">' + escapeTimelineHTML(item.desc) + '</span>',
+      '      <span class="timeline-card-prompt"><span>Hold for 2 seconds or select to explore</span><span class="timeline-loader" aria-hidden="true"></span></span>',
+      '    </button>',
+      '    <div class="timeline-details" id="' + detailId + '" aria-hidden="true" inert>',
+      '      <div class="timeline-details-inner">',
+      '        <p class="timeline-detail-kicker">FIELD NOTES / ' + index + '</p>',
+      '        <ul class="timeline-detail-list">' + details.map(detail => '<li>' + escapeTimelineHTML(detail) + '</li>').join('') + '</ul>',
+      '        <div class="timeline-tags" aria-label="Technologies and focus areas">' + stack.map(tag => '<span class="timeline-tag">' + escapeTimelineHTML(tag) + '</span>').join('') + '</div>',
+      '        ' + (links.length ? '<div class="timeline-links">' + links.map(link => '<a href="' + escapeTimelineHTML(link.url) + '" target="_blank" rel="noopener noreferrer">' + escapeTimelineHTML(link.label) + ' <span aria-hidden="true">↗</span></a>').join('') + '</div>' : ''),
+      '      </div>',
+      '    </div>',
+      '  </div>',
+      '</div>'
+    ].join("");
+  }).join("");
+
+  const supportsHover = typeof window.matchMedia === "function"
+    && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  tl.querySelectorAll(".timeline-item").forEach(item => {
+    const card = item.querySelector(".timeline-card");
+    const trigger = item.querySelector(".timeline-card-trigger");
+    const details = item.querySelector(".timeline-details");
+    let dwellTimer = null;
+
+    const setExpanded = expanded => {
+      item.classList.toggle("is-expanded", expanded);
+      trigger.setAttribute("aria-expanded", String(expanded));
+      details.setAttribute("aria-hidden", String(!expanded));
+      if (expanded) {
+        details.removeAttribute("inert");
+      } else {
+        details.setAttribute("inert", "");
+      }
+    };
+
+    const cancelDwell = () => {
+      if (dwellTimer !== null) {
+        window.clearTimeout(dwellTimer);
+        dwellTimer = null;
+      }
+      item.classList.remove("is-dwelling");
+    };
+
+    const startDwell = () => {
+      if (item.classList.contains("is-expanded") || dwellTimer !== null) return;
+      item.classList.add("is-dwelling");
+      dwellTimer = window.setTimeout(() => {
+        dwellTimer = null;
+        item.classList.remove("is-dwelling");
+        setExpanded(true);
+      }, 2000);
+    };
+
+    if (supportsHover) {
+      card.addEventListener("mouseenter", startDwell);
+      card.addEventListener("mouseleave", cancelDwell);
+    }
+    trigger.addEventListener("focus", startDwell);
+    trigger.addEventListener("blur", cancelDwell);
+    trigger.addEventListener("click", () => {
+      cancelDwell();
+      setExpanded(!item.classList.contains("is-expanded"));
+    });
+
+    card.addEventListener("keydown", event => {
+      if (event.key === "Escape" && item.classList.contains("is-expanded")) {
+        cancelDwell();
+        setExpanded(false);
+        trigger.focus();
+      }
+    });
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.1 });
+
+  tl.querySelectorAll(".timeline-item").forEach(item => obs.observe(item));
+}
 /* ============================================================
    CERTIFICATIONS
 ============================================================ */
