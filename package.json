@@ -2,7 +2,7 @@
   "name": "itswanheda-platform",
   "version": "2.0.0",
   "private": true,
-  "engines": { "node": ">=22.0.0" },
+  "engines": { "node": "22.x" },
   "workspaces": ["server"],
   "scripts": {
     "dev": "concurrently --kill-others-on-fail \"npm:dev:web\" \"npm:dev:api\"",
