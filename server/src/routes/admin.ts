@@ -2,7 +2,7 @@ import { Router } from "express";
 import { Types } from "mongoose";
 import { z } from "zod";
 import { requireAdmin, requireAuth, requireCsrf } from "../middleware.js";
-import { Post } from "../models/Post.js";
+import { Post, type PostStatus } from "../models/Post.js";
 
 const router = Router();
 router.use(requireAuth, requireAdmin);
@@ -33,19 +33,27 @@ function slugify(value: string): string {
     .slice(0, 190);
 }
 
+function getRouteId(value: string | string[] | undefined): string | null {
+  return typeof value === "string" ? value : null;
+}
+
 router.get("/posts", async (request, response) => {
-  const status = request.query.status === "draft" ? "draft" : request.query.status === "published" ? "published" : undefined;
-  const filter = status ? { status } : {};
+  const statusValue = request.query.status;
+  const status: PostStatus | undefined =
+    statusValue === "draft" || statusValue === "published" ? statusValue : undefined;
+  const filter: { status?: PostStatus } = {};
+  if (status) filter.status = status;
   const posts = await Post.find(filter).select("-content").sort({ updatedAt: -1 }).limit(100).lean();
   response.status(200).json({ posts });
 });
 
 router.get("/posts/:id", async (request, response) => {
-  if (!Types.ObjectId.isValid(request.params.id)) {
+  const id = getRouteId(request.params.id);
+  if (!id || !Types.ObjectId.isValid(id)) {
     response.status(400).json({ error: "Invalid article identifier." });
     return;
   }
-  const post = await Post.findById(request.params.id).lean();
+  const post = await Post.findById(id).lean();
   if (!post) {
     response.status(404).json({ error: "Article not found." });
     return;
@@ -81,7 +89,8 @@ router.post("/posts", async (request, response) => {
 });
 
 router.patch("/posts/:id", async (request, response) => {
-  if (!Types.ObjectId.isValid(request.params.id)) {
+  const id = getRouteId(request.params.id);
+  if (!id || !Types.ObjectId.isValid(id)) {
     response.status(400).json({ error: "Invalid article identifier." });
     return;
   }
@@ -91,7 +100,7 @@ router.patch("/posts/:id", async (request, response) => {
     return;
   }
 
-  const post = await Post.findById(request.params.id);
+  const post = await Post.findById(id);
   if (!post) {
     response.status(404).json({ error: "Article not found." });
     return;
@@ -128,11 +137,12 @@ router.patch("/posts/:id", async (request, response) => {
 });
 
 router.delete("/posts/:id", async (request, response) => {
-  if (!Types.ObjectId.isValid(request.params.id)) {
+  const id = getRouteId(request.params.id);
+  if (!id || !Types.ObjectId.isValid(id)) {
     response.status(400).json({ error: "Invalid article identifier." });
     return;
   }
-  const post = await Post.findByIdAndDelete(request.params.id);
+  const post = await Post.findByIdAndDelete(id);
   if (!post) {
     response.status(404).json({ error: "Article not found." });
     return;

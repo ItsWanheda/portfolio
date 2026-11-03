@@ -1,17 +1,18 @@
 import { Router } from "express";
-import type { FilterQuery } from "mongoose";
-import { Post, type PostFields } from "../models/Post.js";
+import { Post } from "../models/Post.js";
 
 const router = Router();
 
 router.get("/", async (request, response) => {
   const page = Math.max(1, Number.parseInt(String(request.query.page || "1"), 10) || 1);
   const limit = Math.min(30, Math.max(1, Number.parseInt(String(request.query.limit || "12"), 10) || 12));
-  const filter: FilterQuery<PostFields> = { status: "published" };
   const category = typeof request.query.category === "string" ? request.query.category.trim() : "";
-  if (category) filter.category = category;
   const search = typeof request.query.q === "string" ? request.query.q.trim().slice(0, 80) : "";
-  if (search) filter.$text = { $search: search };
+  const filter = {
+    status: "published" as const,
+    ...(category ? { category } : {}),
+    ...(search ? { $text: { $search: search } } : {}),
+  };
 
   const [posts, total] = await Promise.all([
     Post.find(filter).select("-content").sort({ publishedAt: -1 }).skip((page - 1) * limit).limit(limit).lean(),
@@ -22,7 +23,12 @@ router.get("/", async (request, response) => {
 });
 
 router.get("/meta/:slug", async (request, response) => {
-  const post = await Post.findOne({ slug: request.params.slug, status: "published" })
+  const slug = typeof request.params.slug === "string" ? request.params.slug : "";
+  if (!slug) {
+    response.status(400).json({ error: "Invalid article URL." });
+    return;
+  }
+  const post = await Post.findOne({ slug, status: "published" })
     .select("title excerpt category tags readTime publishedAt")
     .lean();
   if (!post) {
@@ -33,7 +39,12 @@ router.get("/meta/:slug", async (request, response) => {
 });
 
 router.get("/:slug", async (request, response) => {
-  const post = await Post.findOne({ slug: request.params.slug, status: "published" }).lean();
+  const slug = typeof request.params.slug === "string" ? request.params.slug : "";
+  if (!slug) {
+    response.status(400).json({ error: "Invalid article URL." });
+    return;
+  }
+  const post = await Post.findOne({ slug, status: "published" }).lean();
   if (!post) {
     response.status(404).json({ error: "This article could not be found." });
     return;

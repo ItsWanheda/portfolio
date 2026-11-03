@@ -52,11 +52,12 @@ router.get("/me/bookmarks", async (request, response) => {
 });
 
 router.put("/me/bookmarks/:postId", requireCsrf, async (request, response) => {
-  if (!Types.ObjectId.isValid(request.params.postId)) {
+  const rawPostId = request.params.postId;
+  if (typeof rawPostId !== "string" || !Types.ObjectId.isValid(rawPostId)) {
     response.status(400).json({ error: "Invalid article identifier." });
     return;
   }
-  const postId = new Types.ObjectId(request.params.postId);
+  const postId = new Types.ObjectId(rawPostId);
   const post = await Post.findOne({ _id: postId, status: "published" }).select("_id");
   if (!post) {
     response.status(404).json({ error: "Published article not found." });
@@ -67,13 +68,14 @@ router.put("/me/bookmarks/:postId", requireCsrf, async (request, response) => {
 });
 
 router.delete("/me/bookmarks/:postId", requireCsrf, async (request, response) => {
-  if (!Types.ObjectId.isValid(request.params.postId)) {
+  const rawPostId = request.params.postId;
+  if (typeof rawPostId !== "string" || !Types.ObjectId.isValid(rawPostId)) {
     response.status(400).json({ error: "Invalid article identifier." });
     return;
   }
   await User.updateOne(
     { _id: request.auth!.userId },
-    { $pull: { bookmarks: new Types.ObjectId(request.params.postId) } },
+    { $pull: { bookmarks: new Types.ObjectId(rawPostId) } },
   );
   response.status(200).json({ success: true });
 });
