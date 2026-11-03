@@ -1,456 +1,247 @@
-# 🛡️ Portfolio — Cybersecurity & Backend Engineering
+# ItsWanheda — Personal Platform
 
 <p align="center">
-  <strong>Cybersecurity Enthusiast · Backend Developer · Networking Explorer</strong>
+  <strong>Cybersecurity · Backend Engineering · Networks · Research</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-  <img src="https://img.shields.io/badge/Maintained-Yes-FF003C?style=for-the-badge" alt="Maintained">
+  <img src="https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs" alt="Next.js 16">
+  <img src="https://img.shields.io/badge/React-19-149ECA?style=for-the-badge&logo=react" alt="React 19">
+  <img src="https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Express-5-FFFFFF?style=for-the-badge&logo=express&logoColor=black" alt="Express 5">
+  <img src="https://img.shields.io/badge/MongoDB-Data-47A248?style=for-the-badge&logo=mongodb" alt="MongoDB">
+  <img src="https://img.shields.io/badge/Redis-Sessions-DC382D?style=for-the-badge&logo=redis" alt="Redis">
 </p>
 
-  <a href="https://github.com/ItsWanheda/portfolio/issues">
-    Report Bug
-  </a>
-  ·
-  <a href="https://github.com/ItsWanheda/portfolio/issues">
-    Request Feature
-  </a>
-</p>
+> **Beyond a résumé. A personal platform for systems, experiments, research, and ideas.**
 
-> **A cybersecurity-themed portfolio built from scratch with vanilla HTML, CSS, and JavaScript.**
+The site is evolving from a single-page portfolio into a brand-first digital home. The opening screen introduces the identity; scrolling reveals the actual platform: selected work, a technical journal, background, and contact. Members can manage a profile and save articles. Administrators have a protected content studio for the public journal.
+
+The migration is intentionally incremental. The original HTML/CSS/JavaScript implementation and its assets remain in the repository while the Next.js experience is introduced, giving us a reference point for visual parity and a safe way to migrate content.
 
 ---
 
-## 📑 Contents
+## ✦ Platform map
 
-* [🧠 About](#-about)
-* [✨ Features](#-features)
-* [🛠️ Tech Stack](#️-tech-stack)
-* [🚀 Quick Start](#-quick-start)
-* [⚙️ Configuration](#️-configuration)
-* [🎨 Customization](#-customization)
-* [🔒 Security](#-security)
-* [🐛 Known Issues](#-known-issues)
-* [🗺️ Roadmap](#️-roadmap)
-* [🤝 Contributing](#-contributing)
-* [📜 License](#-license)
-* [📞 Contact](#-contact)
-* [🙏 Acknowledgments](#-acknowledgments)
+| Area | Purpose |
+| --- | --- |
+| **Intro / Landing** | Full-screen brand introduction with a Three.js scene and scroll-led transition |
+| **Projects** | Live public repository feed from the existing GitHub integration |
+| **Journal** | Published technical articles stored in MongoDB |
+| **Member space** | Registration, sign-in, profile editing, and saved articles |
+| **Admin workspace** | Create, edit, draft, publish, unpublish, and delete journal posts |
+| **About / Contact** | Brand story, focus areas, and direct contact channels |
 
----
+## 🧱 Technology
 
-## 📸 Preview
+| Layer | Technology |
+| --- | --- |
+| Web application | Next.js App Router, React, TypeScript |
+| UI foundation | Bootstrap 5, custom CSS, Lucide React |
+| 3D / motion | Three.js, Intersection Observer, CSS transitions |
+| API | Node.js, Express 5, TypeScript |
+| Data | MongoDB with Mongoose |
+| Sessions / rate limits | Redis |
+| Validation | Zod |
+| Authentication | bcrypt password hashing, short-lived JWT access cookie, rotating opaque refresh token |
+| Deployment | Vercel frontend + independently hosted Express API |
 
-<p align="center">
-  <img src="./src/images/preview.png" alt="Portfolio Preview">
-</p>
+## 🗂️ Repository structure
 
----
+```text
+.
+├── app/                       # Next.js App Router pages and components
+│   ├── admin/                 # Admin dashboard and article editor
+│   ├── auth/                  # Shared login/register form
+│   ├── components/            # Site header, 3D scene, reveal motion
+│   ├── dashboard/             # Member profile and bookmarks
+│   ├── journal/               # Public article index and detail
+│   ├── lib/                   # Browser API client
+│   ├── projects/              # GitHub-powered project directory
+│   ├── about/
+│   ├── contact/
+│   ├── globals.css
+│   ├── robots.ts
+│   └── sitemap.ts
+├── server/
+│   ├── src/
+│   │   ├── middleware.ts      # Authentication, roles, CSRF
+│   │   ├── models/            # User and Post schemas
+│   │   ├── routes/            # Auth, public posts, users, admin
+│   │   ├── scripts/           # Explicit administrator bootstrap
+│   │   ├── app.ts
+│   │   ├── config.ts
+│   │   ├── db.ts
+│   │   └── index.ts
+│   └── package.json
+├── api/github.js              # Existing Vercel GitHub integration
+├── src/                       # Original visual/source implementation kept for reference
+├── docs/
+├── .github/workflows/
+├── next.config.ts
+├── package.json
+└── vercel.json
+```
 
-## 🧠 About
-
-This is my personal **cybersecurity and backend engineering portfolio**, built without a frontend framework or runtime dependency.
-
-It is more than a résumé — it is a practical demonstration of how I approach software:
-
-> **Secure by design. Performant by default. Beautiful by intention.**
-
-The portfolio reflects my focus across four areas:
-
-| Focus                       | What it covers                                           |
-| --------------------------- | -------------------------------------------------------- |
-| 🔐 **Cybersecurity**        | Protocol analysis, attack vectors, defensive programming |
-| ⚙️ **Backend Engineering**  | REST APIs, authentication systems, data modeling         |
-| 🌐 **Networking**           | TCP/IP, TLS, DNS, packet analysis                        |
-| 💻 **Software Engineering** | Clean code, modular architecture, type safety            |
-
-> *“Building secure systems one project at a time.”*
-
----
-
-## ✨ Features
-
-### 🎨 Design & Experience
-
-* 🟥 Cyberpunk-inspired dark interface with a red accent palette
-* 🖱️ Custom animated cursor with interactive hover effects
-* 🌐 Canvas-based network background with connected nodes
-* ⌨️ Typewriter animation in the hero section
-* ✨ Smooth scroll-reveal animations using `IntersectionObserver`
-* 📱 Responsive across mobile, tablet, desktop, and ultrawide displays
-* ♿ Accessibility considerations including ARIA labels, keyboard navigation, and reduced-motion support
-* 🖨️ Dedicated print stylesheet for clean résumé printing
-
-### ⚡ Performance
-
-* 🚫 Zero runtime dependencies
-* 🎨 Pure HTML, CSS, and JavaScript
-* 💤 Lazy rendering for off-screen content
-* 🎞️ `requestAnimationFrame` optimized canvas animations
-* 📱 Custom cursor automatically disabled on touch devices
-* 📦 No bundler or build system required
-
-### 🛡️ Security
-
-* 🚫 No third-party analytics or tracking
-* 🔐 CSP-ready markup
-* 🔒 External resources loaded over HTTPS
-* 🔍 Open-source and fully auditable codebase
-* 🚫 No `eval()`, `Function()`, or unsafe DOM sinks
-
-### 📑 Portfolio Sections
-
-| Section               | Purpose                                     |
-| --------------------- | ------------------------------------------- |
-| 🏠 **Hero**           | Introduction, avatar, and primary CTAs      |
-| 🧰 **Skills**         | Filterable technology stack                 |
-| 🐙 **GitHub**         | Repository showcase and language statistics |
-| 📈 **Experience**     | Interactive learning timeline               |
-| 🎓 **Certifications** | Credentials and badges                      |
-| 📝 **Blog**           | Technical articles and writeups             |
-| 📬 **Contact**        | Email and social links                      |
-
----
-
-### Deployment
-
-The production deployment is hosted on Vercel. GitHub Pages is intentionally not used, so Vercel remains the single canonical deployment target for the site and `/api/github` serverless function.
-
-### GitHub API configuration
-
-The GitHub integration uses a server-side `GITHUB_TOKEN`. Keep this value in Vercel Environment Variables only; never expose it to client-side JavaScript.
-
-Use the narrowest available GitHub token permissions needed to read the public profile, repositories, and contribution data. A fine-grained, read-only token is preferred over a broad classic token.
-
-The `/api/github` endpoint also applies an application-level rate limit and should be protected by a Vercel Firewall rate-limit rule in production for distributed enforcement.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer               | Technology                       | Purpose                            |
-| ------------------- | -------------------------------- | ---------------------------------- |
-| **Markup**          | HTML5                            | Semantic structure & accessibility |
-| **Styling**         | CSS3                             | Layout, theme, animations          |
-| **Logic**           | Vanilla JavaScript / ES6 Modules | Interactivity & rendering          |
-| **Animation**       | Canvas API + CSS Keyframes       | Visual effects & transitions       |
-| **Typography**      | Syne · DM Sans · Share Tech Mono | Display, body & monospace text     |
-| **Version Control** | Git + GitHub                     | Source control & deployment        |
-
-### Why No Framework?
-
-This portfolio intentionally avoids React, Vue, Next.js, and other frontend frameworks.
-
-The goal is to demonstrate what can be achieved with the fundamentals:
-
-**HTML → CSS → JavaScript → Browser APIs**
-
-Every animation, interaction, responsive breakpoint, and component is implemented directly.
-
----
-
-## 🚀 Quick Start
+## 🚀 Run locally
 
 ### Requirements
 
-That's it:
+- Node.js 22 or newer
+- npm 10 or newer
+- MongoDB
+- Redis
 
-* A modern browser
-* Git
-* Optional: Python 3 for a local development server
+### 1. Install dependencies
 
-No Node.js, npm, build tools, or framework are required.
-
-### Clone
-
-```bash
-git clone https://github.com/ItsWanheda/portfolio.git
-cd portfolio
-```
-
-### Run Locally
-
-#### Option 1 — Open directly
-
-**Windows**
+From the repository root:
 
 ```bash
-start index.html
+npm install
 ```
 
-**macOS**
+### 2. Configure the API
+
+Copy `server/.env.example` to `server/.env` and provide local MongoDB and Redis connection details.
+
+PowerShell:
+
+```powershell
+Copy-Item server/.env.example server/.env
+```
+
+The API refuses to start without a valid `JWT_SECRET` (at least 32 characters), MongoDB URI, and Redis URI. Do not commit environment files.
+
+### 3. Configure the frontend
+
+Copy `.env.example` to `.env.local`. For local development, keep:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
+```
+
+### 4. Start both applications
 
 ```bash
-open index.html
+npm run dev
 ```
 
-**Linux**
+- Web: http://localhost:3000
+- API: http://localhost:4000
+- Liveness: http://localhost:4000/health/live
+- Readiness: http://localhost:4000/health/ready
+
+You can also start each side separately with `npm run dev:web` and `npm run dev:api`.
+
+## 🔐 Create the first administrator
+
+Public registration always creates a **member** account. A client cannot select or submit the administrator role.
+
+Create the first administrator using the one-time server-side CLI. Set a unique email and a strong password of at least 16 characters in the API environment, then run:
+
+PowerShell:
+
+```powershell
+$env:ADMIN_EMAIL = "admin@example.com"
+$env:ADMIN_PASSWORD = "use-a-unique-password-of-at-least-16-characters"
+$env:ADMIN_NAME = "Site Administrator"
+npm --workspace @itswanheda/api run admin:create
+Remove-Item Env:ADMIN_EMAIL, Env:ADMIN_PASSWORD, Env:ADMIN_NAME
+```
+
+The command refuses to create another administrator if one already exists. It does not create a default account or embed credentials in source code.
+
+Sign in at `/login`. Administrator accounts are routed to `/admin`; members are routed to `/dashboard`.
+
+## 🧭 API overview
+
+All API routes are versioned under `/api/v1`.
+
+| Method | Endpoint | Access |
+| --- | --- | --- |
+| POST | `/auth/register` | Public, rate limited |
+| POST | `/auth/login` | Public, rate limited |
+| POST | `/auth/refresh` | Refresh cookie |
+| POST | `/auth/logout` | Session cookie |
+| GET | `/auth/me` | Authenticated |
+| GET | `/posts` | Public, published only |
+| GET | `/posts/:slug` | Public, published only |
+| GET / PATCH | `/users/me` | Authenticated |
+| GET | `/users/me/bookmarks` | Authenticated |
+| PUT / DELETE | `/users/me/bookmarks/:postId` | Authenticated + CSRF |
+| GET | `/admin/posts` | Administrator |
+| GET | `/admin/posts/:id` | Administrator |
+| POST / PATCH / DELETE | `/admin/posts[/:id]` | Administrator + CSRF |
+
+## ☁️ Deployment
+
+### Frontend — Vercel
+
+Keep the repository root as the Vercel project root. The repository is now configured as a Next.js application.
+
+Set these Vercel environment variables:
+
+| Variable | Value |
+| --- | --- |
+| `NEXT_PUBLIC_API_URL` | `/api/v1` |
+| `API_SERVER_URL` | Public origin of the deployed Express API, without a trailing slash |
+
+The Next.js rewrite proxies `/api/v1/*` to the Express service. This keeps browser requests on the website's own origin and avoids relying on cross-site authentication cookies.
+
+### Backend — Node hosting
+
+Deploy the repository's `server` workspace as a persistent Node.js service. Build and start it from the repository root:
 
 ```bash
-xdg-open index.html
+npm install
+npm --workspace @itswanheda/api run build
+npm --workspace @itswanheda/api start
 ```
 
-#### Option 2 — Recommended
+Set these server environment variables in the API host:
 
-Using Python:
+- `NODE_ENV=production`
+- `PORT` (provided by the host)
+- `MONGODB_URI`
+- `REDIS_URL`
+- `WEB_ORIGIN=https://itswanheda.vercel.app` (or the final custom domain)
+- `JWT_SECRET` (a cryptographically random secret, 32+ characters)
+- `COOKIE_SECURE=true`
+- `COOKIE_SAME_SITE=lax` when using the same-origin Vercel rewrite
+
+Do not expose database URLs, Redis credentials, or signing secrets through `NEXT_PUBLIC_*` variables. Configure the API host's health check to use `/health/ready`.
+
+### Existing GitHub integration
+
+The current `/api/github` Vercel function remains in place for the Projects page. Keep `GITHUB_TOKEN` server-side in Vercel environment variables. The token should have the minimum read-only permissions needed for the public profile and repository feed.
+
+## 🛡️ Security model
+
+- Passwords are hashed with bcrypt; the raw password is never stored.
+- Access tokens are short-lived and held in HttpOnly cookies.
+- Refresh tokens are random opaque values, stored only as SHA-256 hashes in Redis, and consumed atomically during rotation.
+- Each session has a CSRF token; authenticated state-changing routes validate it.
+- The API enforces an exact configured browser origin and credentialed CORS.
+- Public registration cannot assign roles.
+- Admin endpoints verify the current database role on each authenticated request.
+- Draft articles are not returned by public journal routes.
+- Request bodies and article fields have bounded sizes and Zod validation.
+- Security headers, generic error responses, and API rate limits are enabled.
+
+## 🧪 Quality checks
 
 ```bash
-python -m http.server 8000
+npm run typecheck
+npm run lint
+npm run build
 ```
 
-Then open:
+GitHub Actions runs the type-check and production build on pushes and pull requests. A generated dependency lockfile should be committed once the dependency installation has been performed in the project environment.
 
-```text
-http://localhost:8000
-```
+## 🗺️ Next milestones
 
-You can also use any local static server that correctly serves ES modules.
+See [Platform roadmap](./docs/PLATFORM_ROADMAP.md) for the implementation phases, deployment checklist, and the remaining production requirements.
 
----
+## 📄 License
 
-## ⚙️ Configuration
-
-The portfolio is driven primarily by JavaScript data objects in:
-
-```text
-src/js/main.js
-```
-
-No CMS, database, or JSON import pipeline is required.
-
-### 👤 Personal Information
-
-Update the relevant constants:
-
-```javascript
-const TYPED_STRINGS = [
-  'Building Secure Systems...',
-  // Add your own phrases
-];
-
-const GITHUB_USERNAME = 'ItsWanheda';
-
-const CONTACT_DATA = [
-  {
-    icon: '⚡',
-    label: 'GitHub',
-    value: 'github.com/ItsWanheda',
-    // ...
-  },
-  {
-    icon: '📧',
-    label: 'Email',
-    value: 'your@email.com',
-    // ...
-  }
-];
-```
-
-### 🎨 Theme
-
-Edit the CSS custom properties in:
-
-```text
-src/css/style.css
-```
-
-Example:
-
-```css
-:root {
-  --black: #0A0A0A;
-  --red: #FF003C;
-  --white: #F5F5F5;
-  --muted: #888888;
-}
-```
-
-Changing these variables allows the main color scheme to be customized without rewriting individual components.
-
----
-
-## 🎨 Customization
-
-### 📝 Add a Blog Post
-
-Append to `BLOG_DATA`:
-
-```javascript
-{
-  num: '07',
-  tag: 'Category',
-  title: 'Your Article Title',
-  excerpt: 'Short article preview.',
-  date: 'Jun 2025',
-  readTime: '5 min',
-
-  content: `
-    <p>Your HTML content here...</p>
-
-    <h3>Section</h3>
-
-    <pre>
-      <code>// Code blocks work too</code>
-    </pre>
-  `,
-}
-```
-
-### 🧰 Add a Skill
-
-Add a skill to `SKILLS_DATA`:
-
-```javascript
-{
-  name: 'Rust',
-  icon: '🦀',
-  cat: 'languages',
-  level: 40,
-}
-```
-
-For additional information:
-
-```javascript
-'Rust': {
-  desc: 'Memory-safe systems programming language.',
-  exp: 'Currently exploring for security tooling.',
-  projects: [
-    'Memory-safe port scanner',
-  ],
-}
-```
-
----
-
-## 🔒 Security
-
-Security is a core consideration of this project.
-
-For more information:
-
-* 📄 **Vulnerability reporting** → `SECURITY.md`
-* 🛡️ **Security headers** → security section in the source code
-* 📦 **Dependencies** → zero external runtime dependencies
-
-### Security Practices
-
-* ✅ No third-party analytics or tracking
-* ✅ External resources loaded over HTTPS
-* ✅ Reduced-motion preference respected
-* ✅ No `eval()` or `Function()`
-* ✅ Avoidance of unsafe DOM sinks
-* ✅ Click-to-copy contact information
-* ✅ Print stylesheet disables interactive elements
-* ✅ Source code remains open and auditable
-
----
-
-## 🐛 Known Issues
-
-A few minor limitations remain:
-
-* 🖱️ The custom cursor may stutter on low-end devices while the canvas background is active.
-* 🍎 Safari iOS has minor cosmetic differences in `backdrop-filter` rendering.
-* 📜 Long blog articles inside modals require manual scrolling; keyboard arrow keys do not automatically scroll the modal body.
-
----
-
-## 🗺️ Roadmap
-
-Potential future improvements:
-
-* [ ] Improve canvas performance on low-end devices
-* [ ] Further optimize mobile rendering
-* [ ] Expand technical blog content
-* [ ] Add more cybersecurity-focused projects
-* [ ] Improve accessibility coverage
-* [ ] Add additional performance optimizations
-* [ ] Expand GitHub integration
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome.
-
-Whether it's a bug fix, documentation improvement, performance optimization, or new feature, feel free to open an issue or submit a pull request.
-
-### Development Workflow
-
-```bash
-# 1. Fork the repository
-
-# 2. Create a feature branch
-git checkout -b feature/AmazingFeature
-
-# 3. Make your changes
-
-# 4. Commit
-git commit -m "feat: add AmazingFeature"
-
-# 5. Push
-git push origin feature/AmazingFeature
-
-# 6. Open a Pull Request
-```
-
-### Code Style
-
-* Use **2-space indentation**
-* Use **single quotes** for JavaScript strings
-* Prefer semantic HTML elements
-* Follow a mobile-first CSS approach
-* Comment non-obvious logic
-* Keep changes focused and maintainable
-
----
-
-## 📜 License
-
-See [`LICENSE`](./LICENSE) for the full license text.
-
----
-
-## 📞 Contact
-
-<p align="center">
-
-**ItsWanheda**
-Cybersecurity Enthusiast · Backend Developer · Networking Explorer
-
-<br><br>
-
-<a href="https://github.com/ItsWanheda">
-  <img src="https://img.shields.io/badge/GitHub-ItsWanheda-181717?style=for-the-badge&logo=github" alt="GitHub">
-</a>
-
-<a href="mailto:Wanheda.work@gmail.com">
-  <img src="https://img.shields.io/badge/Email-Contact-FF003C?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
-</a>
-
-</p>
-
-**Project:**
-https://github.com/ItsWanheda/portfolio
-
----
-
-## 🙏 Acknowledgments
-
-Built with knowledge, inspiration, and resources from:
-
-* 📚 **MDN Web Docs** — web standards and browser APIs
-* 🎨 **CSS-Tricks** — CSS, Flexbox, and Grid resources
-* 🧪 **TryHackMe & Hack The Box** — hands-on cybersecurity learning
-* 🛡️ **OWASP Foundation** — web security practices
-* 🌐 **Open-source community** — tools, fonts, ideas, and inspiration
-
----
-
-<p align="center">
-  <sub>Built with HTML, CSS, JavaScript, curiosity, and a questionable amount of caffeine. ☕</sub>
-</p>
+See [LICENSE](./LICENSE).

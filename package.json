@@ -1,0 +1,36 @@
+{
+  "name": "itswanheda-platform",
+  "version": "2.0.0",
+  "private": true,
+  "engines": { "node": ">=22.0.0" },
+  "workspaces": ["server"],
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail \"npm:dev:web\" \"npm:dev:api\"",
+    "dev:web": "next dev",
+    "dev:api": "npm --workspace @itswanheda/api run dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit && npm --workspace @itswanheda/api run typecheck"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "lucide-react": "^1.66.0",
+    "next": "^16.4.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-markdown": "^10.1.0",
+    "rehype-sanitize": "^6.0.0",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "^16.4.4",
+    "typescript": "^5.9.3"
+  }
+}
