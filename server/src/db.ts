@@ -9,14 +9,27 @@ redis.on("error", (error) => {
 });
 
 export async function connectDependencies(): Promise<void> {
-  await mongoose.connect(env.MONGODB_URI, {
-    serverSelectionTimeoutMS: 10_000,
-    maxPoolSize: 10,
-  });
-  await redis.connect();
-  console.info("[startup] MongoDB and Redis are connected.");
+  const state = mongoose.connection.readyState;
+  if (state === 0 || state === 3) {
+    await mongoose.connect(env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10_000,
+      maxPoolSize: 10,
+    });
+  } else if (state === 2) {
+    await mongoose.connection.asPromise();
+  }
+
+  if (!redis.isOpen) {
+    await redis.connect();
+  }
+  if (!redis.isReady) {
+    throw new Error("Redis connection is not ready yet.");
+  }
 }
 
 export async function closeDependencies(): Promise<void> {
-  await Promise.allSettled([mongoose.disconnect(), redis.quit()]);
+  await Promise.allSettled([
+    mongoose.disconnect(),
+    redis.isOpen ? redis.quit() : Promise.resolve(),
+  ]);
 }
