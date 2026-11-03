@@ -20,6 +20,8 @@ type Article = {
   publishedAt: string | null;
 };
 
+type ArticleMetadata = Pick<Article, "title" | "excerpt" | "category" | "tags" | "readTime" | "publishedAt">;
+
 async function getArticle(slug: string): Promise<Article | null> {
   const apiOrigin = process.env.API_SERVER_URL?.replace(/\/+$/, "");
   if (!apiOrigin) return null;
@@ -33,9 +35,22 @@ async function getArticle(slug: string): Promise<Article | null> {
   }
 }
 
+async function getArticleMetadata(slug: string): Promise<ArticleMetadata | null> {
+  const apiOrigin = process.env.API_SERVER_URL?.replace(/\/+$/, "");
+  if (!apiOrigin) return null;
+  try {
+    const response = await fetch(apiOrigin + "/api/v1/posts/meta/" + encodeURIComponent(slug), { cache: "no-store" });
+    if (!response.ok) return null;
+    const data = await response.json() as { post?: ArticleMetadata };
+    return data.post || null;
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getArticle(slug);
+  const post = await getArticleMetadata(slug);
   if (!post) return { title: "Article not found" };
 
   return {

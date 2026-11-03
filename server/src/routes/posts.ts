@@ -21,6 +21,17 @@ router.get("/", async (request, response) => {
   response.status(200).json({ posts, pagination: { page, limit, total, pages: Math.ceil(total / limit) } });
 });
 
+router.get("/meta/:slug", async (request, response) => {
+  const post = await Post.findOne({ slug: request.params.slug, status: "published" })
+    .select("title excerpt category tags readTime publishedAt")
+    .lean();
+  if (!post) {
+    response.status(404).json({ error: "This article could not be found." });
+    return;
+  }
+  response.status(200).json({ post });
+});
+
 router.get("/:slug", async (request, response) => {
   const post = await Post.findOne({ slug: request.params.slug, status: "published" }).lean();
   if (!post) {
