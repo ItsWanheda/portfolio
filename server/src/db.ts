@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { createClient } from "redis";
 import { env } from "./config.js";
 
-export const redis = createClient({ url: env.REDIS_URL });
+export const redis = createClient(env.REDIS_URL ? { url: env.REDIS_URL } : {});
 
 export function redisKey(key: string): string {
   return env.REDIS_KEY_PREFIX + key;
@@ -21,6 +21,10 @@ export async function connectDependencies(): Promise<void> {
     });
   } else if (state === 2) {
     await mongoose.connection.asPromise();
+  }
+
+  if (!env.REDIS_URL) {
+    throw new Error("REDIS_URL is not configured.");
   }
 
   if (!redis.isOpen) {
