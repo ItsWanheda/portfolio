@@ -17,7 +17,7 @@ type RouteContext = {
 };
 
 async function proxyApiRequest(request: Request, context: RouteContext): Promise<Response> {
-  const apiOrigin = process.env.API_SERVER_URL?.replace(/\\/+$/, "");
+  const apiOrigin = process.env.API_SERVER_URL?.replace(/\/+$/, "");
   const bypassSecret = process.env.API_DEPLOYMENT_BYPASS;
 
   if (!apiOrigin || !bypassSecret) {
