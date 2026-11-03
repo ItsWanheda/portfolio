@@ -2,7 +2,7 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import type { CookieOptions, Response, Request } from "express";
 import { SignJWT } from "jose";
 import { env, cookieSecure } from "./config.js";
-import { redis } from "./db.js";
+import { redis, redisKey } from "./db.js";
 import { User, type UserDocument } from "./models/User.js";
 
 export const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
@@ -65,10 +65,10 @@ export async function issueSession(user: UserDocument, response: Response): Prom
   const sessionId = randomUUID();
   const csrfToken = randomBytes(32).toString("hex");
   const refreshToken = randomBytes(48).toString("base64url");
-  await redis.set("session:" + sessionId, JSON.stringify({ userId: String(user._id), csrfToken }), {
+  await redis.set(redisKey("session:" + sessionId), JSON.stringify({ userId: String(user._id), csrfToken }), {
     EX: SESSION_TTL_SECONDS,
   });
-  await redis.set("refresh:" + hashToken(refreshToken), sessionId, { EX: SESSION_TTL_SECONDS });
+  await redis.set(redisKey("refresh:" + hashToken(refreshToken)), sessionId, { EX: SESSION_TTL_SECONDS });
   const accessToken = await createAccessToken(user, sessionId);
   setAuthCookies(response, accessToken, refreshToken);
   return csrfToken;
@@ -95,7 +95,7 @@ export async function rotateSession(
   const nextRefreshToken = randomBytes(48).toString("base64url");
   await Promise.all([
     redis.set("session:" + sessionId, rawSession, { EX: SESSION_TTL_SECONDS }),
-    redis.set("refresh:" + hashToken(nextRefreshToken), sessionId, { EX: SESSION_TTL_SECONDS }),
+    redis.set(redisKey("refresh:" + hashToken(nextRefreshToken)), sessionId, { EX: SESSION_TTL_SECONDS }),
   ]);
   const accessToken = await createAccessToken(user, sessionId);
   setAuthCookies(response, accessToken, nextRefreshToken);

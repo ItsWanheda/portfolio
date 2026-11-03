@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { redis } from "./db.js";
+import { redis, redisKey } from "./db.js";
 
 export function redisRateLimit(
   namespace: string,
@@ -13,12 +13,12 @@ export function redisRateLimit(
       const windowId = Math.floor(now / windowSizeMs);
       const resetInSeconds = Math.max(1, Math.ceil(((windowId + 1) * windowSizeMs - now) / 1000));
       const clientKey = request.ip || request.socket.remoteAddress || "unknown";
-      const key = [
+      const key = redisKey([
         "rate",
         namespace,
         windowId,
         Buffer.from(clientKey).toString("base64url"),
-      ].join(":");
+      ].join(":"));
 
       try {
         const count = await redis.incr(key);

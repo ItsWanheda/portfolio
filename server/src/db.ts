@@ -4,6 +4,10 @@ import { env } from "./config.js";
 
 export const redis = createClient({ url: env.REDIS_URL });
 
+export function redisKey(key: string): string {
+  return env.REDIS_KEY_PREFIX + key;
+}
+
 redis.on("error", (error) => {
   console.error("[redis] connection error", error);
 });
@@ -25,6 +29,19 @@ export async function connectDependencies(): Promise<void> {
   if (!redis.isReady) {
     throw new Error("Redis connection is not ready yet.");
   }
+}
+
+let dependencyConnection: Promise<void> | undefined;
+
+export async function ensureDependencies(): Promise<void> {
+  if (mongoose.connection.readyState === 1 && redis.isReady) return;
+  if (!dependencyConnection) {
+    dependencyConnection = connectDependencies().catch((error: unknown) => {
+      dependencyConnection = undefined;
+      throw error;
+    });
+  }
+  await dependencyConnection;
 }
 
 export async function closeDependencies(): Promise<void> {

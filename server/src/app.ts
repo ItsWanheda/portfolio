@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import { env } from "./config.js";
-import { redis } from "./db.js";
+import { redis, ensureDependencies } from "./db.js";
 import { redisRateLimit } from "./rate-limit.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
@@ -32,13 +32,29 @@ app.use((request, response, next) => {
   next();
 });
 
+app.use("/api/v1", async (_request, response, next) => {
+  try {
+    await ensureDependencies();
+    next();
+  } catch (error) {
+    console.error("[api] required dependencies are unavailable", error);
+    response.status(503).json({
+      error: "This service is temporarily unavailable. Please try again shortly.",
+    });
+  }
+});
 app.use("/api/v1", redisRateLimit("api", 120, 60));
 
 app.get("/health/live", (_request, response) => {
   response.status(200).json({ status: "ok" });
 });
 
-app.get("/health/ready", (_request, response) => {
+app.get("/health/ready", async (_request, response) => {
+  try {
+    await ensureDependencies();
+  } catch {
+    // Report dependency state below without leaking provider details.
+  }
   const databaseReady = mongoose.connection.readyState === 1;
   const redisReady = redis.isReady;
   const ready = databaseReady && redisReady;
@@ -62,3 +78,6 @@ app.use((error: unknown, _request: express.Request, response: express.Response, 
   console.error("[api] unhandled request error", error);
   response.status(500).json({ error: "An unexpected server error occurred." });
 });
+
+
+export default app;
