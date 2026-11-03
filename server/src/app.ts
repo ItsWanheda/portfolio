@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit";
 import mongoose from "mongoose";
 import { env } from "./config.js";
 import { redis } from "./db.js";
+import { redisRateLimit } from "./rate-limit.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
 import adminRoutes from "./routes/admin.js";
@@ -25,8 +25,6 @@ app.use(express.json({ limit: "1mb", strict: true }));
 app.use((request, response, next) => {
   const isMutation = ["POST", "PUT", "PATCH", "DELETE"].includes(request.method);
   const origin = request.get("origin");
-  // Browser-origin mutations must come from the configured frontend. The CSRF token
-  // adds a second independent check for every authenticated write operation.
   if (isMutation && origin !== env.WEB_ORIGIN) {
     response.status(403).json({ error: "This origin is not allowed to modify account data." });
     return;
@@ -34,13 +32,7 @@ app.use((request, response, next) => {
   next();
 });
 
-const apiLimiter = rateLimit({
-  windowMs: 60_000,
-  limit: 120,
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-});
-app.use("/api/v1", apiLimiter);
+app.use("/api/v1", redisRateLimit("api", 120, 60));
 
 app.get("/health/live", (_request, response) => {
   response.status(200).json({ status: "ok" });

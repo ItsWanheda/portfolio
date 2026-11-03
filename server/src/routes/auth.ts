@@ -1,19 +1,13 @@
 import { Router } from "express";
-import rateLimit from "express-rate-limit";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { User } from "../models/User.js";
-import { issueSession, readCookie, revokeSession, rotateSession } from "../security.js";
+import { issueSession, readCookie, revokeSession, rotateSession, clearAuthCookies } from "../security.js";
 import { requireAuth } from "../middleware.js";
+import { redisRateLimit } from "../rate-limit.js";
 
 const router = Router();
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 12,
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-  message: { error: "Too many authentication attempts. Please try again later." },
-});
+const authLimiter = redisRateLimit("auth", 12, 15 * 60);
 
 const registerSchema = z.object({
   name: z.string().trim().min(2).max(80),
@@ -50,10 +44,18 @@ router.post("/register", authLimiter, async (request, response) => {
     return;
   }
 
-  const passwordHash = await bcrypt.hash(parsed.data.password, 12);
-  const user = await User.create({ name: parsed.data.name, email, passwordHash, role: "member" });
-  const csrfToken = await issueSession(user, response);
-  response.status(201).json({ user: safeUser(user), csrfToken });
+  try {
+    const passwordHash = await bcrypt.hash(parsed.data.password, 12);
+    const user = await User.create({ name: parsed.data.name, email, passwordHash, role: "member" });
+    const csrfToken = await issueSession(user, response);
+    response.status(201).json({ user: safeUser(user), csrfToken });
+  } catch (error) {
+    if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {
+      response.status(409).json({ error: "An account with this email already exists." });
+      return;
+    }
+    throw error;
+  }
 });
 
 router.post("/login", authLimiter, async (request, response) => {
@@ -77,6 +79,7 @@ router.post("/login", authLimiter, async (request, response) => {
 router.post("/refresh", async (request, response) => {
   const refreshToken = readCookie(request, "refresh_token");
   if (!refreshToken) {
+    clearAuthCookies(response);
     response.status(401).json({ error: "A valid session is required." });
     return;
   }

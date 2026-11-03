@@ -41,7 +41,7 @@ The goal is to evolve the portfolio into a durable personal brand and publishing
 - Standalone Express 5 TypeScript API.
 - MongoDB/Mongoose User and Post models.
 - Redis-backed sessions and refresh-token rotation.
-- HttpOnly cookies, CSRF checks, exact-origin CORS, Zod validation, rate limits, and security headers.
+- HttpOnly cookies, CSRF checks, exact-origin CORS, Zod validation, Redis-backed distributed rate limits, and security headers.
 - Health liveness and dependency readiness endpoints.
 - Next.js same-origin rewrite to the independently hosted API.
 
