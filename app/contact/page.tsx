@@ -10,7 +10,7 @@ export default function ContactPage() {
     <main className="page-shell">
       <div className="container">
         <header className="page-header">
-          <div className="page-eyebrow">OPEN CHANNEL / LET'S CONNECT</div>
+          <div className="page-eyebrow">OPEN CHANNEL / LET&apos;S CONNECT</div>
           <h1 className="page-title">Start a conversation<span className="text-danger">.</span></h1>
           <p className="page-description">For thoughtful collaborations, security research, backend engineering, or a technical idea worth exploring.</p>
         </header>
