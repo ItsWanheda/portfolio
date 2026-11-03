@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Github, Mail } from "lucide-react";
+import { ArrowUpRight, Code2, Mail } from "lucide-react";
 import { Reveal } from "../components/Reveal";
 
 export const metadata: Metadata = { title: "Contact" };
@@ -26,7 +26,7 @@ export default function ContactPage() {
           </div>
           <div className="col-md-6">
             <Reveal className="workspace-panel h-100">
-              <Github className="text-danger mb-4" size={24} />
+              <Code2 className="text-danger mb-4" size={24} />
               <div className="meta-mono mb-2">GITHUB / OPEN SOURCE</div>
               <h2 className="h4 mb-3">ItsWanheda</h2>
               <p className="text-secondary small lh-lg">Explore current projects, inspect the source, report an issue, or start a discussion around a repository.</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUpRight, Github, Star, GitFork } from "lucide-react";
+import { ArrowUpRight, Code2, Star, GitFork } from "lucide-react";
 
 type Repository = {
   id: number;
@@ -67,7 +67,7 @@ export default function ProjectsPage() {
               <article className="content-card" key={repo.id}>
                 <div className="d-flex justify-content-between align-items-center">
                   <span className="meta-mono">{repo.language || "EXPERIMENT"}</span>
-                  <Github size={17} className="text-danger" />
+                  <Code2 size={17} className="text-danger" />
                 </div>
                 <h2>{repo.name}</h2>
                 <p>{repo.description || "An open-source project. Explore the repository for implementation details and current status."}</p>

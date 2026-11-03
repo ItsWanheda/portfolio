@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, ArrowUpRight, Code2, Github, Network, ShieldCheck, Terminal } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Code2, Network, ShieldCheck, Terminal } from "lucide-react";
 import { SceneCanvas } from "./components/SceneCanvas";
 import { Reveal } from "./components/Reveal";
 
@@ -138,7 +138,7 @@ export default function HomePage() {
             <Reveal className="contact-cta">
               <p>Ideas become better when they leave the notebook. Open to thoughtful collaborations and technical conversations.</p>
               <Link href="/contact" className="button-primary">Start a conversation <ArrowUpRight size={17} /></Link>
-              <a href="https://github.com/ItsWanheda" target="_blank" rel="noreferrer" className="github-inline"><Github size={16} /> GitHub / ItsWanheda</a>
+              <a href="https://github.com/ItsWanheda" target="_blank" rel="noreferrer" className="github-inline"><Code2 size={16} /> GitHub / ItsWanheda</a>
             </Reveal>
           </div>
         </section>
