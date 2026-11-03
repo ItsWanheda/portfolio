@@ -1,4 +1,5 @@
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1").replace(/\/$/, "");
+const defaultApiBase = process.env.NODE_ENV === "production" ? "/api/v1" : "http://localhost:4000/api/v1";
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || defaultApiBase).replace(/\\/$/, "");
 let csrfToken: string | null = null;
 
 type ApiOptions = Omit<RequestInit, "headers"> & { headers?: HeadersInit };
