@@ -39,7 +39,7 @@ export default function HomePage() {
               <SceneCanvas />
               <div className="orbit-label orbit-label-top"><span>FIG. 001</span> SYSTEM CORE</div>
               <div className="orbit-label orbit-label-bottom">ENGINEERED / NOT ASSEMBLED</div>
-              <div className="hero-coordinate">45° 27' N<br />09° 11' E</div>
+              <div className="hero-coordinate">45° 27&#39; N<br />09° 11&#39; E</div>
             </div>
           </div>
           <a href="#platform" className="scroll-cue" aria-label="Scroll to explore">
