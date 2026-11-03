@@ -13,7 +13,8 @@ import userRoutes from "./routes/users.js";
 export const app = express();
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
-app.use(helmet());
+const helmetMiddleware = helmet as unknown as () => express.RequestHandler;
+app.use(helmetMiddleware());
 app.use(cors({
   origin: env.WEB_ORIGIN,
   credentials: true,
