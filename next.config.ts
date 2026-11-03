@@ -1,21 +1,10 @@
 import type { NextConfig } from "next";
 
-const apiOrigin = process.env.API_SERVER_URL?.replace(/\/+$/, "");
-
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
   images: { formats: ["image/avif", "image/webp"] },
-  async rewrites() {
-    if (!apiOrigin) return [];
-    return [
-      {
-        source: "/api/v1/:path*",
-        destination: apiOrigin + "/api/v1/:path*",
-      },
-    ];
-  },
   async headers() {
     return [
       {
