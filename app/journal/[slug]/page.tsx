@@ -4,10 +4,12 @@ import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
+import { BookmarkButton } from "../../components/BookmarkButton";
 
 export const dynamic = "force-dynamic";
 
 type Article = {
+  _id: string;
   title: string;
   slug: string;
   excerpt: string;
@@ -68,6 +70,7 @@ export default async function JournalArticlePage({ params }: { params: Promise<{
             <span>{post.readTime} MIN READ</span>
             {post.tags.map((tag) => <span key={tag}>#{tag}</span>)}
           </div>
+          <BookmarkButton postId={post._id} />
           <div className="article-content">
             <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{post.content}</ReactMarkdown>
           </div>

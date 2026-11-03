@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Types } from "mongoose";
 import { z } from "zod";
 import { requireAdmin, requireAuth, requireCsrf } from "../middleware.js";
 import { Post } from "../models/Post.js";
@@ -40,6 +41,10 @@ router.get("/posts", async (request, response) => {
 });
 
 router.get("/posts/:id", async (request, response) => {
+  if (!Types.ObjectId.isValid(request.params.id)) {
+    response.status(400).json({ error: "Invalid article identifier." });
+    return;
+  }
   const post = await Post.findById(request.params.id).lean();
   if (!post) {
     response.status(404).json({ error: "Article not found." });
@@ -76,6 +81,10 @@ router.post("/posts", async (request, response) => {
 });
 
 router.patch("/posts/:id", async (request, response) => {
+  if (!Types.ObjectId.isValid(request.params.id)) {
+    response.status(400).json({ error: "Invalid article identifier." });
+    return;
+  }
   const parsed = postSchema.partial().safeParse(request.body);
   if (!parsed.success || Object.keys(parsed.data || {}).length === 0) {
     response.status(400).json({ error: "Provide at least one valid article field to update." });
@@ -119,6 +128,10 @@ router.patch("/posts/:id", async (request, response) => {
 });
 
 router.delete("/posts/:id", async (request, response) => {
+  if (!Types.ObjectId.isValid(request.params.id)) {
+    response.status(400).json({ error: "Invalid article identifier." });
+    return;
+  }
   const post = await Post.findByIdAndDelete(request.params.id);
   if (!post) {
     response.status(404).json({ error: "Article not found." });

@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { Post } from "../models/Post.js";
+import type { FilterQuery } from "mongoose";
+import { Post, type PostFields } from "../models/Post.js";
 
 const router = Router();
 
 router.get("/", async (request, response) => {
   const page = Math.max(1, Number.parseInt(String(request.query.page || "1"), 10) || 1);
   const limit = Math.min(30, Math.max(1, Number.parseInt(String(request.query.limit || "12"), 10) || 12));
-  const filter: Record<string, unknown> = { status: "published" };
+  const filter: FilterQuery<PostFields> = { status: "published" };
   const category = typeof request.query.category === "string" ? request.query.category.trim() : "";
   if (category) filter.category = category;
   const search = typeof request.query.q === "string" ? request.query.q.trim().slice(0, 80) : "";

@@ -115,10 +115,11 @@ The API refuses to start without a valid `JWT_SECRET` (at least 32 characters), 
 
 ### 3. Configure the frontend
 
-Copy `.env.example` to `.env.local`. For local development, keep:
+Copy `.env.example` to `.env.local`. For local development, keep both values pointed at the local Express API:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
+API_SERVER_URL=http://localhost:4000
 ```
 
 ### 4. Start both applications

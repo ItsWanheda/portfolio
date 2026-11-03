@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Types } from "mongoose";
 import { z } from "zod";
 import { requireAuth, requireCsrf } from "../middleware.js";
 import { Post } from "../models/Post.js";
@@ -51,7 +52,12 @@ router.get("/me/bookmarks", async (request, response) => {
 });
 
 router.put("/me/bookmarks/:postId", requireCsrf, async (request, response) => {
-  const post = await Post.findOne({ _id: request.params.postId, status: "published" }).select("_id");
+  if (!Types.ObjectId.isValid(request.params.postId)) {
+    response.status(400).json({ error: "Invalid article identifier." });
+    return;
+  }
+  const postId = new Types.ObjectId(request.params.postId);
+  const post = await Post.findOne({ _id: postId, status: "published" }).select("_id");
   if (!post) {
     response.status(404).json({ error: "Published article not found." });
     return;
@@ -61,7 +67,14 @@ router.put("/me/bookmarks/:postId", requireCsrf, async (request, response) => {
 });
 
 router.delete("/me/bookmarks/:postId", requireCsrf, async (request, response) => {
-  await User.updateOne({ _id: request.auth!.userId }, { $pull: { bookmarks: request.params.postId } });
+  if (!Types.ObjectId.isValid(request.params.postId)) {
+    response.status(400).json({ error: "Invalid article identifier." });
+    return;
+  }
+  await User.updateOne(
+    { _id: request.auth!.userId },
+    { $pull: { bookmarks: new Types.ObjectId(request.params.postId) } },
+  );
   response.status(200).json({ success: true });
 });
 
