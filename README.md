@@ -74,7 +74,8 @@ The migration is intentionally incremental. The original HTML/CSS/JavaScript imp
 │   │   ├── db.ts
 │   │   └── index.ts
 │   └── package.json
-├── api/github.js              # Existing Vercel GitHub integration
+├── app/api/github/route.ts    # Next.js GitHub data route
+├── api/github.js              # Legacy handler retained during migration
 ├── src/                       # Original visual/source implementation kept for reference
 ├── docs/
 ├── .github/workflows/
@@ -213,7 +214,7 @@ Do not expose database URLs, Redis credentials, or signing secrets through `NEXT
 
 ### Existing GitHub integration
 
-The current `/api/github` Vercel function remains in place for the Projects page. Keep `GITHUB_TOKEN` server-side in Vercel environment variables. The token should have the minimum read-only permissions needed for the public profile and repository feed.
+The Next.js App Router handler at `app/api/github/route.ts` serves the Projects page feed. The original `api/github.js` handler is retained during the migration but is no longer the active route. Keep `GITHUB_TOKEN` server-side in Vercel environment variables. The token should have the minimum read-only permissions needed for the public profile and repository feed.
 
 ## 🛡️ Security model
 
