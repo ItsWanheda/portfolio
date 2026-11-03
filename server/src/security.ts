@@ -65,10 +65,10 @@ export async function issueSession(user: UserDocument, response: Response): Prom
   const sessionId = randomUUID();
   const csrfToken = randomBytes(32).toString("hex");
   const refreshToken = randomBytes(48).toString("base64url");
-  await redis.set(redisKey(redisKey("session:" + sessionId)), JSON.stringify({ userId: String(user._id), csrfToken }), {
+  await redis.set(redisKey("session:" + sessionId), JSON.stringify({ userId: String(user._id), csrfToken }), {
     EX: SESSION_TTL_SECONDS,
   });
-  await redis.set(redisKey(redisKey("refresh:" + hashToken(refreshToken))), sessionId, { EX: SESSION_TTL_SECONDS });
+  await redis.set(redisKey("refresh:" + hashToken(refreshToken)), sessionId, { EX: SESSION_TTL_SECONDS });
   const accessToken = await createAccessToken(user, sessionId);
   setAuthCookies(response, accessToken, refreshToken);
   return csrfToken;
