@@ -65,10 +65,10 @@ export async function issueSession(user: UserDocument, response: Response): Prom
   const sessionId = randomUUID();
   const csrfToken = randomBytes(32).toString("hex");
   const refreshToken = randomBytes(48).toString("base64url");
-  await redis.set(redisKey("session:" + sessionId), JSON.stringify({ userId: String(user._id), csrfToken }), {
+  await redis.set(redisKey(redisKey("session:" + sessionId)), JSON.stringify({ userId: String(user._id), csrfToken }), {
     EX: SESSION_TTL_SECONDS,
   });
-  await redis.set(redisKey("refresh:" + hashToken(refreshToken)), sessionId, { EX: SESSION_TTL_SECONDS });
+  await redis.set(redisKey(redisKey("refresh:" + hashToken(refreshToken))), sessionId, { EX: SESSION_TTL_SECONDS });
   const accessToken = await createAccessToken(user, sessionId);
   setAuthCookies(response, accessToken, refreshToken);
   return csrfToken;
@@ -79,22 +79,22 @@ export async function rotateSession(
   response: Response,
 ): Promise<{ user: UserDocument; csrfToken: string } | null> {
   // GETDEL ensures a refresh token can be consumed only once, even on concurrent requests.
-  const sessionId = await redis.getDel("refresh:" + hashToken(refreshToken));
+  const sessionId = await redis.getDel(redisKey("refresh:" + hashToken(refreshToken)));
   if (!sessionId) return null;
 
-  const rawSession = await redis.get("session:" + sessionId);
+  const rawSession = await redis.get(redisKey("session:" + sessionId));
   if (!rawSession) return null;
 
   const session = JSON.parse(rawSession) as SessionPayload;
   const user = await User.findById(session.userId);
   if (!user || !user.isActive) {
-    await redis.del("session:" + sessionId);
+    await redis.del(redisKey("session:" + sessionId));
     return null;
   }
 
   const nextRefreshToken = randomBytes(48).toString("base64url");
   await Promise.all([
-    redis.set("session:" + sessionId, rawSession, { EX: SESSION_TTL_SECONDS }),
+    redis.set(redisKey("session:" + sessionId), rawSession, { EX: SESSION_TTL_SECONDS }),
     redis.set(redisKey("refresh:" + hashToken(nextRefreshToken)), sessionId, { EX: SESSION_TTL_SECONDS }),
   ]);
   const accessToken = await createAccessToken(user, sessionId);
@@ -105,8 +105,8 @@ export async function rotateSession(
 export async function revokeSession(request: Request, response: Response): Promise<void> {
   const refreshToken = readCookie(request, "refresh_token");
   if (refreshToken) {
-    const sessionId = await redis.getDel("refresh:" + hashToken(refreshToken));
-    if (sessionId) await redis.del("session:" + sessionId);
+    const sessionId = await redis.getDel(redisKey("refresh:" + hashToken(refreshToken)));
+    if (sessionId) await redis.del(redisKey("session:" + sessionId));
   }
   clearAuthCookies(response);
 }
