@@ -1,0 +1,250 @@
+/*
+ * Motion and compact layout layer.
+ * Kept separate from the existing design system and Three.js scene.
+ */
+
+/* Lenis baseline styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------
+   SKILLS — compact four-column grid, without card surfaces
+   ---------------------------------------------------------- */
+
+#skills .skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px 22px;
+  align-items: stretch;
+}
+
+#skills .skill-card {
+  min-width: 0;
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-rows: minmax(20px, auto) 3px;
+  align-items: center;
+  column-gap: 11px;
+  row-gap: 6px;
+  padding: 9px 4px;
+  color: var(--text);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: visible;
+  isolation: auto;
+  transform: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+#skills .skill-card::before,
+#skills .skill-card::after {
+  display: none;
+  content: none;
+}
+
+#skills .skill-card > * {
+  position: static;
+  z-index: auto;
+}
+
+#skills .skill-card:hover,
+#skills .skill-card:focus-visible {
+  background: rgba(255, 0, 60, 0.035);
+  border-color: rgba(255, 0, 60, 0.42);
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+#skills .skill-icon {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(255, 0, 60, 0.055);
+  font-size: 1.25rem;
+  line-height: 1;
+  transform: none;
+  transition: background-color 0.2s ease;
+}
+
+#skills .skill-card:hover .skill-icon,
+#skills .skill-card:focus-visible .skill-icon {
+  background: rgba(255, 0, 60, 0.12);
+  border-color: transparent;
+  transform: none;
+}
+
+#skills .skill-name {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(0.76rem, 0.9vw, 0.9rem);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+#skills .skill-card:hover .skill-name,
+#skills .skill-card:focus-visible .skill-name {
+  color: var(--red);
+  text-shadow: none;
+}
+
+#skills .skill-level {
+  grid-column: 2;
+  grid-row: 2;
+  width: 100%;
+  height: 2px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#skills .skill-level-fill {
+  width: var(--level, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--red);
+  box-shadow: 0 0 8px rgba(255, 0, 60, 0.24);
+}
+
+/* ----------------------------------------------------------
+   GITHUB — consistent, responsive repository project grid
+   ---------------------------------------------------------- */
+
+#github .github-layout {
+  align-items: start;
+  gap: clamp(20px, 3vw, 42px);
+}
+
+#github .repos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+  grid-auto-rows: 1fr;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+}
+
+#github .repo-card {
+  min-width: 0;
+  min-height: 228px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+#github .repo-description {
+  min-height: 3.8em;
+  -webkit-line-clamp: 2;
+}
+
+#github .repo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: auto;
+}
+
+#github .repo-link {
+  margin-top: 16px;
+}
+
+/* ----------------------------------------------------------
+   RESPONSIVE REFINEMENT
+   ---------------------------------------------------------- */
+
+@media (max-width: 1050px) {
+  #skills .skills-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px 16px;
+  }
+
+  #github .github-layout {
+    grid-template-columns: minmax(220px, 270px) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  #github .github-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #github .github-profile-card {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  #skills .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 12px;
+  }
+
+  #skills .skill-card {
+    min-height: 60px;
+    column-gap: 8px;
+    padding: 8px 2px;
+  }
+
+  #skills .skill-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+  }
+
+  #skills .skill-name {
+    font-size: 0.76rem;
+  }
+
+  #github .repos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #github .repo-card {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #skills .skill-card,
+  #github .repo-card {
+    transition: none !important;
+    transform: none !important;
+  }
+}
