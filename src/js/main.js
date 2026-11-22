@@ -7108,8 +7108,23 @@ function renderGithubRepositories(
   }
 
 
+  // Show only the three repositories with the most recent GitHub updates.
+  const recentRepositories = repositories
+    .map((repo, index) => ({
+      repo,
+      index,
+      updatedAt: Date.parse(repo.updated_at || repo.pushed_at || "")
+    }))
+    .sort((a, b) => {
+      const aTime = Number.isFinite(a.updatedAt) ? a.updatedAt : -Infinity;
+      const bTime = Number.isFinite(b.updatedAt) ? b.updatedAt : -Infinity;
+      return bTime - aTime || a.index - b.index;
+    })
+    .slice(0, 3)
+    .map(({ repo }) => repo);
+
   reposGrid.innerHTML =
-    repositories
+    recentRepositories
       .map(repo => {
 
         const language =
