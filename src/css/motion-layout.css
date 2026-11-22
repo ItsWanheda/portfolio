@@ -46,12 +46,13 @@ html.lenis body {
   column-gap: 11px;
   row-gap: 6px;
   padding: 9px 4px;
-  color: var(--text);
+  color: var(--white);
   text-align: left;
   background: transparent;
   border: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 0;
+  outline: none;
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -81,6 +82,11 @@ html.lenis body {
   border-color: rgba(255, 0, 60, 0.42);
   box-shadow: none;
   transform: translateY(-2px);
+}
+
+#skills .skill-card:focus-visible {
+  outline: 2px solid rgba(255, 0, 60, 0.72);
+  outline-offset: 3px;
 }
 
 #skills .skill-icon {
